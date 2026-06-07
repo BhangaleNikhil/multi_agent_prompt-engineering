@@ -4,6 +4,7 @@
 
 from src.agents.python_agent import python_agent
 from src.agents.master_agent import master_agent
+from src.agents.orchestrator import orchestrator
 import json
 
-print(master_agent())
+print(orchestrator())
