@@ -8,5 +8,6 @@ def orchestrator():
     model = config.get_model()
 
     agent = create_agent(model=model,tools=[dir_structure])
-    result = agent.invoke({"messages":[{"role":"user","content":"You are an orchestrator manager of ai workflow. Tell me what are you going to do"}]})
+    dir_name = "./test_data"
+    result = agent.invoke({"messages":[{"role":"user","content":f"You are an orchestrator manager of ai workflow. you read the director {dir_structure}, then send python file names to python agent and once all file read calls master agent which reads all file and creates consolidated reports"}]})
     return result
