@@ -1,21 +1,24 @@
 import os
-from typing import Dict, Any
+from typing import List
+import os
 from langchain.tools import tool
 
-def get_dir_structure(root_dir_path:str):
-    """get_dir_structure function gets the root directory path root_dir_path and returns the entire directory structure"""
-    structure :Dict[str,Any] = {}
-    for element in os.listdir(root_dir_path):
-        element_path = os.path.join(root_dir_path,element)
-        if element not in ["__pycache__"]:
-            if os.path.isdir(element_path):
-                structure[element] = get_dir_structure(element_path)
-            else:
-                structure[element] = None
-
-    return structure
-
 @tool
-def dir_structure(root_dir_path):
-    """dir_structure function gets the root directory path root_dir_path and returns the entire directory structure"""
-    return get_dir_structure(root_dir_path=root_dir_path)
+def get_relevant_file(root_dir_path:str,file_filter:str)->List:
+    """get_relevant_file function gets the root directory path and returns the list of relevant file paths
+
+    Args:
+    get_relevant_file:str
+    file_filter:str (python or master to select file type to retrieve)
+
+    returns:
+    relevant_file_list:List
+    """
+
+    file_filters={"python":".py","master":".md"}
+
+    filtered_files = []
+    for root,dir,files in os.walk("./src"):
+        filtered_files.extend([os.path.abspath(os.path.join(root,file)) for file in files if file.endswith(file_filters[file_filter])])
+
+    return filtered_files
