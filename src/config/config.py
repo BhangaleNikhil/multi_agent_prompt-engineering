@@ -3,7 +3,7 @@ from typing import Any
 
 class Config:
     def __init__(self):
-        self.model = ChatOllama(model="gemma4:latest",temperature=0)
+        pass
 
     def get_model(self) -> Any:
-        return self.model
+        return ChatOllama(model="gemma4:latest",temperature=0)
