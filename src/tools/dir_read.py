@@ -1,10 +1,9 @@
 import os
 from typing import List
-import os
 from langchain.tools import tool
+from src.states import AppState
 
-@tool
-def get_relevant_file(root_dir_path:str,file_filter:str)->List:
+def get_relevant_file(state:AppState)->AppState:
     """get_relevant_file function gets the root directory path and returns the list of relevant file paths
 
     Args:
@@ -15,10 +14,16 @@ def get_relevant_file(root_dir_path:str,file_filter:str)->List:
     relevant_file_list:List
     """
 
-    file_filters={"python":".py","master":".md"}
+    print("get relevant_file is called")
+    file_filter = state["file_filter"]
+    root_dir_path = state["root_path"]
+
+    file_filters = {"python":".py"}
 
     filtered_files = []
-    for root,dir,files in os.walk("./src"):
+    for root,dir,files in os.walk(root_dir_path):
         filtered_files.extend([os.path.abspath(os.path.join(root,file)) for file in files if file.endswith(file_filters[file_filter])])
 
-    return filtered_files
+    state["py_docs"]["count"] = len(filtered_files)
+    state["py_docs"]["docs"] = filtered_files
+    return state
