@@ -10,7 +10,6 @@ def orchestrator_router(state:AppState) -> str:
     py_files = state["py_docs"]["docs"]
 
     if not py_doc_count and not py_files:
-        state["file_filter"] = "python"
         return "get_relevant_files"
     elif py_doc_count and py_files:
         return "python_agent"

@@ -16,7 +16,7 @@ def graph_compilation():
     route_map = ["get_relevant_files",
                  "python_agent","master_agent"]
     
-    graph.add_edge(START,"orchestrator")
+    graph.set_entry_point("orchestrator")
     graph.add_edge("python_agent","orchestrator")
     graph.add_edge("get_relevant_files","orchestrator")
     graph.add_conditional_edges("orchestrator",orchestrator_router,path_map=route_map)
