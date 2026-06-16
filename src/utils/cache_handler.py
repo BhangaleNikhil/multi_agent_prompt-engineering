@@ -15,13 +15,14 @@ class CacheHandler:
     def _get_doc_key(self,doc_id):
         return f"doc:{doc_id}"
     
-    def save_document(self,doc_id:str,document:Dict[str,str]):
+    def save_document(self,doc_id:str,document:Dict[str,Any]):
         doc_key = self._get_doc_key(doc_id)
         self.client.hset(doc_key,mapping=cast(dict[EncodableT, EncodableT],document))
+        return doc_key
 
     def get_document(self,doc_id:str):
         doc_key = self._get_doc_key(doc_id)
-        self.client.hgetall(name=doc_key)
+        return self.client.hgetall(name=doc_key)
 
     def delete_document(self, doc_id: str):
         key = self._get_doc_key(doc_id)

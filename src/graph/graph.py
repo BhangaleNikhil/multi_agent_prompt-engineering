@@ -24,8 +24,8 @@ def graph_compilation():
     graph.add_edge("master_agent",END)
 
     agent = graph.compile()
-    python_state = PyDocState({"count":None,"docs":None,"processed_docs":None,"docs_with_issues":None})
+    python_state = PyDocState({"count":None,"docs":None,"processed_docs":None,"docs_with_issues":None,"input_tokens_agent":0,"output_tokens_agent":0,"input_tokens_tool":0,"output_tokens_tool":0})
     report_state = ReportDocState({"count":None,"docs":None,"docs_with_issues":None,"processed_docs":None})
-    state = AppState({"root_path":"./test_data","file_filter":"","py_docs":python_state,"reports":report_state})
+    state = AppState({"root_path":"./test_data","file_filter":"","cache_key":[],"py_docs":python_state,"reports":report_state})
     
     agent.invoke(state)

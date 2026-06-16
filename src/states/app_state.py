@@ -7,3 +7,4 @@ class AppState(TypedDict):
     file_filter:str
     py_docs: PyDocState
     reports: ReportDocState
+    cache_key:List
