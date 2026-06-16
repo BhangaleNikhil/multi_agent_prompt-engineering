@@ -3,7 +3,7 @@ from src.tools.py_read import py_read
 from src.config.config import Config
 from src.states.app_state import AppState
 from langchain_core.messages import message_to_dict
-from src.utils.cache_handler import CacheHandler
+from src.utils import CacheHandler
 import json
 import os
 from datetime import datetime
@@ -22,6 +22,7 @@ def python_agent(state:AppState)->AppState:
 
     result = agent.invoke({"messages": [{"role": "user", "content": f"Read the file {file_path} and find the issues with the code."}]})
     messages = result.get("messages", [])
+
     for msg in messages:
         msg["type"]
     serializable_messages = [message_to_dict(msg) for msg in messages]
@@ -37,6 +38,8 @@ def python_agent(state:AppState)->AppState:
             state["py_docs"]["output_tokens_tool"] += msg["data"]["usage_metadata"]["output_tokens"]
 
     response = {"message": ai_response, "file_path":file_path }
+
+    state["py_docs"]["processed_docs"].append(file_path)
 
     doc_key = cache_handler.save_document(doc_id=doc_id,document=response)
     doc_key = cache_handler._get_doc_key(doc_id)

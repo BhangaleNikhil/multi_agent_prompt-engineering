@@ -20,8 +20,7 @@ class CacheHandler:
         self.client.hset(doc_key,mapping=cast(dict[EncodableT, EncodableT],document))
         return doc_key
 
-    def get_document(self,doc_id:str):
-        doc_key = self._get_doc_key(doc_id)
+    def get_document(self,doc_key:str) -> Dict:
         return self.client.hgetall(name=doc_key)
 
     def delete_document(self, doc_id: str):

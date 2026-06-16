@@ -8,3 +8,4 @@ class AppState(TypedDict):
     py_docs: PyDocState
     reports: ReportDocState
     cache_key:List
+    storage_folder:str
