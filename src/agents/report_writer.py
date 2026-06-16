@@ -26,6 +26,8 @@ def report_writer(state:AppState)->AppState:
         processed_docs.append(str(file_path))
         counter += 1
 
+        cache_handler.delete_document(doc_key=key)
+
     state["reports"]["docs"].extend(processed_docs)
     state["reports"]["count"] = counter
     state["cache_key"].clear()

@@ -20,6 +20,7 @@ def graph_compilation():
     graph.set_entry_point("orchestrator")
     graph.add_edge("python_agent","orchestrator")
     graph.add_edge("get_relevant_files","orchestrator")
+    graph.add_edge("report_writer","orchestrator")
     graph.add_conditional_edges("orchestrator",orchestrator_router,path_map=route_map)
     
     graph.add_edge("master_agent",END)

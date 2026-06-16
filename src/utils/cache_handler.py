@@ -23,6 +23,5 @@ class CacheHandler:
     def get_document(self,doc_key:str) -> Dict:
         return self.client.hgetall(name=doc_key)
 
-    def delete_document(self, doc_id: str):
-        key = self._get_doc_key(doc_id)
-        result = self.client.delete(key)
+    def delete_document(self, doc_key: str):
+        result = self.client.delete(doc_key)
