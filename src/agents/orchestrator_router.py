@@ -11,7 +11,7 @@ def orchestrator_router(state:AppState) -> str:
 
     processed = state["py_docs"]["processed_docs"]
 
-    if processed and (len(processed) % 10 == 0 or not py_files):
+    if processed and ((len(processed) % 10 == 0 and state["cache_key"]) or (not py_files and state["cache_key"])):
         return "report_writer"
     else:
         if not py_doc_count and not py_files:

@@ -18,7 +18,7 @@ def get_relevant_file(state:AppState)->AppState:
     file_filter = state["file_filter"]
     root_dir_path = state["root_path"]
 
-    file_filters = {"python":".py"}
+    file_filters = {"python":".py","master":".md"}
 
     filtered_files = []
     for root,dir,files in os.walk(root_dir_path):

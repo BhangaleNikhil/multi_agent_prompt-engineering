@@ -23,8 +23,6 @@ def python_agent(state:AppState)->AppState:
     result = agent.invoke({"messages": [{"role": "user", "content": f"Read the file {file_path} and find the issues with the code."}]})
     messages = result.get("messages", [])
 
-    for msg in messages:
-        msg["type"]
     serializable_messages = [message_to_dict(msg) for msg in messages]
 
     ai_response = ""
