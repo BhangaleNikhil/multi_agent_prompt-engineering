@@ -5,7 +5,7 @@ from src.agents import orchestrator_router,master_agent,python_agent, orchestrat
 
 from src.tools import  python_tools, get_relevant_file
 
-def graph_compilation():
+def graph_compilation(root_path:str,storage_folder:str,prompt_technique:str):
     graph = StateGraph(AppState)
     python_tool_node = ToolNode(name="python_tool_node",tools=python_tools)
     graph.add_node("python_agent",python_agent)
@@ -28,6 +28,6 @@ def graph_compilation():
     agent = graph.compile()
     python_state = PyDocState({"count":None,"docs":None,"processed_docs":[],"docs_with_issues":[],"input_tokens_agent":0,"output_tokens_agent":0,"input_tokens_tool":0,"output_tokens_tool":0})
     report_state = ReportDocState({"count":0,"docs":[],"docs_with_issues":None,"processed_docs":None,"input_tokens_agent":0,"output_tokens_agent":0,"input_tokens_tool":0,"output_tokens_tool":0})
-    state = AppState({"root_path":"./test_data","file_filter":"","cache_key":[],"py_docs":python_state,"reports":report_state,"storage_folder":"./test_data/test_reports"})
+    state = AppState({"root_path":root_path,"file_filter":"","cache_key":[],"py_docs":python_state,"reports":report_state,"storage_folder":storage_folder,"prompt_technique":prompt_technique})
     
     agent.invoke(state)
