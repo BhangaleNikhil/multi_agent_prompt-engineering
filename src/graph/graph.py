@@ -7,7 +7,6 @@ from src.tools import  python_tools, get_relevant_file
 
 def graph_compilation(root_path:str,storage_folder:str,prompt_technique:str):
     graph = StateGraph(AppState)
-    python_tool_node = ToolNode(name="python_tool_node",tools=python_tools)
     graph.add_node("python_agent",python_agent)
     graph.add_node("master_agent",master_agent)
     graph.add_node("get_relevant_files",get_relevant_file)
