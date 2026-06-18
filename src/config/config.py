@@ -40,3 +40,6 @@ class Config:
     def get_redis_log_config(self) -> Any:
         host = os.getenv("REDIS_HOST")
         port = int(os.getenv("REDIS_PORT_LOG","6380"))
+
+    def get_logs_storage(self) -> Any:
+        return os.getenv("agent_logs.db","agent_logs.db")
