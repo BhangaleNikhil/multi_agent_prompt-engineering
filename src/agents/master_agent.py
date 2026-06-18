@@ -25,7 +25,7 @@ def master_agent(state:AppState) -> AppState:
     prompt = config.get_master_prompt()
     cache_keys = state["reports"]["docs"]
 
-    context = ""
+    raw_context = ""
     results = ""
 
     for key in cache_keys:
@@ -34,14 +34,15 @@ def master_agent(state:AppState) -> AppState:
         response = document.get("message","")
 
         final_response = f"{file}\n{response}\n"
-        context += final_response
+        raw_context += final_response
 
+    raw_context += f"Following are the file where we had errors: {json.dumps(state["py_docs"]["docs_with_issues"])}"
     splitter = RecursiveCharacterTextSplitter(chunk_size=120000,chunk_overlap=100,length_function=gemma_tokenizer,separators=["\n\n","\n"])
 
-    contexts = splitter.split_text(context)
+    chunked_contexts = splitter.split_text(raw_context)
 
-    for contxt in contexts:
-        result = agent.invoke({"messages":[{"role": "user", "content": prompt.format(security_agent_reports=contxt,previous_report=results)}]})
+    for context in chunked_contexts:
+        result = agent.invoke({"messages":[{"role": "user", "content": prompt.format(security_agent_reports=context,previous_report=results)}]})
         
         messages = result.get("messages", [])
 
