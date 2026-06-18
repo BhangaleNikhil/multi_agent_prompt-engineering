@@ -1,9 +1,13 @@
 from src.states import AppState
-from src.utils import CacheHandler
+from src.utils import CacheHandler, LogCacheHandler, LogStorage
 import os
 from pathlib import Path
+import json
 
 cache_handler = CacheHandler()
+log_cache_handler = LogCacheHandler()
+log_storage = LogStorage()
+
 def report_writer(state:AppState)->AppState:
     print(f"{25*'='}Report Writer is called{25*'='}\n")
     cache_keys = state["cache_key"]
@@ -28,6 +32,12 @@ def report_writer(state:AppState)->AppState:
             file.write(response)
         
         counter += 1
+
+    logs = [(log.get("timestamp",""),log.get("log_message","")) for log in log_cache_handler.get_logs(key="logs")]
+
+    execution_status = log_storage.store_logs(logs=logs)
+    if execution_status:
+        log_cache_handler.delete_all_logs(key="logs")
 
     state["reports"]["docs"].extend(cache_keys)
     state["reports"]["count"] += counter

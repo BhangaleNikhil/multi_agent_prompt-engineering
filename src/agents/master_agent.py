@@ -2,7 +2,7 @@ from langchain.agents import create_agent
 from src.tools.dir_read import get_relevant_file
 from src.config.config import Config
 from src.states.app_state import AppState
-from src.utils import CacheHandler
+from src.utils import CacheHandler, LogCacheHandler, LogStorage
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 from transformers import AutoTokenizer
 from langchain_core.messages import message_to_dict
@@ -11,6 +11,8 @@ import json, os
 config = Config()
 
 cache_handler = CacheHandler()
+log_cache_handler = LogCacheHandler()
+log_storage = LogStorage()
 
 tokenizer = AutoTokenizer.from_pretrained("google/gemma-4-E4B-it")
 
@@ -65,4 +67,14 @@ def master_agent(state:AppState) -> AppState:
     storage = os.path.join(os.path.abspath(storage),"master_report.md")
     with open (storage,"w+",encoding="utf-8") as file:
         file.write(content)
+
+    for key in cache_keys:
+        cache_handler.delete_document(doc_key=key)
+
+    logs = [(log.get("timestamp",""),log.get("log_message","")) for log in log_cache_handler.get_logs(key="logs")]
+
+    execution_status = log_storage.store_logs(logs=logs)
+    if execution_status:
+        log_cache_handler.delete_all_logs(key="logs")
+        
     return state

@@ -4,14 +4,16 @@ from typing import List
 
 config = Config()
 
-connection = sqlite3.Connection(config.get_logs_storage())
-cursor = sqlite3.Cursor(connection)
+class LogStorage:
+    def __int__(self):
+        self.connection = sqlite3.Connection(config.get_logs_storage())
+        self.cursor = sqlite3.Cursor(self.connection)
 
-cursor.execute("CREATE TABLE IF NOT EXISTS workflow_logs(timestamp TIMESTAMP,log TEXT)")
+        self.cursor.execute("CREATE TABLE IF NOT EXISTS workflow_logs(timestamp TIMESTAMP,log_message TEXT)")
 
-def store_logs(logs:List) -> bool:
-    cursor.executemany("INSERT INTO workflow_logs (timestamp, log) VALUES (?, ?)",logs)
+    def store_logs(self,logs:List) -> bool:
+        self.cursor.executemany("INSERT INTO workflow_logs (timestamp, log) VALUES (?, ?)",logs)
 
-    connection.commit()
+        self.connection.commit()
 
-    return True
+        return True
