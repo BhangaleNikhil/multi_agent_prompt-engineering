@@ -5,7 +5,7 @@ from redis.typing import EncodableT
 from src.config.config import Config
 
 config = Config()
-redis_details = config.get_redis_config()
+redis_details = config.get_redis_doc_config()
 
 class CacheHandler:
     def __init__(self) -> None:
