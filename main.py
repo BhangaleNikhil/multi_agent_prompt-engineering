@@ -41,6 +41,5 @@ execution_flow = [
 
 ]
 
-# for flow in execution_flow:
-#     print(flow)
-graph_compilation(**execution_flow[0])
+for flow in execution_flow:
+    graph_compilation(**flow)
