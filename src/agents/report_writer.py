@@ -59,9 +59,6 @@ def report_writer(state:AppState)->AppState:
         state["reports"]["docs"].extend(cache_keys)
         state["reports"]["count"] += counter
         state["cache_key"].clear()
-
-        if len(state["py_docs"]["processed_docs"]) % 100 == 0:
-            time.sleep(30)
     except Exception as e:
         logger.error(e)
     return state

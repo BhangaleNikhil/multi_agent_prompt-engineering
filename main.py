@@ -44,4 +44,3 @@ execution_flow = [
 # for flow in execution_flow:
 #     print(flow)
 graph_compilation(**execution_flow[0])
-time.sleep(120)
