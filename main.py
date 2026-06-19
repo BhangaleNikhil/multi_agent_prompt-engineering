@@ -1,6 +1,12 @@
 from dotenv import load_dotenv
 load_dotenv()
 
+import os
+
+root_path = os.getenv("ROOT_PATH","./")
+base_storage_path = os.getenv("BASE_STORAGE_PATH","")
+prompt_technique = os.getenv("PROMPT_TECHNIQUE","zero_shot")
+
 import time
 from src.config.config import Config
 config = Config()
@@ -12,34 +18,5 @@ from src.graph.graph import graph_compilation
 setup_logging()
 logger = logging.getLogger(__name__)
 
-execution_flow = [
-    {
-        "root_path":r"data\test_data",
-        "storage_folder":r"reports\test_reports_storage\few_shot",
-        "prompt_technique":"few_shot"
-    },
-    {
-        "root_path":r"data\test_data",
-        "storage_folder":r"reports\test_reports_storage\zero_shot",
-        "prompt_technique":"zero_shot"
-    },
-    {
-        "root_path":r"data\test_data",
-        "storage_folder":r"reports\test_reports_storage\chain_of_thought",
-        "prompt_technique":"chain_of_thought"
-    },
-    {
-        "root_path":r"data\test_data",
-        "storage_folder":r"reports\test_reports_storage\structured_output",
-        "prompt_technique":"structured_output"
-    },
-    {
-        "root_path":r"data\test_data",
-        "storage_folder":r"reports\test_reports_storage\role_based",
-        "prompt_technique":"role_based"
-    }
-
-]
-
-for flow in execution_flow:
-    graph_compilation(**flow)
+storage = os.path.join(base_storage_path,prompt_technique)
+graph_compilation(root_path=root_path,storage_folder=storage,prompt_technique=prompt_technique)
