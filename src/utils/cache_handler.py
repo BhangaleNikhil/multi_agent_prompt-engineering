@@ -4,6 +4,9 @@ from typing import Dict, Any,Optional,cast
 from redis.typing import EncodableT
 from src.config.config import Config
 
+import logging
+logger = logging.getLogger(__name__)
+
 config = Config()
 redis_details = config.get_redis_doc_config()
 
@@ -17,7 +20,10 @@ class CacheHandler:
     
     def save_document(self,doc_id:str,document:Dict[str,Any]):
         doc_key = self._get_doc_key(doc_id)
-        self.client.hset(doc_key,mapping=cast(dict[EncodableT, EncodableT],document))
+        try:
+            self.client.hset(doc_key,mapping=cast(dict[EncodableT, EncodableT],document))
+        except Exception as e:
+            logger.error(e)
         return doc_key
 
     def get_document(self,doc_key:str) -> Dict:

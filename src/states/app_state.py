@@ -10,3 +10,4 @@ class AppState(TypedDict):
     cache_key:List
     storage_folder:str
     prompt_technique:str
+    prompts:Dict[str,str]

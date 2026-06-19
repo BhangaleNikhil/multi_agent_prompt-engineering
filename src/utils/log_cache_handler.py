@@ -2,6 +2,8 @@ import redis
 from typing import List, Dict
 from src.config.config import Config
 import json
+import logging
+logger = logging.getLogger(__name__)
 
 config = Config()
 redis_details = config.get_redis_log_config()

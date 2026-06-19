@@ -1,6 +1,8 @@
 from langchain_ollama import ChatOllama
 from typing import Any, Dict, Optional
 import os, json
+import logging
+logger = logging.getLogger(__name__)
 
 PROMPT = {}
 
@@ -10,23 +12,27 @@ default_python_prompt = "You are an expert Application Security Engineer. Your j
 class Config:
     def __init__(self):
         pass
-    def _get_prompts(self,technique:str) -> bool:
-        prompts = None
+    def _get_prompts(self,technique:str) -> Dict:
+        try:
+            prompts = None
 
-        with open("./src/prompts/prompts.json") as file:
-            prompts = json.loads(file.read())
+            with open("./src/prompts/prompts.json") as file:
+                prompts = json.loads(file.read())
 
-        PROMPT = prompts[technique]
-        return PROMPT != None
+            PROMPT = prompts[technique] if prompts else {}
+        except Exception as e:
+            logger.error(e)
+            PROMPT = {}
+        return PROMPT
     
-    def get_prompts(self,technique:str) -> bool:
+    def get_prompts(self,technique:str) -> Dict:
         return self._get_prompts(technique=technique)
     
     def get_master_prompt(self)->str:
-        return PROMPT.get("master_agent",default_master_prompt)
+        return default_master_prompt
     
     def get_python_prompt(self)->str:
-        return PROMPT.get("python_agent",default_python_prompt)
+        return default_python_prompt
 
     def get_model(self) -> Any:
         return ChatOllama(model="gemma4:latest",temperature=0)
@@ -40,6 +46,7 @@ class Config:
     def get_redis_log_config(self) -> Any:
         host = os.getenv("REDIS_HOST")
         port = int(os.getenv("REDIS_PORT_LOG","6380"))
+        return {"host":host,"port":port}
 
     def get_logs_storage(self) -> Any:
-        return os.getenv("agent_logs.db","agent_logs.db")
+        return os.getenv("LOG_DB","agent_logs.db")
