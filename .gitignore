@@ -3,6 +3,7 @@
 __pycache__/
 /data/py_code_test_data
 /data/py_test_data_small
+/data/py_test_data_small_archieve
 /data/test_data
 /reports/test_small
 agent_logs.db
