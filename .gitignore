@@ -8,3 +8,4 @@ __pycache__/
 /reports/test_small
 agent_logs.db
 /reports
+/.vscode
