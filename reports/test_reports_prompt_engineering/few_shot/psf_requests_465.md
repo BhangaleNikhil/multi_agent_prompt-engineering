@@ -1,0 +1,6 @@
+Vulnerability: Logic Flaw / Improper Domain Matching
+Severity: High
+CWE: CWE-20
+Location: Line 38
+Description: The function uses `str.endswith()` to determine if a hostname matches an entry in the `no_proxy` list. This method performs simple string suffix matching, which is insufficient and highly prone to false positives when dealing with domain names or hostnames. For example, if a user defines a no-proxy host as `example`, this logic will incorrectly match any URL ending in `example` (e.g., `mybank.com/example`) even if the intent was only to match the exact hostname `example`. This flaw could allow an attacker or misconfigured client to bypass intended network proxy controls by manipulating the target URL's domain structure.
+Remediation: Instead of relying on simple string suffix matching, implement strict validation for hostnames. The comparison should ensure that the matched entry is either an exact match (including TLD) or that proper DNS/network libraries are used to validate if the hostname belongs to a specific network range defined in `no_proxy`. If partial matching is required, use regular expressions with appropriate anchors (`^` and `$`) to enforce full domain boundaries.

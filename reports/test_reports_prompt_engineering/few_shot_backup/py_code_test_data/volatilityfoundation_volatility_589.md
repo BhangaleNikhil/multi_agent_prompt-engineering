@@ -1,0 +1,6 @@
+Vulnerability: Information Leakage
+Severity: Medium
+CWE: CWE-200
+Location: Line 4
+Description: The function is designed to dump highly sensitive system information, including process IDs (`UniqueProcessId`) and detailed memory virtual address ranges (VADs: `vad.Start`, `vad.End`). If this function is called or exposed to an unauthorized user or process, it constitutes a severe information leak. This data can provide an attacker with the necessary memory layout and process structure details required for advanced attacks, such as exploiting memory corruption vulnerabilities or performing privilege escalation.
+Remediation: Implement strict access controls (ACLs) on the function and the output stream (`outfd`) to ensure that only authorized, highly privileged components can execute this code and access the resulting system memory dump. If the output is consumed by other services, ensure that the output stream is treated as sensitive data and is not logged or transmitted without proper encryption and authorization checks.

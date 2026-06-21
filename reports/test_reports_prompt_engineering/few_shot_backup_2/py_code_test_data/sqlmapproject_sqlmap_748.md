@@ -1,0 +1,6 @@
+Vulnerability: Denial of Service (Resource Exhaustion)
+Severity: Medium
+CWE: CWE-400
+Location: Line 5 (The loop structure over `WAF_ATTACK_VECTORS`)
+Description: The function iterates through all defined attack vectors (`WAF_ATTACK_VECTORS`). If this list is excessively large, or if the underlying `get_page` function performs expensive operations (such as making synchronous network calls to external endpoints), the repeated execution within the loop can lead to uncontrolled resource consumption. An attacker could potentially trigger a Denial of Service condition by manipulating the input vector set or simply calling this detection mechanism too frequently, exhausting CPU cycles, memory, or network bandwidth.
+Remediation: Implement strict rate limiting and time limits around the execution of the `detect` function. Furthermore, if the list of vectors is configurable, enforce bounds checking on its size to prevent resource exhaustion attacks. Consider using asynchronous processing for external calls within the loop to improve efficiency and manage concurrency better.

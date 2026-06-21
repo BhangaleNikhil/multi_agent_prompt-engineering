@@ -1,0 +1,6 @@
+Vulnerability: Improper Input Validation (HTTP Protocol)
+Severity: High
+CWE: CWE-20
+Location: N/A (The vulnerability resides in the underlying HTTP parsing logic, specifically the `read_stream_body` function.)
+Description: The provided test case demonstrates a critical security requirement: the HTTP parser must strictly validate the format of the chunk size. The input `1_a` contains an underscore, which is not a valid hexadecimal character. If the underlying HTTP parsing function (`read_stream_body`) fails to strictly validate that the chunk size line contains only hexadecimal digits, it could lead to unexpected parsing behavior, potential denial of service (DoS) through resource exhaustion, or incorrect data processing.
+Remediation: The HTTP parsing library must implement strict input validation (e.g., using regular expressions or character set checks) on the chunk size line to ensure it consists exclusively of valid hexadecimal characters (0-9, a-f, A-F). The parser should reject any request body that violates this protocol rule with a clear error code (e.g., 400 Bad Request).

@@ -1,0 +1,6 @@
+Vulnerability: SQL Injection
+Severity: Critical
+CWE: CWE-89
+Location: Throughout the function, particularly lines 2 and 10 (where `expression` is used).
+Description: The function is designed to construct and execute complex database queries using user-supplied input (`expression`) as a core component of the payload. It relies heavily on string formatting (`%s`) and concatenation to build query fragments (e.g., in `hashDBRetrieve` or when constructing `injExpression`). By embedding untrusted, unvalidated, and unsanitized inputs directly into the query structure, an attacker can inject arbitrary SQL commands, leading to unauthorized data retrieval, modification, or deletion.
+Remediation: This function's logic is inherently dangerous as it facilitates exploitation. If this code were part of a legitimate application feature (e.g., search), all database interactions must be refactored immediately. Never construct queries using string formatting with user input. Instead, use parameterized queries provided by the underlying database connector library to ensure that inputs are always treated as data values and never as executable code. If this function is part of a security testing or exploitation framework, it must be isolated and strictly controlled, never exposed to external users.

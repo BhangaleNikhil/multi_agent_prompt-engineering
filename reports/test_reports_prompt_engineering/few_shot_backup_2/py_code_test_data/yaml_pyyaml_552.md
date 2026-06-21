@@ -1,0 +1,6 @@
+Vulnerability: Arbitrary Method Execution / Reflection Abuse
+Severity: High
+CWE: CWE-20
+Location: Line 14
+Description: The function uses `getattr(self, '_'+method_name)` to dynamically retrieve and execute a method based on the value of `method_name`. If `method_name` is derived from untrusted or user-controlled input, an attacker can pass the name of any existing method on the object instance (`self`). This allows for arbitrary code execution by calling sensitive internal functions (e.g., database deletion methods, administrative actions) that were not intended to be exposed via this interface.
+Remediation: Implement strict whitelisting for all acceptable values of `method_name`. Instead of using reflection based on input strings, the function should validate the provided method name against a predefined list of allowed operations. If dynamic calling is absolutely necessary, ensure that the target object (`self`) and its methods are thoroughly vetted to prevent unauthorized access or state changes.

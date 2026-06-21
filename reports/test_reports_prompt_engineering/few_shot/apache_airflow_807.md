@@ -1,0 +1,6 @@
+Vulnerability: Broken Access Control / Insecure Direct Object Reference (IDOR)
+Severity: High
+CWE: CWE-284
+Location: Lines 2-5 (Usage of `dag_id` and `task_id`)
+Description: The function retrieves critical resource identifiers (`dag_id`, `task_id`) directly from the request arguments without performing any explicit authorization checks. An attacker who knows or can guess valid DAG IDs or Task IDs could potentially trigger execution for sensitive workflows, even if they are not authorized to manage those specific resources. This allows unauthorized users to manipulate system state and execute arbitrary tasks within the Airflow environment.
+Remediation: Implement robust access control mechanisms at the beginning of this function. Before fetching `dag` or `task`, the application must verify that the currently authenticated user has the necessary permissions (e.g., read, write, trigger) for the specific DAG ID and Task ID provided in the request parameters. This should involve checking user roles against resource ownership/permissions stored in the database.

@@ -1,0 +1,6 @@
+Vulnerability: Path Traversal / Injection
+Severity: High
+CWE: CWE-22
+Location: Line 13
+Description: The function constructs a registry key path by concatenating untrusted input (`rec.ServiceName.dereference()`) directly into a string used for an API call (`regapi.reg_get_value`). If the `Service Name` attribute contains directory traversal sequences (e.g., `../../../etc/passwd`) or malicious characters that break out of the intended key structure, an attacker could potentially trick the underlying registry API into reading sensitive system keys or files outside the expected scope.
+Remediation: Before constructing the path, validate and sanitize all user-supplied inputs used in file or key paths. Specifically, ensure that `rec.ServiceName` only contains alphanumeric characters and approved separators (like hyphens or underscores) and strictly enforce canonicalization to prevent traversal sequences like `..`. If possible, use an API function designed for safe path construction rather than manual string formatting.

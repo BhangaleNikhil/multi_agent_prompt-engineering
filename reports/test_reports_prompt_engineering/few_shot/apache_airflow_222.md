@@ -1,0 +1,6 @@
+Vulnerability: Insecure Deserialization / Arbitrary Code Execution
+Severity: High
+CWE: CWE-502
+Location: Line 13
+Description: The function relies on `ExecutorLoader.load_executor(ti.executor)` to dynamically load an executor based on a configuration string (`ti.executor`). If the implementation of `ExecutorLoader` does not strictly validate or sanitize the provided executor name, an attacker could potentially supply a malicious class path or serialized object that forces the system to load and execute arbitrary code during the initialization phase (e.g., via gadget chains). This is a critical risk when dealing with dynamic loading mechanisms in complex frameworks like Airflow.
+Remediation: Implement strict whitelisting for all allowed executor types. The `ExecutorLoader` must only permit instantiation of pre-approved, safe classes and should never allow the execution of arbitrary code or deserialization of untrusted data provided by configuration inputs. Furthermore, ensure that any arguments passed to task instances are strongly typed and validated before being used in serialization/deserialization processes.

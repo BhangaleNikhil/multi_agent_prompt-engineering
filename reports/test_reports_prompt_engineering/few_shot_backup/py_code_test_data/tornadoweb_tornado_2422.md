@@ -1,0 +1,6 @@
+Vulnerability: HTTP Header Injection
+Severity: High
+CWE: CWE-116
+Location: Multiple lines (e.g., lines setting `Authorization`, `User-Agent`, `Host`)
+Description: The function constructs and writes HTTP headers using various inputs derived from the request object (`self.request.headers`, `self.request.user_agent`, `self.parsed.netloc`, etc.). If any of these input values contain carriage return (`\r`) or line feed (`\n`) characters, an attacker can inject arbitrary headers or even manipulate the request structure. This vulnerability can lead to HTTP Response Splitting, bypassing security controls, or causing denial of service.
+Remediation: All user-controlled inputs used to construct HTTP headers (such as User-Agent, custom headers, or values derived from the URI/Host) must be strictly sanitized. Specifically, the code must validate and strip or reject any input containing control characters like `\r` or `\n` before they are written to the connection stream. Furthermore, the underlying HTTP library should be configured to handle header values safely, preventing the inclusion of such characters.

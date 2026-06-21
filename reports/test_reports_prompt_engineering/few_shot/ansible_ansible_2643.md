@@ -1,0 +1,6 @@
+Vulnerability: Code Injection / Remote Code Execution (RCE)
+Severity: Critical
+CWE: CWE-94
+Location: Line 60 (The use of `eval(compiled, JSON_TYPES, dict(locals))`)
+Description: The function attempts to implement a sophisticated sandboxing mechanism using Abstract Syntax Tree (AST) whitelisting and restricted execution context (`eval`). However, relying on manual AST whitelisting is notoriously difficult and prone to bypasses. An attacker can often find ways to construct malicious code using combinations of allowed nodes or by exploiting the limited scope of the `CALL_WHITELIST` that still results in arbitrary code execution (e.g., accessing system modules, file operations, or executing shell commands if those builtins are available). The use of `eval()` on user-provided input (`expr`) is inherently dangerous and constitutes a critical security flaw.
+Remediation: Never use `eval()` or `exec()` with untrusted input. If dynamic evaluation is absolutely necessary for business logic (e.g., evaluating mathematical expressions), utilize specialized, safe expression parsing libraries designed specifically for this purpose (e.g., using dedicated math parsers). For complex sandboxing requirements, consider running the code in a highly restricted environment such as a container or virtual machine to enforce resource and capability limits.

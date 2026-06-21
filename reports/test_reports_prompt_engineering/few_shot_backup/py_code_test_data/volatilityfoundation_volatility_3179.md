@@ -1,0 +1,6 @@
+Vulnerability: Path Traversal / Improper Input Sanitization
+Severity: Medium
+CWE: CWE-22
+Location: Line 100
+Description: The function accepts an `output` parameter, which is assumed to be a file path. This path is concatenated directly into the `config.LOCATION` attribute without any sanitization or validation. If the `output` variable is controlled by an attacker (e.g., via a command-line argument or network input), an attacker could inject directory traversal sequences (e.g., `../../etc/passwd`) to force the tool to write the resulting crash dump file to an arbitrary location on the system, potentially overwriting sensitive system files or causing denial of service.
+Remediation: Before assigning the `output` path to `config.LOCATION`, the input must be rigorously sanitized. Implement checks to ensure the path does not contain directory traversal sequences (`..`, `/`, `\`) and that the resulting path is confined to an expected output directory. Use standard library functions designed for safe path joining and validation.

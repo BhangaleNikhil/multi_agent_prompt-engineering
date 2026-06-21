@@ -1,0 +1,6 @@
+Vulnerability: OS Command Injection
+Severity: Critical
+CWE: CWE-78
+Location: Line 10 (The line containing `self._msfCliProc = execute(self._cliCmd, shell=True, stdin=PIPE, stdout=PIPE, stderr=PIPE)`)
+Description: The function executes a system command using the variable `self._cliCmd` while setting `shell=True`. If the content of `self._cliCmd` is derived from or influenced by untrusted user input (even indirectly through configuration), an attacker can inject arbitrary operating system commands. This allows for full Remote Code Execution (RCE) on the underlying host system, bypassing application logic entirely.
+Remediation: Avoid using `shell=True` whenever possible. If command execution is absolutely necessary, ensure that all components of the command are strictly validated against a predefined allowlist and that any user-supplied input is passed as separate arguments in an array format rather than being concatenated into a single shell string. If direct system calls must be used, use safer alternatives that do not invoke a shell interpreter.

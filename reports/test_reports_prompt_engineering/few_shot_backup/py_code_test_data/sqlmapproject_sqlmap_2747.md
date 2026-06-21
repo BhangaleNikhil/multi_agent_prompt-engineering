@@ -1,0 +1,6 @@
+Vulnerability: Detection Bypass / Brittle Security Logic
+Severity: Medium
+CWE: CWE-664
+Location: Line 4
+Description: The security detection logic relies on hardcoding specific strings ("Cloudbric", "Malicious Code Detected") and checking for a specific status code range (>= 400). This approach is highly brittle. An attacker who understands the detection mechanism can easily bypass it by modifying the application's error handling, changing the WAF's response body, or adjusting the HTTP status codes, rendering the entire detection function ineffective.
+Remediation: Instead of relying on specific error messages, the detection mechanism should analyze general characteristics of failure responses. For example, it should look for common patterns of failure (e.g., generic stack traces, specific header values indicating a security filter was triggered, or analyzing the response body for common obfuscation techniques) rather than exact, hardcoded strings. If possible, the detection should be based on behavioral analysis rather than signature matching.

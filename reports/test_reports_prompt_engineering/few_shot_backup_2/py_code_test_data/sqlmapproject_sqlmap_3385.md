@@ -1,0 +1,6 @@
+Vulnerability: SQL Injection
+Severity: Critical
+CWE: CWE-89
+Location: Line 7
+Description: The function utilizes an object method, `inject.checkBooleanExpression()`, to execute dynamic database expressions. If the variables intended for the placeholders (`{}`) are derived from external or untrusted sources (such as configuration files, environment variables, or user input), and if these inputs are not properly sanitized or parameterized before being passed into the expression builder, an attacker can inject malicious SQL code. This allows unauthorized execution of arbitrary database commands, potentially leading to data theft, modification, or denial of service.
+Remediation: Never construct dynamic queries by concatenating unvalidated user input. Instead, use the database driver's built-in parameterized query features (prepared statements). If an expression must be dynamically generated, ensure that all inputs are strictly validated against a whitelist of allowed characters and values before execution.

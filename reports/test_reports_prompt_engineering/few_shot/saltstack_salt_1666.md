@@ -1,0 +1,6 @@
+Vulnerability: Regular Expression Denial of Service (ReDoS)
+Severity: High
+CWE: CWE-690
+Location: Line 13
+Description: The function allows users to pass arbitrary target strings (`tgt`) which are then processed by various matching systems, including `pcre` and `grain_pcre`. If an attacker supplies a specially crafted input string (a malicious regex pattern) as the `tgt` argument when using these forms, it can trigger catastrophic backtracking in the underlying regular expression engine. This causes the function to consume excessive CPU resources, potentially leading to a Denial of Service (DoS) condition for the service or minion running the code.
+Remediation: When utilizing functions that process user-supplied input as regular expressions (like `match.pcre` or `match.grain_pcre`), implement strict resource limits and time constraints on the regex execution. Consider using modern regex libraries or engines that are designed to mitigate catastrophic backtracking, or validate the complexity of the provided pattern before execution.

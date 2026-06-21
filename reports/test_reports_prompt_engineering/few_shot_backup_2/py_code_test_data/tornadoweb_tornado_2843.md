@@ -1,0 +1,6 @@
+Vulnerability: Path Traversal / Directory Traversal
+Severity: High
+CWE: CWE-22
+Location: Line 4 - Line 5
+Description: The code constructs the request path (`self.path` and `self.uri`) by concatenating values from `SCRIPT_NAME` and `PATH_INFO`, which are sourced directly from the untrusted WSGI environment variables. Although `urllib.quote` is used, this function only encodes characters; it does not validate or canonicalize the path structure against directory traversal sequences (e.g., `%2e%2e/`). An attacker could supply encoded traversals that might be decoded by downstream components (like file system operations) leading to unauthorized access outside the intended web root directory.
+Remediation: Implement strict input validation and canonicalization for all path components. Before using `SCRIPT_NAME` or `PATH_INFO`, ensure they are resolved relative to a known, safe base directory. Use dedicated routing libraries that automatically handle path resolution and reject any paths containing traversal sequences (`..`) or excessive encoding depth.

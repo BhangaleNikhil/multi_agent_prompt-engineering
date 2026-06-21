@@ -1,0 +1,6 @@
+Vulnerability: Missing Input Validation / Potential Identifier Injection
+Severity: Medium
+CWE: CWE-20
+Location: Line 13 (Usage of `table_name` in SQL query)
+Description: Although the code correctly uses parameterized queries (`%s`) for the value of `table_name`, it relies on the input being a valid, expected table name. If the application were to evolve or if the underlying database driver allowed identifiers (like table names) to be passed via parameters and interpreted incorrectly, an attacker could potentially inject malicious SQL fragments that modify the query structure rather than just its value. Furthermore, there is no validation to ensure `table_name` exists in the schema or adheres to expected naming conventions, which could lead to unexpected database errors or denial of service if a malformed name is provided.
+Remediation: Implement strict input validation and whitelisting for all identifiers (like table names). Before executing the query, validate that `table_name` matches an allowed pattern (e.g., alphanumeric characters only) and ideally check its existence against a known list of valid tables within the application's scope. If possible, use ORM features that handle identifier quoting automatically rather than raw SQL strings.

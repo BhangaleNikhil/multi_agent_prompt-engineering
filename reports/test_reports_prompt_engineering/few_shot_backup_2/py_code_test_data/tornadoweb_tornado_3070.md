@@ -1,0 +1,6 @@
+Vulnerability: Insecure Handling of Sensitive Data
+Severity: Medium
+CWE: CWE-200
+Location: Lines 134, 156 (Assignments for `self.auth_password` and `self.proxy_password`)
+Description: The class accepts and stores sensitive credentials (passwords) as plain strings (`auth_password`, `proxy_password`). Storing passwords in memory or object attributes without masking or encryption increases the risk of exposure if the application state is dumped, logged, or accessed by an attacker who gains limited access to the process memory.
+Remediation: Credentials should be handled using secure practices. Ideally, they should not be stored as plain strings within the object's persistent state. If storage is necessary, consider hashing them immediately upon receipt (though this complicates authentication) or, more practically for a client library, ensure that any logging or debugging output related to these attributes automatically masks or redacts the password values. For production environments, credentials should be sourced from secure secrets management systems (e.g., HashiCorp Vault, AWS Secrets Manager).

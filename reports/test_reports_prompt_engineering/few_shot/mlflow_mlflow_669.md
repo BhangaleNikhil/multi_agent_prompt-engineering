@@ -1,0 +1,6 @@
+Vulnerability: Directory Traversal / Arbitrary File System Manipulation
+Severity: High
+CWE: CWE-22
+Location: Lines 10, 14, 18
+Description: The function accepts `model_path` as an argument and uses it to perform multiple critical file system operations, including directory renaming (`os.rename`) and reading/writing configuration files (`open`, `yaml.safe_dump`). If the `model_path` input is derived from untrusted user input without proper sanitization or validation, an attacker could inject path traversal sequences (e.g., `../../etc/passwd`). This would allow the function to operate outside its intended directory scope, potentially renaming critical system directories or overwriting sensitive configuration files with malicious content.
+Remediation: Before using `model_path` in any file system operation, validate and canonicalize the path. Ensure that the resolved absolute path remains within a designated, safe base directory (a "jail"). Use functions like `os.path.abspath()` combined with checks to prevent traversal sequences from escaping the intended working directory. If possible, use dedicated APIs or libraries instead of raw OS calls for file manipulation.

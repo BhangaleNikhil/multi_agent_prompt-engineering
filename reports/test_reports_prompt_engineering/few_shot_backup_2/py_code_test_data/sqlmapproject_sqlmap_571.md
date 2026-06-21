@@ -1,0 +1,6 @@
+Vulnerability: Injection Flaw / Unsafe Payload Construction
+Severity: Critical
+CWE: CWE-89 (SQL Injection) / CWE-79 (Improper Neutralization of Input During Web Page Generation)
+Location: Entire method body (`payload`)
+Description: The function is explicitly designed to construct, manipulate, and inject malicious payloads across various contexts (URI parameters, custom headers, POST bodies). It handles untrusted input (`newValue`, `origValue`) by concatenating or formatting it directly into strings intended for external systems (like databases or web servers) without performing necessary context-aware escaping. This makes the function itself a critical security vulnerability, as any data passed through it can be used to execute arbitrary code or manipulate backend queries.
+Remediation: This method must be removed from production application code immediately. If this functionality is required for testing or research purposes, all inputs must undergo rigorous validation and context-specific encoding (e.g., using parameterized statements for SQL, URL encoding for URI components, and proper header escaping for HTTP headers) before being used in any external system call.

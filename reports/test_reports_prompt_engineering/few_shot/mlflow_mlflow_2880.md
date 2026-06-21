@@ -1,0 +1,6 @@
+Vulnerability: Path Traversal / Arbitrary Resource Access
+Severity: High
+CWE: CWE-22
+Location: Line 4
+Description: The function accepts `artifact_uri` as a direct input parameter. Although the code attempts to normalize this URI using internal MLflow methods (`get_underlying_uri`), relying solely on path normalization functions can be insufficient if the underlying resource loading mechanism does not strictly enforce that the resolved path remains within the intended, restricted artifact repository directory. An attacker could potentially craft a malicious `artifact_uri` (e.g., utilizing relative paths or specialized URI schemes) to trick the system into accessing files outside of the designated scope, leading to unauthorized data leakage or resource manipulation.
+Remediation: Implement strict input validation and canonicalization checks on `artifact_uri`. Before passing the resolved URI (`uri`) to any resource loading function, the application must verify that the resulting absolute path is strictly contained within a predefined, trusted root directory (whitelisting). If possible, use sandboxing techniques or dedicated file system access libraries that inherently prevent traversal outside of specified boundaries.

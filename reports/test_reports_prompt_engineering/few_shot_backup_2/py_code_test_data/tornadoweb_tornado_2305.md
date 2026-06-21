@@ -1,0 +1,6 @@
+Vulnerability: Improper Handling of Sensitive Data / Secrets Exposure
+Severity: High
+CWE: CWE-200
+Location: Line 10 (Usage of `client_secret` in HMAC calculation)
+Description: The function handles and utilizes highly sensitive credentials, specifically the `client_secret` and the resulting `access_token`. These secrets are passed as arguments and used directly within cryptographic operations. If any part of the application stack—including logging mechanisms, error handlers, or memory dumps—captures these variables during execution, it results in a severe credential leak. An attacker gaining access to the `client_secret` can impersonate the application and potentially misuse the API endpoint without needing valid user credentials.
+Remediation: Secrets should never be passed through function arguments if they are not strictly necessary for the immediate calculation. Instead, utilize dedicated secret management systems (e.g., HashiCorp Vault, AWS Secrets Manager) to retrieve secrets at runtime. Furthermore, ensure that all logging and error handling mechanisms explicitly filter out or mask sensitive parameters like `client_secret` and tokens before writing them to persistent storage.

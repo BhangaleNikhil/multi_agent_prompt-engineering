@@ -1,0 +1,6 @@
+Vulnerability: Path Traversal / Insecure Configuration
+Severity: High
+CWE: CWE-22
+Location: Line 49
+Description: The function constructs absolute URL patterns by joining `settings['base_url']` with handler paths (`handler[0]`). If the value of `settings['base_url']` or any path loaded via `load_handlers` is derived from untrusted user input (e.g., environment variables, configuration files editable by low-privilege users), an attacker could inject directory traversal sequences (e.g., `../../etc/`) into these settings. This could allow the application to incorrectly resolve paths, potentially leading to unauthorized access or redirection to sensitive system resources outside of the intended web root.
+Remediation: All configuration values used for path construction (`settings['base_url']`, `settings['nbextensions_path']`, etc.) must be strictly validated and sanitized. Implement a function that explicitly resolves and normalizes paths, ensuring that the resulting path remains within an expected, restricted directory structure (e.g., using Python's `os.path.abspath` combined with checks to ensure the resolved path starts with the intended base directory).

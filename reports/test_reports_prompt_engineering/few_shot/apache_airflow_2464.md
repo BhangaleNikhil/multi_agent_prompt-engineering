@@ -1,0 +1,6 @@
+Vulnerability: Resource Leakage / Improper Process Management
+Severity: High
+CWE: CWE-420
+Location: Lines 5-16
+Description: The test method relies on starting external, long-running processes (`airflow webserver --daemon`) using `subprocess.Popen`. While the code attempts to terminate a specific monitor process (`proc.terminate()`), it lacks robust cleanup mechanisms (such as `try...finally` blocks or context managers) for all spawned resources. If an exception occurs at any point during the test execution, the background processes started by `subprocess.Popen` may not be reliably terminated, leading to resource leakage (zombie processes, open file descriptors, memory consumption). This can cause subsequent tests in the suite to fail due to resource exhaustion or unpredictable system state.
+Remediation: For unit and integration testing involving external services, avoid actual process spawning whenever possible. Instead, use mocking frameworks (e.g., `unittest.mock`) to simulate the behavior of the webserver and monitor processes. If real subprocess execution is necessary, wrap the entire test logic in a comprehensive `try...finally` block that explicitly attempts to kill all spawned PIDs using signals (like SIGTERM) regardless of whether the test passes or fails.

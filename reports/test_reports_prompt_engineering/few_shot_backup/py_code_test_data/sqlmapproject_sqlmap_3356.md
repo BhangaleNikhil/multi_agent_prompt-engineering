@@ -1,0 +1,6 @@
+Vulnerability: Payload Manipulation / Security Bypass
+Severity: High
+CWE: CWE-20
+Location: Entire function body
+Description: The function `tamper` is explicitly designed to modify input payloads (e.g., replacing `IFNULL` with `IF(ISNULL(...))`). This technique is a classic example of a security bypass mechanism. By transforming known malicious patterns into syntactically equivalent but structurally different forms, the function allows attackers to evade weak or bespoke Web Application Firewalls (WAFs) and input validation filters that rely on simple signature matching. This significantly increases the risk of successful injection attacks (like SQL Injection) against the underlying application, even if the original payload was flagged.
+Remediation: Security controls (WAFs, input filters) must not rely solely on signature matching or simple function filtering. Implement robust, context-aware validation that analyzes the *intent* and *semantic meaning* of the input, rather than just the literal string patterns. For database interactions, always use parameterized queries regardless of the input source.

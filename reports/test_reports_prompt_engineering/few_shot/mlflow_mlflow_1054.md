@@ -1,0 +1,6 @@
+Vulnerability: Path Traversal
+Severity: High
+CWE: CWE-22
+Location: Line 13 (The call `databricks_model_artifact_repo.download_artifacts(remote_file_path, local_path)`)
+Description: The function accepts file paths (`remote_file_path` and `local_path`) as arguments. If these inputs are derived from untrusted user input without proper validation or sanitization, an attacker could inject directory traversal sequences (e.g., `../`, `..\`) to access files outside the intended working directory or repository scope. This vulnerability could allow unauthorized reading of sensitive system files or configuration data if the underlying implementation uses these paths directly for file operations.
+Remediation: Implement strict path validation and canonicalization. Before using any user-provided path, resolve it against a known safe root directory (a "jail") to ensure that the resulting absolute path remains within the allowed boundaries. Use functions like `os.path.abspath()` combined with checks to prevent traversal outside the designated base directory.

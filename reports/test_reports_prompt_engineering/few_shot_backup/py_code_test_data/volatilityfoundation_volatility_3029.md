@@ -1,0 +1,6 @@
+Vulnerability: Information Disclosure (Sensitive Memory Mapping)
+Severity: Critical
+CWE: CWE-200
+Location: Entire function body
+Description: The function is designed to enumerate and map highly sensitive system information, including physical memory addresses, virtual memory addresses, kernel module names, and process ownership details. By generating and returning the `reverse_map` dictionary, the application exposes a comprehensive memory map of the entire system state. If this function is called by an unauthorized or low-privilege user, it constitutes a severe information leak, providing an attacker with critical data necessary for advanced attacks such as privilege escalation, rootkit detection, or targeted memory corruption exploits.
+Remediation: Implement strict access control checks (e.g., mandatory privilege checks, capability checks) before executing this function. The function should only be callable by highly privileged processes (e.g., system administrators or dedicated forensic tools). Furthermore, consider implementing data filtering or sanitization within the function to redact or anonymize specific sensitive details (like full module names or specific physical addresses) if the calling context does not require full system visibility.

@@ -1,0 +1,6 @@
+Vulnerability: Improper Output Encoding / Insufficient Sanitization
+Severity: High
+CWE: CWE-79
+Location: Line 20
+Description: The function attempts to sanitize input by identifying "safe" characters and hex-encoding all others. This custom, manual encoding mechanism is highly brittle and prone to failure. The security vulnerability lies in the assumption that simply hex-encoding the bytes (`%%%02X`) will neutralize the character's meaning in all downstream contexts. If the resulting `suffix_text` is later used in a context (such as a database query, a shell command, or a markup language) that interprets the `%` character or the resulting hex sequence before the intended parsing, an attacker could bypass the sanitization and achieve a form of injection (e.g., breaking out of the intended tag structure).
+Remediation: Never implement custom encoding logic for security purposes. The application must use standard, well-vetted encoding libraries (e.g., `html.escape` for web output, or parameterized queries for database interaction) that are specifically designed for the *final destination* and context of the data. If the output is intended for a specific markup language, use a dedicated, secure library for that language's escaping mechanism.

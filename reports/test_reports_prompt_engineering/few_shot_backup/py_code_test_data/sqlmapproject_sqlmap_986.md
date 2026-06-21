@@ -1,0 +1,6 @@
+Vulnerability: OS Command Injection
+Severity: Critical
+CWE: CWE-78
+Location: Line 2 (The line constructing `self._forgedCmd`)
+Description: The function utilizes the `COPY ... FROM PROGRAM` SQL command, which allows the database to execute arbitrary operating system commands. The input parameter `cmd` is passed directly into this command execution mechanism. Although the code attempts to escape single quotes (`cmd.replace("'", "''")`), this only mitigates SQL syntax issues and does not prevent an attacker from injecting malicious operating system commands (e.g., using shell metacharacters like `&&`, `|`, or `;`). This vulnerability allows an attacker to execute arbitrary code on the underlying host system with the privileges of the database service account.
+Remediation: Never pass untrusted user input to functions that execute operating system commands. If external command execution is absolutely necessary, the input must be strictly validated against a whitelist of allowed commands and arguments. Alternatively, if the goal is merely data transfer, use parameterized queries or safe database APIs that do not involve OS shell execution.

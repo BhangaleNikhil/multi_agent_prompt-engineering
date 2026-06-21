@@ -1,0 +1,6 @@
+Vulnerability: Command Injection / Improper Input Sanitization
+Severity: Critical
+CWE: CWE-77
+Location: Lines 29 - 35 (The block where `commands` are generated and executed)
+Description: The module constructs configuration commands by converting structured data objects (`configobjs`) into raw command strings using `dumps(configobjs, 'commands')`. If the input parameters defining the configuration (e.g., via `lines`, `src`, or retrieved network state that is later processed) contain malicious characters (such as semicolons, pipes, or backticks), and these inputs are not rigorously sanitized or escaped before being passed to `load_config` or executed on the target device, an attacker could inject arbitrary commands. This allows for full compromise of the managed networking device.
+Remediation: Implement strict input validation and whitelisting for all configuration parameters that contribute to command generation. Before executing any generated command list, ensure that every component is validated against a known safe grammar specific to the target network operating system (e.g., Cisco IOS syntax). If possible, use an API-based method of configuration application rather than relying on string concatenation and shell execution.

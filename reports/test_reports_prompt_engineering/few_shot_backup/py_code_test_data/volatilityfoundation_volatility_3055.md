@@ -1,0 +1,6 @@
+Vulnerability: Information Leakage (Kernel Memory Disclosure)
+Severity: Critical
+CWE: CWE-200
+Location: Line 19 (The `yield` statement)
+Description: The function is designed to introspect and enumerate internal kernel structures, specifically iterating through memory buckets (`mig_hash_entry`) to retrieve function names (`rname`) and corresponding memory addresses (`entry.routine`). By yielding this tuple (entry number, function name, routine address), the application leaks highly sensitive internal kernel state information. This information can be exploited by attackers to perform advanced attacks such as Address Space Layout Randomization (ASLR) bypass, Return-Oriented Programming (ROP) chain construction, or mapping the internal memory layout of the operating system, significantly lowering the bar for privilege escalation.
+Remediation: Access to this functionality must be strictly limited to highly privileged, trusted components. If the output must be exposed, the data should be sanitized, abstracted, and filtered to remove raw memory addresses and internal kernel symbols. Implement robust privilege checks (e.g., requiring root/kernel-level credentials) before executing this code path.

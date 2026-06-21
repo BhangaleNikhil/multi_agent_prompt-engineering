@@ -1,0 +1,6 @@
+Vulnerability: Denial of Service (DoS) / Resource Exhaustion
+Severity: High
+CWE: CWE-400
+Location: Line 21 (The loop structure iterating over `region_count`)
+Description: The code relies on a value, `region_count`, retrieved from the input data (`self._get_tag`). If an attacker can manipulate the underlying file or memory dump to report an excessively large `region_count` (e.g., exceeding available system resources or causing integer overflow in related calculations), the subsequent `for` loop will execute an uncontrolled number of times. This leads to excessive CPU consumption, massive memory allocation for the `self.runs` list, and ultimately causes a Denial of Service condition, crashing the application process.
+Remediation: Implement strict bounds checking on all input-derived counters, such as `region_count`. Before entering the loop, validate that `region_count` does not exceed a predefined, reasonable maximum limit (e.g., 1024 or 4096). Additionally, consider adding resource monitoring within the loop to gracefully handle potential memory exhaustion rather than allowing the process to crash entirely.

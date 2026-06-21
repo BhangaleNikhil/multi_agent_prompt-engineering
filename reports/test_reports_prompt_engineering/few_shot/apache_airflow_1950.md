@@ -1,0 +1,6 @@
+Vulnerability: State Manipulation / Logic Flow Bypass
+Severity: High
+CWE: CWE-284
+Location: Lines 15, 16, and 19
+Description: The function manually manipulates the internal state of task instances (`tis['say_hi'].state = TaskInstanceState.SUCCESS`) and subsequently forces a database flush (`session.flush()`) before updating the DAG run state. Directly manipulating core system states (like `TaskInstanceState` or `DagRunState`) bypasses the framework's intended execution lifecycle and transactional integrity checks. This pattern is highly susceptible to race conditions, data inconsistency, and potential corruption of the workflow history if not executed within a strictly controlled transaction boundary.
+Remediation: State changes should only be initiated through the high-level, documented APIs provided by the orchestration framework (e.g., using dedicated service methods or triggers) rather than direct object manipulation and session flushing. This ensures that all necessary internal checks, logging, and transactional safeguards are executed correctly.

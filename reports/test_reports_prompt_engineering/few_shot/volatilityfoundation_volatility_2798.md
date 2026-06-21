@@ -1,0 +1,6 @@
+Vulnerability: Information Leakage / Unauthorized Memory Access
+Severity: Critical
+CWE: CWE-200
+Location: Line 19 (The entire memory reading loop)
+Description: The function reads and concatenates raw data segments from an arbitrary process's address space (`proc_as.zread`). If the calling context does not enforce strict authorization checks, this mechanism allows a malicious actor to read sensitive or private information (such as cryptographic keys, passwords, session tokens, or proprietary source code) from memory that they should not have access to. This constitutes a severe information leakage vulnerability.
+Remediation: Implement robust privilege and capability checks before executing any function that reads process memory (`proc_as.zread`). The system must ensure that the calling user/process has explicit authorization (e.g., elevated privileges, specific security context) to read the target process's address space. Furthermore, consider implementing sandboxing or least-privilege access controls around this functionality to limit the scope of data that can be retrieved.

@@ -1,0 +1,6 @@
+Vulnerability: SQL Injection
+Severity: High
+CWE: CWE-89
+Location: Line 10
+Description: The function executes an `UPDATE` statement using string formatting (`%`) combined with a parameter list for the value. While the use of `self.quote_name()` helps mitigate injection risks on table and column identifiers, the overall construction relies heavily on the internal implementation of `self.execute`. If the underlying ORM layer fails to correctly sanitize or properly bind the data type of `effective_default` (especially if it is a complex object or string that contains quotes), an attacker could potentially inject malicious SQL code through the default value mechanism, allowing unauthorized modification or extraction of data.
+Remediation: Ensure that all database interactions strictly use parameterized queries provided by the underlying database driver (e.g., `cursor.execute(sql_template, params)`). Avoid constructing query templates using Python string formatting (`%` operator) for any part of the SQL structure, including placeholders for values. If possible, refactor the ORM layer to abstract away this manual template construction entirely.

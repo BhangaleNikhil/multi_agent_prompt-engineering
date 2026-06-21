@@ -1,0 +1,6 @@
+Vulnerability: Backdoor/Malicious Code Injection (Remote Code Execution)
+Severity: Critical
+CWE: CWE-94
+Location: Entire method body (especially file writing operations)
+Description: The function's explicit purpose, as stated in the docstring, is to write and upload a web backdoor (agent) and a file stager into a writable directory within the web server's document root. This code is designed to achieve unauthorized Remote Code Execution (RCE) by injecting malicious payloads (`backdoorContent`, `stagerContent`) into the target system. The execution of this method constitutes a severe security breach, compromising the confidentiality, integrity, and availability of the entire web application and underlying server.
+Remediation: This code must be immediately removed from the application. If this functionality is intended for security testing or penetration testing, it must only be executed within a strictly isolated, sandboxed, and non-production environment (e.g., a dedicated virtual machine or container) and must never be deployed or run against production systems.

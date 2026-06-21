@@ -1,0 +1,6 @@
+Vulnerability: Command Injection
+Severity: Critical
+CWE: CWE-78
+Location: Line 10
+Description: The code executes an external system command (`psql`) using variables derived from user input or configuration (username, password). If the underlying function `self._run_it` is implemented by joining these arguments into a single shell string and executing it with `shell=True`, an attacker could inject malicious commands. For example, if the `username` variable were controlled by an attacker and contained characters like `;` or `&&`, they could execute arbitrary operating system commands beyond simply connecting to the database.
+Remediation: When executing external processes in Python, always pass arguments as a list of strings (which is done here) and ensure that the execution function (like `subprocess.run`) is configured *not* to use the shell interpreter (`shell=False` or omitting the `shell` argument). This prevents the operating system from interpreting user-supplied data as executable code. Furthermore, credentials should be managed using secure secrets management systems rather than being passed directly in test arguments.

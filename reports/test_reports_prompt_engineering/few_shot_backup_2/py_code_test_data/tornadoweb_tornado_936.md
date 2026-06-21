@@ -1,0 +1,6 @@
+Vulnerability: Time-Based Denial of Service (DoS) / Improper Input Validation
+Severity: High
+CWE: CWE-207
+Location: Line 13
+Description: The function accepts a `duration` parameter which dictates the delay before the future resolves. If this `duration` value can be controlled by an attacker and set to an excessively large number, it could effectively halt service execution or consume resources indefinitely, leading to a Denial of Service condition. Furthermore, the code lacks explicit validation on the type (e.g., ensuring it is a positive float) or range of the `duration` parameter, which could lead to unexpected behavior in the underlying I/O loop if invalid inputs are provided.
+Remediation: Implement strict input validation for the `duration` parameter at the function entry point. The value must be validated to ensure it is a positive numeric type (e.g., float) and should also be constrained by a reasonable upper bound (e.g., maximum delay allowed should not exceed 60 seconds) to prevent resource exhaustion or indefinite blocking.

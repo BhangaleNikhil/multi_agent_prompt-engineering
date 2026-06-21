@@ -1,0 +1,6 @@
+Vulnerability: Information Leakage (System State)
+Severity: High
+CWE: CWE-200
+Location: Lines 7, 15, 21
+Description: The function reads and writes detailed, internal system network state (including Unix socket paths, local/remote IP addresses, ports, and protocol states) to an output stream (`outfd`). This process constitutes a significant information leak. If the function is executed in an environment where the output stream is accessible to an unauthorized actor, it provides valuable reconnaissance data (network topology, active services, and internal addressing schemes) that can be used for targeted attacks or lateral movement.
+Remediation: Implement strict access controls and least privilege principles for the execution context of this function. If the network details are only required for debugging or logging, ensure the output stream (`outfd`) is highly restricted and cannot be accessed or read by non-privileged processes. If the data is sensitive, consider abstracting or sanitizing the output to only include necessary, non-sensitive identifiers.

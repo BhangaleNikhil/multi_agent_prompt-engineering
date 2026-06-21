@@ -1,0 +1,6 @@
+Vulnerability: Path Traversal / Arbitrary File Write
+Severity: High
+CWE: CWE-22
+Location: Line 20
+Description: The function constructs a file path (`p`) using several parameters (`dag_id`, `run_id`, `task_id`) that are likely derived from external or user-controlled inputs. If these input strings are not properly sanitized, an attacker could inject directory traversal sequences (e.g., `../../etc/passwd`). This vulnerability allows the attacker to write serialized data to arbitrary locations on the file system, potentially overwriting critical configuration files, leading to Denial of Service or Remote Code Execution if the overwritten file is executable.
+Remediation: Implement strict input validation and sanitization for all path components (`dag_id`, `run_id`, `task_id`). Ensure that these inputs are restricted to a safe character set (e.g., alphanumeric characters, hyphens) and cannot contain directory separators (`/` or `\`) or traversal sequences (`..`). If the underlying file system library supports it, use functions designed to resolve paths safely and prevent escaping the intended base directory.

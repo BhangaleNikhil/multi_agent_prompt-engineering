@@ -1,0 +1,6 @@
+Vulnerability: Information Leakage (Detailed Error Reporting)
+Severity: Medium
+CWE: CWE-200
+Location: Lines 140-150 (The final `except:` block)
+Description: The code utilizes `traceback.format_exc()` and logs/prints highly detailed exception messages (`excMsg`), including full stack traces, internal file paths, and potentially sensitive system information. While detailed logging is useful for developers, exposing these full traces to the end-user (especially if the tool is run in an untrusted or public-facing environment) can provide attackers with valuable intelligence about the application's internal structure, file system layout, and dependencies, aiding in subsequent targeted attacks.
+Remediation: Implement robust error handling that catches exceptions but only logs the full stack trace internally (e.g., to a secure log file). When presenting an error message to the user, sanitize the output to provide only generic, non-technical failure messages (e.g., "An unexpected error occurred. Please contact support with the error code: [CODE]"). If detailed logging is required, ensure that all sensitive data (paths, environment variables, internal function names) is masked or redacted before being displayed.

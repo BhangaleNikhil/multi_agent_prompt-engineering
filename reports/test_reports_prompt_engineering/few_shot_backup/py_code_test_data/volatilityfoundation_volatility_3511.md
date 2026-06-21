@@ -1,0 +1,6 @@
+Vulnerability: Information Leakage (Sensitive System Data)
+Severity: High
+CWE: CWE-200
+Location: Lines 10-35
+Description: The function systematically collects and yields highly sensitive system information, including kernel space details, physical memory addresses, module lists (`modlist`), and various kernel callback function pointers (e.g., `get_fs_callbacks`, `get_registry_callbacks`). If this function's output is not strictly controlled, sanitized, or restricted based on the calling user's privileges, an attacker could harvest a comprehensive map of the operating system's internal structure, which is invaluable for developing targeted exploits (e.g., kernel rootkits, privilege escalation attacks).
+Remediation: Implement strict access control checks before collecting and yielding sensitive data. If the function is intended for debugging or privileged use, ensure that the output mechanism validates the calling context and only provides the minimum necessary information required for the legitimate operation. Consider abstracting or limiting the scope of the data returned to prevent full system mapping.

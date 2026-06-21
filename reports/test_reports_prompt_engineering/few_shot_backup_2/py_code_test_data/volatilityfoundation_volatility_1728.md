@@ -1,0 +1,6 @@
+Vulnerability: Improper Input Validation / State Manipulation
+Severity: Medium
+CWE: CWE-20
+Location: Line 13 - Line 27
+Description: The function relies on metadata fields (`major`, `minor`, `memory_model`) retrieved from the `profile.metadata` object to determine critical internal parameters (the `distance` map). If an attacker can manipulate these values—for instance, by providing unexpected data types, out-of-range integers, or non-standard strings—it could lead to incorrect dictionary lookups, flawed conditional logic execution, and ultimately result in the corruption of the profile object's internal state. This vulnerability allows for potential integrity violations within the analysis process.
+Remediation: Implement strict input validation on all fields retrieved from `profile.metadata`. Before using any value (like major/minor versions or memory models) to construct the `version` tuple, validate that these values conform to expected types (e.g., integer checks, regex for strings) and acceptable ranges defined by the system's operational scope. If validation fails, the function should raise a controlled exception rather than proceeding with potentially corrupted data.

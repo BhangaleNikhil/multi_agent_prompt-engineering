@@ -1,0 +1,6 @@
+Vulnerability: SQL Injection
+Severity: Critical
+CWE: CWE-89
+Location: Line 140 (The line `cmd += "%s," % parValue`)
+Description: The function constructs a final database command string (`cmd`) by concatenating user-provided parameter values (`parValue`). Although the code attempts to wrap non-integer/non-boolean inputs in single quotes, this mechanism is insufficient and highly prone to bypass (e.g., using escaped quotes or complex SQL syntax). By directly embedding untrusted input into the command string that will eventually be executed by `self.udfEvalCmd`, an attacker can inject arbitrary SQL commands, leading to unauthorized data access, modification, or deletion.
+Remediation: The application must never construct database queries using direct string concatenation with user-provided values. Instead, all parameters passed to the underlying database execution function (`self.udfEvalCmd`) must be handled using parameterized queries (prepared statements). This ensures that the database driver treats the input strictly as data, regardless of its content, and prevents it from being interpreted as executable SQL code.

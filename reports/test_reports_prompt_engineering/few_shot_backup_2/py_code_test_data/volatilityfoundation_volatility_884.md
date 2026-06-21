@@ -1,0 +1,6 @@
+Vulnerability: Incorrect Pointer Arithmetic / Memory Safety Issue
+Severity: Critical
+CWE: CWE-190
+Location: Lines 3, 8, 12
+Description: The function relies heavily on manual pointer arithmetic and offset calculations to locate kernel structures (`_EPROCESS`, `PoolTag`). This approach is highly susceptible to integer overflow/underflow or incorrect boundary checks. If the calculated offsets (e.g., `pool_base` or the final `eprocess` offset) exceed the allocated memory boundaries, the code will perform an out-of-bounds read operation. In a kernel context, reading arbitrary memory can lead to information disclosure (leakage of sensitive kernel data) or system instability (Denial of Service/crash).
+Remediation: Instead of manual pointer arithmetic and offset calculations, utilize robust, high-level APIs provided by the underlying operating system framework that abstract away raw memory addressing. If low-level access is unavoidable, implement rigorous bounds checking at every calculation step to ensure that calculated offsets remain within the known boundaries of the allocated object space before accessing memory.

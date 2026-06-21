@@ -1,0 +1,6 @@
+Vulnerability: Command Injection
+Severity: Critical
+CWE: CWE-78
+Location: Line 24 (The command construction using `.format()`)
+Description: The function constructs a system shell command by directly embedding multiple user-controlled variables (`title`, `admin_user`, `admin_password`, `admin_email`, `url`) into the command string using Python's string formatting. If an attacker provides input containing shell metacharacters (such as `;`, `&&`, `|`, or backticks), they can terminate the intended WordPress installation command and execute arbitrary operating system commands with the privileges of the running user (`user`).
+Remediation: Avoid constructing complex shell commands using direct string concatenation or formatting with untrusted inputs. If external CLI execution is necessary, implement strict input validation (whitelisting allowed characters) for all parameters to ensure they cannot contain shell metacharacters. Alternatively, if the underlying framework supports it, use a mechanism that executes arguments as an array of distinct parameters rather than a single formatted string, which prevents shell interpretation of the inputs.

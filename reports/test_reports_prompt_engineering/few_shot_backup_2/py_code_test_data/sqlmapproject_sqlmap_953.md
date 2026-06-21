@@ -1,0 +1,6 @@
+Vulnerability: Regular Expression Denial of Service (ReDoS)
+Severity: High
+CWE: CWE-400
+Location: Multiple regex usages (e.g., lines involving `re.search`, `re.findall`, `re.finditer`)
+Description: The function relies heavily on complex regular expressions (`FORM_SEARCH_REGEX`, patterns for finding POST calls, etc.) to parse and extract structured data from the input HTML content. If these regex patterns contain nested quantifiers or are poorly constructed (e.g., using greedy matching combined with optional groups), an attacker can provide a specially crafted, malicious input string (`content`). Processing this input will cause the regular expression engine to enter exponential time complexity, consuming excessive CPU resources and potentially leading to a Denial of Service (DoS) condition for the application.
+Remediation: Avoid using complex regex patterns on large or untrusted inputs for structural parsing. Instead, utilize dedicated, robust HTML parsing libraries (such as BeautifulSoup or lxml in Python) which are designed to handle malformed or massive HTML documents efficiently and safely. If regex must be used, ensure that all quantifiers are non-greedy (`*?`) and implement resource limits or timeouts when executing the regex engine.

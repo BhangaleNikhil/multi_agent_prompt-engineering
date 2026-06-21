@@ -1,0 +1,6 @@
+Vulnerability: Denial of Service (Resource Exhaustion)
+Severity: Medium
+CWE: CWE-400
+Location: Line 12 - Line 30 (Overall loop structure)
+Description: The function iterates through complex, nested data structures representing process memory heaps (`heap.segments()`, `segment.heap_entries()`). If the input `data` contains objects corresponding to extremely large or malformed memory dumps, the deeply nested loops and string extraction logic could consume excessive CPU time and memory resources, leading to a Denial of Service (DoS) condition for the application. Furthermore, relying on external object structures (`task`, `entry`) without robust boundary checks increases the risk of unexpected behavior if the input data is maliciously crafted or corrupted.
+Remediation: Implement strict resource limits and validation checks on the size and complexity of the input memory objects (`data`). Before entering the nested loops, validate that the total number of segments and entries does not exceed predefined safe thresholds. Consider adding time-based or iteration-count safeguards to prevent infinite or excessively long processing times.

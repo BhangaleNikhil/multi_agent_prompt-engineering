@@ -1,0 +1,6 @@
+Vulnerability: Cross-Site Scripting (XSS)
+Severity: High
+CWE: CWE-79
+Location: Line 20
+Description: The function processes user-provided content (`value`) through a Markdown parser and then uses `mark_safe()` on the resulting HTML string. While the intent is to render rich text, if the input `value` contains malicious raw HTML or scripts that are not properly sanitized by the underlying markdown library (especially when `safe_mode=False`), these payloads will be rendered directly into the client's browser. This allows an attacker to execute arbitrary JavaScript in the context of the user viewing the page.
+Remediation: Implement a robust, dedicated HTML sanitization step on the output string *before* calling `mark_safe()`. Use a library like Python's Bleach (or similar framework-specific sanitizer) to strip all potentially dangerous tags and attributes (e.g., `<script>`, `onerror`, etc.) from the final rendered Markdown output. This ensures that only safe, whitelisted HTML elements are preserved.

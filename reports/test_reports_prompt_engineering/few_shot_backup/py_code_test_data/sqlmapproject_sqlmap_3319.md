@@ -1,0 +1,6 @@
+Vulnerability: SQL Injection
+Severity: Critical
+CWE: CWE-89
+Location: Multiple lines (e.g., Line 22, Line 33, Line 46)
+Description: The function constructs multiple SQL queries by using Python's string formatting operator (`%s`) to embed variables such as table names (`tbl`), database names (`db`), and condition parameters (`tblCond`, `tblCondParam`) directly into the query strings. Since these variables are not properly escaped or passed as parameters, an attacker can inject malicious SQL payloads (e.g., using `' OR 1=1 --`) through the `conf.tbl` list or other inputs, allowing them to bypass intended logic, enumerate data, or execute arbitrary database commands.
+Remediation: All instances where variables are concatenated or formatted into SQL query strings must be refactored to use parameterized queries. Instead of using string formatting, the database connector's execute method should be used, passing the variable values as a separate tuple or list of parameters. This ensures that the database driver treats the input data strictly as data, not as executable code.

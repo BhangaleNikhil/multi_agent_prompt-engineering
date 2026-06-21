@@ -1,0 +1,6 @@
+Vulnerability: SQL Injection
+Severity: Critical
+CWE: CWE-89
+Location: Multiple instances, particularly within calls to `inject.checkBooleanExpression`
+Description: The function relies heavily on constructing dynamic SQL queries by concatenating various string inputs (such as random integers (`randInt`) or constants like `DBMS.MYSQL`) directly into boolean expressions passed to `inject.checkBooleanExpression`. This practice is highly susceptible to injection attacks. If an attacker can influence any of the variables used in these concatenated strings, they can inject malicious SQL payloads, allowing them to bypass the intended logic and execute arbitrary database commands (e.g., dumping data, modifying schema).
+Remediation: All dynamic values that are incorporated into a query string must be passed as parameters using parameterized queries provided by the underlying database connector or ORM framework. Never use string concatenation (`%s` formatting) to build SQL statements when incorporating variable data. If this code is part of a library, ensure that all internal functions handling database interaction enforce strict parameterization and input validation for every query executed.

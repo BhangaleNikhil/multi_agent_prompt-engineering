@@ -1,0 +1,6 @@
+Vulnerability: Security Bypass/Input Manipulation
+Severity: Critical
+CWE: CWE-20
+Location: Entire function body
+Description: This function is designed to manipulate and obfuscate malicious input payloads (specifically SQL injection attempts) to bypass common security filters, such as `magic_quotes` or `addslashes`. By transforming the single quote character (`'`) into a multi-byte sequence (`%bf%27`) and appending comment characters (`-- `), it actively aids an attacker in crafting payloads that evade standard input validation and sanitization routines. The existence and use of such a function indicate a failure to properly sanitize or validate user input before it reaches the database layer.
+Remediation: Never rely on custom input sanitization functions like this to prevent injection attacks. Instead, always use parameterized queries (prepared statements) or safe Object-Relational Mapping (ORM) frameworks. These methods ensure that user input is treated strictly as data and never as executable code, regardless of the characters it contains.

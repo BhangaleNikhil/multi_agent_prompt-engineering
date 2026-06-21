@@ -1,0 +1,6 @@
+Vulnerability: Memory Corruption / Improper Pointer Arithmetic
+Severity: Critical
+CWE: CWE-190
+Location: Line 11-13
+Description: The function relies on complex pointer arithmetic and calculated offsets (`pool_base + pool_obj.BlockSize * pool_align - self.address_space.profile.get_obj_size("_EPROCESS")`) to locate the `_EPROCESS` structure. This calculation is highly susceptible to integer overflow or underflow if the underlying memory structures (like `_POOL_HEADER` or the calculated `BlockSize`) are corrupted, manipulated, or if the address space boundaries are exceeded. An attacker who can corrupt the memory state or control the input parameters used in these offset calculations could force the program to read or write to arbitrary memory locations, leading to a critical memory corruption vulnerability and potential arbitrary code execution.
+Remediation: All pointer arithmetic and offset calculations must be rigorously validated against known memory boundaries and object sizes. Instead of relying on complex, chained offset calculations, utilize safe, high-level memory access APIs provided by the operating system or framework that inherently handle bounds checking and pointer validation. If direct memory access is necessary, implement explicit checks for overflow/underflow at every arithmetic step.

@@ -1,0 +1,6 @@
+Vulnerability: SQL Injection / Arbitrary Data Exfiltration
+Severity: Critical
+CWE: CWE-89
+Location: Line 2, Line 16, Line 49
+Description: The function `_oneShotUnionUse` is designed to execute complex, arbitrary SQL queries using a UNION-based injection technique. It accepts an `expression` parameter, which is treated as untrusted input, and uses it to construct and execute database queries (`agent.forgeUnionQuery`). If this function or its underlying logic were to be exposed or misused in a production environment, an attacker could pass malicious SQL payloads (e.g., `UNION SELECT password, credit_card FROM users`) to bypass application logic and exfiltrate sensitive data from the database. The function essentially provides a mechanism for blind or error-based SQL injection.
+Remediation: This function is highly specialized and appears to be part of an injection testing utility. If this logic is ever incorporated into a production application, it must be immediately removed. For any legitimate data retrieval functionality, all database interactions must use parameterized queries (prepared statements) or a safe Object-Relational Mapping (ORM) framework. Never construct SQL queries by concatenating or embedding user-provided input strings.

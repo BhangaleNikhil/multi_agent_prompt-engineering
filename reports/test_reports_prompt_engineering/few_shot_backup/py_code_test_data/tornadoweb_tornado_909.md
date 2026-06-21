@@ -1,0 +1,6 @@
+Vulnerability: Denial of Service (DoS) via Resource Exhaustion
+Severity: Medium
+CWE: CWE-400
+Location: Line 10
+Description: While the code includes a check for `content_length > self._max_body_size`, the initial parsing and processing of the `Content-Length` header itself could be vulnerable to resource exhaustion if an attacker sends an extremely long, but technically valid, header value. Although Python's `int()` handles large numbers, if the header string is excessively long, the initial processing and subsequent memory allocation for the `pieces` list (when handling duplicated lengths) could consume excessive CPU or memory, leading to a Denial of Service condition.
+Remediation: Implement strict length limits on the HTTP header values themselves (e.g., limiting the maximum number of characters allowed in `Content-Length`) before attempting conversion or splitting. Additionally, ensure that the `self._max_body_size` check is performed immediately after the header is read to prevent unnecessary processing of oversized inputs.

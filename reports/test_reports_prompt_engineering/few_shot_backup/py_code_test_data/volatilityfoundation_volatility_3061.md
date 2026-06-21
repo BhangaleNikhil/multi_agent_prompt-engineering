@@ -1,0 +1,6 @@
+Vulnerability: Out-of-Bounds Access
+Severity: High
+CWE: CWE-787
+Location: Line 23
+Description: The function calculates an index (`idx`) based on the input `index` and the node's `height`. This calculated index is then used to access the `node.slots` array (`slot = node.slots[idx]`). If the input `index` is maliciously crafted or if the internal state variables (`height`, `RADIX_TREE_MAP_SHIFT`) are manipulated, the resulting `idx` could exceed the allocated bounds of the `node.slots` array. This vulnerability allows an attacker to potentially read or write memory outside the intended data structure boundaries, leading to memory corruption, information leakage, or a Denial of Service (DoS).
+Remediation: Before accessing `node.slots[idx]`, implement explicit bounds checking to ensure that the calculated index `idx` is within the valid range of the `node.slots` array (i.e., `0 <= idx < len(node.slots)`). If the index is out of bounds, the function should safely return `None` or raise a controlled exception instead of attempting the memory access.

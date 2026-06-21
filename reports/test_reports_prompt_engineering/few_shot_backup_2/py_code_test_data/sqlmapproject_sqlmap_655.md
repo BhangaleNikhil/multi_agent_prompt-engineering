@@ -1,0 +1,6 @@
+Vulnerability: Information Disclosure / Potential Blind SQL Injection
+Severity: High
+CWE: CWE-89
+Location: Line 10, Line 16
+Description: The function executes multiple hardcoded, complex SQL payloads (`" AND VAL(CVAR(1))=1"` and `" AND IIF(ATN(2)>0,1,0) BETWEEN 2 AND 0"`) designed for database fingerprinting or compatibility testing. While the inputs are not direct user input, this pattern demonstrates that the application is capable of constructing and executing arbitrary SQL logic based on internal strings. If an attacker could influence the content passed to `agent.fullPayload` (even indirectly through configuration manipulation) or if these payloads were used in a context where they leak information about the database structure, it would lead to severe information disclosure or blind SQL injection attacks.
+Remediation: If this function is strictly for internal compatibility testing and cannot be removed, ensure that all payload construction mechanisms (`agent.fullPayload`) are rigorously reviewed to prevent any possibility of external input influencing the query structure. Ideally, such database fingerprinting logic should be isolated in a dedicated, non-production module or replaced with safe, parameterized connection checks that do not rely on complex boolean/system function payloads.

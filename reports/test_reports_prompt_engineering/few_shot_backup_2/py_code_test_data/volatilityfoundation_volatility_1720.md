@@ -1,0 +1,6 @@
+Vulnerability: Unauthorized Memory Access / Information Disclosure
+Severity: Critical
+CWE: CWE-200 (Exposure of Sensitive Information to an Unauthorized Actor)
+Location: Line 3, Line 7
+Description: The function explicitly loads and iterates over the physical address space (`utils.load_as(self._config, astype = 'physical')`) and accesses low-level system structures like the LDR data table entries. If this module is executed with elevated privileges (e.g., kernel or root access) and its output or execution path can be influenced by an attacker, it poses a severe risk of unauthorized information disclosure (dumping sensitive memory contents) or potential privilege escalation if the underlying library functions (`utils.load_as`, `obj.Object`) are susceptible to memory corruption attacks.
+Remediation: If this code is intended for internal security research or debugging, ensure that execution is strictly confined within a sandboxed environment with minimal necessary privileges (Principle of Least Privilege). If it must handle physical memory, implement rigorous input validation and boundary checks on all offsets and addresses loaded from the address space to prevent out-of-bounds reads/writes. Furthermore, restrict access to this functionality only to authorized personnel or processes.

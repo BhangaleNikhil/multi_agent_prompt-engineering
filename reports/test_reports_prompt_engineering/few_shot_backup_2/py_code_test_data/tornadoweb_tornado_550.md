@@ -1,0 +1,6 @@
+Vulnerability: Improper Handling of Binary Data in Logs / Encoding Vulnerability
+Severity: Medium
+CWE: CWE-200
+Location: Line 3
+Description: The code logs raw byte literals (`b"\xe9"`). While this specific example uses a benign test byte, the pattern demonstrates logging binary data directly. If production code follows this practice and logs user-provided or system-sensitive information (such as session tokens, passwords, or private keys) as raw bytes without explicit encoding, it can lead to log corruption, misinterpretation of security events by monitoring tools, or accidental leakage of sensitive binary information. Logging mechanisms must handle the conversion from arbitrary bytes to a defined character set safely.
+Remediation: When logging data that originates as bytes and is intended for human readability or standard log analysis, always explicitly encode the data into a known character set (e.g., UTF-8) before passing it to the logger. If raw binary content must be logged for debugging purposes, use standardized encoding methods such as Base64 or hexadecimal representation to ensure integrity and prevent logging framework confusion.

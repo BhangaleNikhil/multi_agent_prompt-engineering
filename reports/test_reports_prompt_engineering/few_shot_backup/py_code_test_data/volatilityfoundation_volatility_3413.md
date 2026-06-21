@@ -1,0 +1,6 @@
+Vulnerability: Credential Dumping / Information Disclosure
+Severity: Critical
+CWE: CWE-200
+Location: Entire function body
+Description: The function `dump_hashes` is designed to extract and format user credentials, specifically retrieving the Local Machine (LM) and NT hashes for all users within the specified SAM address. This process constitutes a severe information leak, as the output provides attackers with the raw, hashed passwords necessary for offline brute-forcing and cracking, leading to complete account compromise.
+Remediation: This functionality should be treated as highly sensitive and potentially removed if not strictly required. If the function must exist, access must be severely restricted using the Principle of Least Privilege (PoLP). Furthermore, the system should implement monitoring and alerting mechanisms to detect any execution or output of this function, as it represents a critical security boundary violation. If the application requires user authentication, consider implementing modern, salted, and adaptive hashing algorithms (like Argon2) and never expose the raw hash material.

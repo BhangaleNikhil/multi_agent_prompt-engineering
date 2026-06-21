@@ -1,0 +1,6 @@
+Vulnerability: Improper Input Validation / Denial of Service
+Severity: High
+CWE: CWE-20
+Location: Line 43, Line 56
+Description: The function relies on configuration options stored in `self.opts` without performing adequate validation or type checking. Specifically, the code uses `int(self.opts['loop_interval'])` and accesses `self.opts['grains_refresh_every']`. If an attacker or misconfigured environment provides non-integer values (e.g., strings that cannot be cast to integers) or excessively large/small numbers for these critical timing parameters, the application will crash or enter a state of resource exhaustion, leading to a Denial of Service condition.
+Remediation: Implement strict input validation and sanitization for all configuration options read from `self.opts`. Before using any option value (especially those used in type conversions like `int()` or mathematical operations), validate that the value exists, is of the expected type, and falls within acceptable operational ranges (e.g., positive integers). Use a dedicated configuration validation library if possible.

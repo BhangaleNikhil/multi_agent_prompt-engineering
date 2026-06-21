@@ -1,0 +1,6 @@
+Vulnerability: Resource Exhaustion / Denial of Service (DoS)
+Severity: High
+CWE: CWE-400
+Location: Line 23
+Description: The function reads data from a process's virtual address descriptor (VAD) using `process_space.zread(vad.Start, vad.Length)`. The code relies on the assumption that the length (`vad.Length`) will be reasonable. If an attacker can manipulate the target process's memory mapping (or if the target process is designed to map extremely large, sparse regions), the `vad.Length` could be excessively large (e.g., multiple gigabytes). Reading such a large block of memory without explicit size validation can lead to excessive memory consumption, CPU exhaustion, or even a crash of the analyzing process, resulting in a Denial of Service condition.
+Remediation: Implement strict validation checks on the size of the data being read. Before calling `zread`, validate that `vad.Length` does not exceed a predefined, reasonable maximum threshold (e.g., 100MB). If the length exceeds this limit, the function should log a warning and skip the read operation instead of attempting to allocate and read the massive data block.

@@ -1,0 +1,6 @@
+Vulnerability: Path Traversal / Arbitrary File Read
+Severity: High
+CWE: CWE-22
+Location: Throughout the function, specifically when handling `cfile` (e.g., lines involving `self._parsers[cfile]`, `get_config_type(cfile)`).
+Description: The function accepts a configuration file path (`cfile`) and uses it to load data from various sources, including INI and YAML parsers. If the value of `cfile` is derived from untrusted user input without proper sanitization or validation, an attacker could exploit this vulnerability by providing paths like `../../etc/passwd` or other system files. This allows the application to read arbitrary files on the underlying filesystem, potentially leading to information disclosure.
+Remediation: Implement strict path validation and canonicalization for all file inputs (`cfile`). Before using the path, ensure that it is resolved to an absolute path and that this path remains strictly within a designated, safe configuration directory (a "jail" or root directory). Use functions like `os.path.realpath()` combined with checks against the expected base directory to prevent traversal attacks.

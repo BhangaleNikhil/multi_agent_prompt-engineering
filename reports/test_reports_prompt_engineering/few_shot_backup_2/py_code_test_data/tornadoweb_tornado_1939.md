@@ -1,0 +1,6 @@
+Vulnerability: Overly Broad Exception Handling
+Severity: Medium
+CWE: CWE-754
+Location: Line 13
+Description: The code uses a bare `except:` block (`except:`) within the function wrapper. This catches all possible exceptions, including system exits, memory errors, and unexpected runtime issues, preventing proper error identification and handling. While this might be necessary for specific framework requirements (like ensuring `exc_info` is captured), it severely degrades code robustness by masking underlying bugs or security-relevant failures, making the application difficult to maintain and secure.
+Remediation: Replace the bare `except:` block with explicit exception types (e.g., `except Exception as e:` or specific expected exceptions) to ensure that only anticipated errors are caught. If all exceptions must be captured for framework compatibility, consider logging the full traceback immediately upon catching an unknown exception and re-raising a more controlled, generic error type rather than silently proceeding.

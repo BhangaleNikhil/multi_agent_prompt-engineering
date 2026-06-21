@@ -1,0 +1,6 @@
+Vulnerability: Information Leakage / Denial of Service
+Severity: High
+CWE: CWE-200, CWE-400
+Location: Line 3 - Line 10
+Description: The function processes complex internal memory structures (Virtual Address Descriptors or VADs) and writes highly detailed process information to an output stream (`outfd`). If the input `data` contains malformed, corrupted, or excessively large process state objects, the traversal logic (`task.VadRoot.traverse()`) could fail unexpectedly, leading to a Denial of Service (DoS). Furthermore, by writing raw memory layout details without sanitization, the function risks leaking highly sensitive system information that an attacker could use for further exploitation or privilege escalation.
+Remediation: Implement robust input validation and resource limiting. Before traversing VADs, validate the integrity of `task` and `vad` objects to ensure they conform to expected structural boundaries. Introduce safeguards (e.g., counters) to limit the total number of VAD entries processed per task to prevent memory exhaustion or excessive CPU usage from malicious inputs. Additionally, if this function is exposed via an API, ensure that the output stream (`outfd`) is restricted and only accessible by authorized users/processes.

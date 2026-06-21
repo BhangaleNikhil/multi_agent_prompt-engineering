@@ -1,0 +1,6 @@
+Vulnerability: Over-exposure of Functionality / Excessive Privileges
+Severity: High
+CWE: CWE-691
+Location: Lines 4 - 35 (The entire function body)
+Description: The function registers a large number of custom Python functions and aggregates directly into the database connection. This practice significantly increases the attack surface by exposing complex mathematical, string manipulation, and cryptographic primitives (MD5, SHA256, etc.) to arbitrary SQL queries. If an attacker can execute any SQL query, they gain access to these powerful functions, potentially allowing them to perform data exfiltration, integrity checks, or complex logic operations that should be restricted to the application layer.
+Remediation: Implement a strict whitelisting mechanism for function registration. Only expose the absolute minimum set of database functions required for core business logic. Furthermore, review all registered cryptographic functions (like MD5) and ensure they are only used if absolutely necessary, preferring modern, secure alternatives. The principle of least privilege must be applied to database extension capabilities.

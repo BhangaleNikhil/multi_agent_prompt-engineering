@@ -1,0 +1,6 @@
+Vulnerability: Improper Output Encoding / Contextual Escaping Failure
+Severity: High
+CWE: CWE-79
+Location: Multiple lines involving `self.stream.write(data)`
+Description: The function writes raw, user-provided input (`text`) directly to an output stream (`self.stream`). While the code attempts custom escaping for single quotes (by writing `''`), this mechanism is highly brittle and insufficient because it fails to account for other potential context breaks, such as HTML characters (`<`, `>`, `&`), JSON delimiters, or specific markup language syntax that might be interpreted by the final consumer of the stream. If the output stream is later rendered in a web browser (e.g., if this function is part of an XSS sink), an attacker can inject malicious payloads that break out of the intended text context.
+Remediation: Never write raw user input directly to an output stream destined for interpretation by another system (like HTML or XML). Instead, use a robust templating engine or dedicated library functions that automatically perform contextual encoding (e.g., converting `<` to `&lt;`, and `>` to `&gt;`) based on the target format of the output sink.

@@ -1,0 +1,6 @@
+Vulnerability: Cross-Site Scripting (XSS) / Output Encoding Failure
+Severity: High
+CWE: CWE-79
+Location: Line 49 (and throughout the rendering logic)
+Description: The function retrieves data from the `grid` object (`node.values[column.index]`) and passes it through the cell renderer (`self._cell_renderers[column.index].render(...)`) before writing it directly to the output stream (`outfd.write(...)`). The code does not perform any context-aware output encoding or sanitization on the data. If the data contained within the grid is user-supplied and the output stream (`outfd`) is consumed by an environment that interprets markup (such as an HTML browser, rich text editor, or a system that processes ANSI escape codes), an attacker can inject malicious scripts or formatting, leading to XSS.
+Remediation: Before writing any data derived from untrusted sources (like `node.values`), the application must apply context-specific output encoding. If the output is destined for HTML, use HTML entity encoding. If it is destined for a specific format, ensure that the rendering process explicitly escapes all characters that could be interpreted as control characters or markup.

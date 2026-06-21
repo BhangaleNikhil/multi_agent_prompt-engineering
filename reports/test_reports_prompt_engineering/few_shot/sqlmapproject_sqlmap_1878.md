@@ -1,0 +1,6 @@
+Vulnerability: SQL Injection
+Severity: Critical
+CWE: CWE-89
+Location: Line 70 (and subsequent lines using `query = query % (...)`)
+Description: The function constructs complex database queries by dynamically concatenating or formatting multiple pieces of data derived from configuration variables (`conf.tbl`, `conf.db`, etc.) directly into the base SQL query template (`rootQuery.inband.query`). This process uses Python string formatting (`%`) to build the final query string before execution via `inject.getValue()`. If any input used in constructing `tblQuery` or `whereDbsQuery` is malicious (e.g., containing quotes, semicolons, or comment characters), an attacker can break out of the intended data context and execute arbitrary SQL commands, leading to full database compromise or unauthorized information disclosure.
+Remediation: All dynamic values that represent data (not structural elements like table names) must be passed as parameters using parameterized queries provided by the underlying database driver/API (`inject.getValue`). If the input *must* define structure (like column or table names), these inputs must be strictly validated against a whitelist of allowed identifiers and escaped using dedicated, robust identifier escaping functions that handle all SQL dialect specifics, rather than relying on simple string formatting.

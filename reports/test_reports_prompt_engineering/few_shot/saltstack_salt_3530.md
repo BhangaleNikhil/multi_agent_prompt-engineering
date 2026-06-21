@@ -1,0 +1,6 @@
+Vulnerability: Path Traversal / Arbitrary File Read
+Severity: High
+CWE: CWE-22
+Location: Line 30
+Description: The function constructs and reads configuration files based on multiple sources of input, including `path`, environment variables (`env_var`), and default settings. While the code uses `os.path.expanduser` and `os.path.abspath` to normalize paths, it does not validate that the resulting path remains within an expected or safe directory structure. If an attacker can manipulate any of the configuration inputs (e.g., by controlling environment variables or injecting malicious values into a master config file), they could potentially point `opts['token_file']` to sensitive system files (like `/etc/passwd`) and read their contents, leading to information disclosure.
+Remediation: Implement strict path validation checks. Before reading any configuration file, the function must verify that the resolved absolute path is contained within a predefined whitelist of allowed directories or canonicalize the path against known safe roots to prevent traversal outside the intended scope. If possible, use dedicated configuration management libraries that handle path resolution securely and abstract away direct file system access based on user input.

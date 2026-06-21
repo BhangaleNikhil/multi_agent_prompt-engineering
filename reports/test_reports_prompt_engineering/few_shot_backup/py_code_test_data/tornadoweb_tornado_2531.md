@@ -1,0 +1,6 @@
+Vulnerability: Injection (Potential Command or Path Traversal)
+Severity: High
+CWE: CWE-22
+Location: Line 7 (The loop processing `filename`)
+Description: The code tests the handling of filenames containing special characters (e.g., `;`, `"`, `\`). If the underlying function `parse_multipart_form_data` or any subsequent code that uses the extracted `filename` (e.g., saving the file to disk, logging it, or passing it to a system command) does not properly sanitize or validate these characters, an attacker could inject malicious commands or traverse directories. The presence of characters like `;` suggests a risk of command injection if the filename is processed by a shell.
+Remediation: Implement strict input validation (whitelisting) for all filenames. Filenames should only be allowed to contain characters expected for file system names (e.g., alphanumeric characters, hyphens, underscores, and dots). Never pass user-supplied filenames directly to system calls or shell interpreters. If the filename must be used in a shell context, use safe APIs that avoid shell interpretation.

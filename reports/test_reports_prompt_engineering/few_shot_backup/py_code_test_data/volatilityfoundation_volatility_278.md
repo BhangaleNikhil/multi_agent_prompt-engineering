@@ -1,0 +1,6 @@
+Vulnerability: Format String Vulnerability
+Severity: High
+CWE: CWE-134
+Location: Line 15
+Description: The function constructs and writes structured data by passing multiple user-controlled attributes from the `task` object (e.g., `task.ImageFileName`, `task.UniqueProcessId`, `str(task.CreateTime or '')`) to `self.table_row`. If the underlying implementation of `self.table_row` or the file descriptor writing mechanism (`outfd`) uses a function like `printf()` or `fprintf()` without explicitly controlling the format string, an attacker could inject format specifiers (e.g., `%s`, `%x`, `%n`) via the task data. This could lead to information disclosure (reading memory contents) or, in the worst case, arbitrary memory writes.
+Remediation: Ensure that the function responsible for writing the row data (`self.table_row`) treats all input parameters strictly as data and never interprets them as format specifiers. If using C-style I/O functions, use the raw `write()` system call with properly formatted buffers, or use modern, safe logging/writing APIs that do not rely on variable argument lists for formatting.

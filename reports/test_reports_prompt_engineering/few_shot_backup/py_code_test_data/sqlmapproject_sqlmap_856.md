@@ -1,0 +1,6 @@
+Vulnerability: Arbitrary File System Operation / Path Traversal (Denial of Service)
+Severity: Critical
+CWE: CWE-22
+Location: Line 1 (Function input `directory`)
+Description: The function accepts an arbitrary directory path (`directory`) and performs highly destructive operations (overwriting, renaming, and finally deleting the entire directory tree using `shutil.rmtree`). If the input `directory` is not strictly validated and sanitized by the calling context, an attacker could provide a path pointing to critical system directories (e.g., `/etc`, `/var/www/html`, or the root directory `/`). This allows the attacker to execute a Denial of Service (DoS) attack by deleting or corrupting essential system files and data.
+Remediation: Implement strict input validation and sanitization for the `directory` parameter. The function should only operate on paths that are confirmed to be within a predefined, safe root directory (a concept known as "jail" or "chroot"). Before processing, the input path must be resolved and checked to ensure it does not escape the intended operational scope. Additionally, consider implementing role-based access control (RBAC) to ensure only authorized processes can call this destructive function.

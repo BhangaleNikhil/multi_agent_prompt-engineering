@@ -1,0 +1,6 @@
+Vulnerability: Regular Expression Denial of Service (ReDoS)
+Severity: High
+CWE: CWE-1322
+Location: Line 20 - Line 69 (The entire regex construction and execution block)
+Description: The function constructs a complex regular expression pattern (`regex`) using user-supplied input (`payload`). Since the payload is derived from untrusted sources, an attacker can craft a malicious payload that results in a catastrophic backtracking regex. When this regex is executed against the `content` (via `re.sub`), it forces the underlying regex engine to perform an exponential number of checks, consuming excessive CPU resources and leading to a Denial of Service (DoS) condition for the application.
+Remediation: Avoid constructing complex regular expressions directly from untrusted user input. If regex matching is absolutely necessary using user-controlled components, implement strict limits on pattern complexity, length, and execution time. Consider using specialized libraries or techniques that enforce bounded backtracking to prevent resource exhaustion.

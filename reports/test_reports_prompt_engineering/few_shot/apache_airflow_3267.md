@@ -1,0 +1,6 @@
+Vulnerability: Insecure SSL/TLS Configuration (Disabling Certificate Verification)
+Severity: High
+CWE: CWE-295
+Location: Line 3
+Description: The code snippet demonstrates or tests a connection setup where SSL certificate verification is explicitly disabled by setting `"verify": False`. When an application connects to a service without validating the server's certificate, it becomes highly vulnerable to Man-in-the-Middle (MITM) attacks. An attacker can intercept and modify the communication stream without the client detecting the tampering because the connection will be established regardless of the certificate's authenticity or validity.
+Remediation: The application must always enforce strict SSL/TLS certificate validation. Instead of setting `verify` to `False`, the connection mechanism should be configured to validate the server's certificate against a trusted Certificate Authority (CA) bundle by providing the path to the CA file (`cafile`). This ensures that the client only connects to legitimate, verifiable endpoints.

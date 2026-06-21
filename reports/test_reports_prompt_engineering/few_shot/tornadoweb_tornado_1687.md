@@ -1,0 +1,6 @@
+Vulnerability: Improper Input Validation / Denial of Service
+Severity: Medium
+CWE: CWE-20
+Location: Line 3 (The `if rules:` block)
+Description: The function accepts a list of `rules` which are expected to be complex objects or tuples. However, the code does not perform any validation on the structure, type, or size of this input list before passing it to `self.add_rules(rules)`. An attacker could provide an excessively large list (leading to resource exhaustion/Denial of Service) or a list containing malformed data types that are not expected by the router logic, potentially causing unexpected runtime errors or allowing the system to process invalid configurations.
+Remediation: Implement strict input validation and schema checking for the `rules` argument. Before processing the rules, validate that the list size is within acceptable limits and that every element conforms precisely to the expected structure (e.g., ensuring paths are strings and targets are valid object instances). Consider adding safeguards against resource consumption during initialization.

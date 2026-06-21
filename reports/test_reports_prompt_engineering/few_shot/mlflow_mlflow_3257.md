@@ -1,0 +1,6 @@
+Vulnerability: Insecure Deserialization / Arbitrary File Access
+Severity: Critical
+CWE: CWE-502
+Location: Line 2
+Description: The function loads a machine learning model artifact using `mlflow.pytorch.load_model()`. If the source of the artifact (`context.artifacts["pytorch_model"]`) is controlled or influenced by an attacker, this operation presents two major risks: 1) **Insecure Deserialization:** Loading complex models often involves deserializing objects (e.g., using Pickle or similar mechanisms). If the underlying serialization format is vulnerable, an attacker could inject malicious code that executes upon loading, leading to Remote Code Execution (RCE). 2) **Arbitrary File Access/Path Traversal:** If the path provided in `context.artifacts` can be manipulated, an attacker might trick the function into reading sensitive system files instead of a model artifact.
+Remediation: Implement strict validation and sanitization on all inputs defining the artifact source path. Use whitelisting to ensure that only expected directories or known safe file types are loaded. If possible, use secure serialization formats (e.g., ONNX) that do not embed executable code, rather than relying solely on native framework serialization methods which may be vulnerable to deserialization attacks.

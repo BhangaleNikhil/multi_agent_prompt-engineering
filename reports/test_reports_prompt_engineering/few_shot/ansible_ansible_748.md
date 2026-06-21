@@ -1,0 +1,6 @@
+Vulnerability: Injection (API/Command)
+Severity: High
+CWE: CWE-89
+Location: Line 17 and Line 30
+Description: The code uses user-supplied parameters (`lldp_policy` and `description`) directly within string formatting operations when constructing API paths (`aci.construct_url`) and payloads (`aci.payload`). This practice is vulnerable to injection attacks. If an attacker provides input containing special characters (e.g., quotes, parentheses, or specific query syntax recognized by the underlying ACI/API framework), they could potentially manipulate the intended API call structure, leading to unauthorized data retrieval, modification, or denial of service.
+Remediation: All user-supplied inputs must be rigorously validated and sanitized before being used in string formatting for constructing API calls. Implement strict input validation (whitelisting) based on the expected format and character set for `lldp_policy` and `description`. Furthermore, ensure that the underlying module framework automatically handles proper escaping of all parameters passed into structured query components to prevent injection.

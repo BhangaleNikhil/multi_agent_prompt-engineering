@@ -1,0 +1,6 @@
+Vulnerability: Race Condition / Improper State Management
+Severity: High
+CWE: CWE-362
+Location: Line 15 (The entire function body relying on `_state.contexts`)
+Description: The function relies on and modifies a shared, global, or module-level state variable (`_state.contexts`). If this code is executed in a multi-threaded or asynchronous environment without proper synchronization mechanisms (such as locks or thread-local storage), multiple concurrent executions can read or write to `_state.contexts` simultaneously. This leads to a race condition, potentially corrupting the execution context, causing unpredictable behavior, or allowing one thread to observe the state of another.
+Remediation: Access and modification of the shared state (`_state.contexts`) must be protected by synchronization primitives (e.g., `threading.Lock`). Alternatively, if the context is inherently tied to the execution thread, the state should be managed using thread-local storage (`threading.local`) to ensure isolation between concurrent operations.

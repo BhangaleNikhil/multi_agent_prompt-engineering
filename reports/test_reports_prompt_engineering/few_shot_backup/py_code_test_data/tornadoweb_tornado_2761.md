@@ -1,0 +1,6 @@
+Vulnerability: Server-Side Request Forgery (SSRF)
+Severity: High
+CWE: CWE-284
+Location: Line 2 (Function scope)
+Description: The function constructs and executes an HTTP request based on user-controlled inputs (`path` and `body`). By accepting an arbitrary `path` and explicitly allowing nonstandard methods (`request.allow_nonstandard_methods = True`), an attacker can potentially manipulate the request to target internal network resources (e.g., cloud metadata services, internal APIs, or localhost services) that should not be publicly accessible. This allows the attacker to bypass network segmentation and perform unauthorized actions from the server's perspective.
+Remediation: Implement strict input validation and allow-listing for the `path` parameter. The application must validate that the resolved URL only points to approved external domains and IP ranges. Furthermore, if the function must support nonstandard methods, implement granular checks to ensure the method is only used for expected, authorized purposes.

@@ -1,0 +1,6 @@
+Vulnerability: Improper Input Sanitization / Log Injection
+Severity: High
+CWE: CWE-20
+Location: Line 14 (Within the `for task in data:` loop)
+Description: The function writes various attributes from the `task` object (e.g., `task.ImageFileName`, `str(task.CreateTime or '')`) directly to an output file descriptor (`outfd`). If any of these fields contain unescaped control characters, such as newline characters (`\n`), carriage returns (`\r`), or delimiters specific to the expected report format (e.g., commas if CSV), an attacker who can manipulate the input data objects could inject arbitrary content into the resulting log file or report. This compromises the integrity and structure of the output data.
+Remediation: Before writing any user-controlled or system-derived string data to the output stream, implement strict sanitization and escaping mechanisms. Specifically, all strings passed to `self.table_row` must be validated to ensure they do not contain control characters that could break the intended format (e.g., replacing newlines with a safe placeholder). If the output is expected to be CSV, use a dedicated library function to handle proper quoting and escaping of fields.

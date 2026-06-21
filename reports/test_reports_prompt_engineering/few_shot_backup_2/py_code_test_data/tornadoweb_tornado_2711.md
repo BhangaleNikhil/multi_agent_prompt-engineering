@@ -1,0 +1,6 @@
+Vulnerability: Denial of Service (DoS) / Input Validation Failure
+Severity: Medium
+CWE: CWE-20
+Location: Line 13
+Description: The function assumes that the input `line` string is non-empty when attempting to access its first character using `line[0]`. If an empty line or a malformed null/None value is passed as input, accessing `line[0]` will raise an `IndexError`, causing the application to crash and resulting in a Denial of Service condition. Furthermore, the code assumes that if the line is not whitespace-prefixed, it must contain at least one colon (`:`) for successful unpacking on Line 18, which could also lead to a runtime exception if the header format is incorrect.
+Remediation: Implement robust input validation checks at the beginning of the function to ensure `line` is neither empty nor None before attempting any string indexing or splitting operations. Use explicit length checks and defensive programming practices (e.g., checking the number of elements returned by `split`) to handle malformed inputs gracefully without crashing the application.

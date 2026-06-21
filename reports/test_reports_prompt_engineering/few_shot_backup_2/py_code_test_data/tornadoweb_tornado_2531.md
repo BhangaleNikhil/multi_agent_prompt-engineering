@@ -1,0 +1,6 @@
+Vulnerability: Injection Flaw / Improper Handling of Special Characters
+Severity: High
+CWE: CWE-111
+Location: Line 8 - Line 20 (The usage of `parse_multipart_form_data` with user-controlled filenames)
+Description: The code snippet tests the robustness of a multipart form data parser (`parse_multipart_form_data`) when handling filenames containing special characters (e.g., `;`, `"`, `\`). If the underlying parsing function fails to strictly validate, sanitize, or escape these characters, an attacker could potentially exploit this flaw. This could lead to boundary confusion, allowing them to inject malicious data that confuses the parser's understanding of form boundaries, or worse, if the filename is later used in a file system operation (like creating a path), it could lead to Path Traversal or Command Injection.
+Remediation: Implement strict input validation and whitelisting for all user-supplied filenames. The parser must ensure that special characters are correctly escaped according to RFC standards for MIME boundaries and headers, preventing them from being interpreted as delimiters or control characters by the parsing logic. If possible, restrict allowed filename characters to a safe subset (e.g., alphanumeric, hyphens, underscores).

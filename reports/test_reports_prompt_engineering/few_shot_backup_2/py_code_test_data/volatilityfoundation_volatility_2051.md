@@ -1,0 +1,6 @@
+Vulnerability: Unsafe Pointer Dereferencing / Kernel Memory Corruption
+Severity: Critical
+CWE: CWE-787
+Location: Line 2, Line 9
+Description: The function performs multiple sequential pointer dereferences (`.dereference_as()`, `.dereference()`) based on assumed internal memory layouts of kernel structures (e.g., `KdVersionBlock`, `DebuggerDataList`). This technique is highly fragile and relies on undocumented, fixed offsets within the operating system kernel's memory space. If the underlying OS version or patch level changes, the structure layout may shift, causing one of the dereferences to access an invalid or unmapped memory address. This will result in a Segmentation Fault (Denial of Service) or, if exploited by an attacker who can control the input state leading up to this function call, could lead to arbitrary kernel memory read/write primitives (Remote Code Execution).
+Remediation: Kernel debugging utilities must rely exclusively on official, stable, and version-controlled OS APIs provided by the operating system vendor. Manual pointer arithmetic and direct structure traversal are inherently unsafe and should be avoided in production or even advanced development environments unless absolutely necessary and thoroughly validated against every target kernel build.

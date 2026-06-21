@@ -1,0 +1,6 @@
+Vulnerability: SQL Injection
+Severity: Critical
+CWE: CWE-89
+Location: Line 30 (and throughout the version checking loop)
+Description: The function relies heavily on executing dynamic, constructed SQL expressions via `inject.checkBooleanExpression()`. While the current inputs are hardcoded, this pattern is inherently dangerous. If any variable used in string formatting—such as the `version` string or the calculated number of characters (`1 if number < 10 else 2`)—were derived from user input (e.g., a configuration file or an API parameter), an attacker could inject malicious SQL payloads. This allows for arbitrary database command execution, potentially leading to data exfiltration, modification, or deletion.
+Remediation: Avoid constructing complex queries using string formatting (`%d=(SELECT SUBSTR((VERSION),1,%d) FROM SYS.PRODUCT_COMPONENT_VERSION WHERE ROWNUM=1)`). If dynamic query construction is absolutely necessary, ensure that all variables are strictly validated against expected types and formats (whitelisting) before being incorporated into the SQL statement. Ideally, use parameterized queries for all data inputs, even when checking version information.

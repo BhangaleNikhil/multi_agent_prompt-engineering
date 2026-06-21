@@ -1,0 +1,6 @@
+Vulnerability: SQL Injection
+Severity: Critical
+CWE: CWE-89
+Location: Multiple instances, particularly lines involving `inject.checkBooleanExpression` and `inject.getValue`.
+Description: The function relies heavily on executing dynamic SQL expressions using `inject.checkBooleanExpression` and `inject.getValue`. While the provided code uses hardcoded strings, the pattern itself is critically flawed. If any of the inputs used to construct these expressions (such as version numbers, aliases, or parameters passed to this function) are derived from untrusted sources (e.g., user input, configuration files, or network requests), an attacker can inject malicious SQL payloads. This allows an attacker to bypass the intended logic, exfiltrate sensitive data, or modify the database state.
+Remediation: All database interactions that involve dynamic query construction must be refactored to use parameterized queries. Instead of building SQL strings with concatenated variables, use placeholders (`?` or `:name`) and pass the variables as separate parameters to the database execution function. Furthermore, any input used to determine the structure or content of the SQL query must be strictly validated against a whitelist of allowed characters and values.

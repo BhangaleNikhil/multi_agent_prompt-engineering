@@ -1,0 +1,6 @@
+Vulnerability: Resource Exhaustion / State Management Flaw
+Severity: Medium
+CWE: CWE-400
+Location: Line 35
+Description: The decorator implements complex logic for catching `TimeoutError` and manually re-raising it into a generator/coroutine (`self._test_generator.throw(e)`). While the intent is to preserve accurate stack traces, this manual manipulation of asynchronous state (generators) is highly brittle. If the underlying framework or Python runtime changes, or if an exception occurs during the cleanup phase after `run_sync` fails, it could lead to unhandled exceptions, resource leaks, or a Denial of Service (DoS) condition where the test runner crashes or enters an unstable state due to corrupted internal state (`self._test_generator`).
+Remediation: Review and simplify the exception handling logic. Instead of manually throwing exceptions back into the generator, utilize standard asynchronous context managers or framework-provided mechanisms designed for reliable timeout cleanup. Ensure that all resources (like network connections or temporary files) are properly closed using `try...finally` blocks within the test execution wrapper to guarantee clean state regardless of how the test exits (success, failure, or timeout).

@@ -1,0 +1,6 @@
+Vulnerability: SQL Injection
+Severity: High
+CWE: CWE-89
+Location: Line 13 (and subsequent lines using string formatting)
+Description: The code constructs SQL queries by using Python's string formatting (`%d`) to embed integer variables (`version`) directly into the query string. While using integers currently mitigates the risk, this pattern is highly susceptible to SQL Injection if any of the variables used in the query construction (e.g., if the loop range or the version numbers were derived from user input) were ever changed to accept string data. The reliance on string concatenation/formatting to build database queries is an anti-pattern.
+Remediation: The application must utilize parameterized queries provided by the underlying database connector or ORM framework. Instead of formatting the query string with variables, the query structure should use placeholders (e.g., `?` or `%s`), and the variables should be passed as a separate tuple or list argument to the execution function. This ensures the database driver handles the data type conversion and escaping, preventing malicious input from being interpreted as executable SQL code.

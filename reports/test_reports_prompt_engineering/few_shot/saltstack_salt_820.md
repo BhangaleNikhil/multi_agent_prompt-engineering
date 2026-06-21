@@ -1,0 +1,6 @@
+Vulnerability: Time-of-Check to Time-of-Use (TOCTOU)
+Severity: High
+CWE: CWE-362
+Location: N/A (The vulnerability resides in the logic of `ec2._validate_key_path_and_mode`, which is being tested.)
+Description: The function validates file existence and permissions using separate system calls (`os.path.exists` and `os.stat`). This pattern creates a Time-of-Check to Time-of-Use (TOCTOU) race condition vulnerability. An attacker could exploit the small window of time between the permission check (Time-of-Check) and when the key file is actually opened or used (Time-of-Use). During this window, an attacker could replace the legitimate key file with a symbolic link pointing to a sensitive system file (e.g., `/etc/shadow`), allowing them to bypass the intended security checks and read unauthorized data.
+Remediation: To mitigate TOCTOU vulnerabilities when dealing with critical files like private keys, use atomic operations or secure library functions that perform both the check and the usage in a single, uninterruptible system call (e.g., using `os.open` with appropriate flags) rather than relying on separate checks (`stat`, `exists`). If possible, ensure the key path is derived from a trusted source to prevent symlink attacks.

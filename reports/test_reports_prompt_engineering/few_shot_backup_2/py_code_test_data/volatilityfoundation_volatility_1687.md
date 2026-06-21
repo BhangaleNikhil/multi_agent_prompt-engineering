@@ -1,0 +1,6 @@
+Vulnerability: Time-of-Check to Time-of-Use (TOCTOU) / Memory Safety
+Severity: Critical
+CWE: CWE-362
+Location: Line 4 - Line 10 (Entire function body)
+Description: The function relies heavily on calculating and using fixed offsets (`tleoffset`) and pointer arithmetic based on the current state of kernel structures (`_EPROCESS`, `_ETHREAD`). In a dynamic operating system environment, these internal structure layouts are highly volatile. If the underlying process or memory space is modified by another thread (or even an interrupt) between the time the offset is calculated/read (Time-of-Check) and when the object is instantiated using that offset (Time-of-Use), the resulting pointers will point to invalid, corrupted, or unexpected data. This can lead to arbitrary memory reads, kernel panic, or information leakage.
+Remediation: When dealing with volatile OS structures like process lists, utilize stable, high-level APIs provided by the operating system's debugging framework (e.g., specialized kernel debugger functions) rather than raw pointer arithmetic and manual offset calculations. If low-level access is unavoidable, implement robust locking mechanisms or transaction boundaries to ensure memory consistency throughout the entire operation sequence.

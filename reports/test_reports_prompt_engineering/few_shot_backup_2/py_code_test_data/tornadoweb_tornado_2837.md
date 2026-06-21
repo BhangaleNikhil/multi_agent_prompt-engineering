@@ -1,0 +1,6 @@
+Vulnerability: Cross-Site Scripting (XSS)
+Severity: High
+CWE: CWE-79
+Location: Line 15 (General data handling/output stream)
+Description: The function handles and writes arbitrary chunks of data (`chunk`) to an output buffer. While the code attempts to mitigate structured data risks by using `escape.json_encode` when a dictionary is detected, it does not perform context-aware output encoding on raw text inputs (i.e., when `chunk` is not a dictionary). If user-controlled input containing malicious scripts (e.g., `<script>alert('XSS')</script>`) is passed as a raw chunk and subsequently rendered by the client browser, it will execute in the victim's session.
+Remediation: All data written to an output stream that originates from untrusted user input must be properly encoded based on the context where it will be consumed (e.g., HTML entity encoding if placed within an HTML body, or JavaScript escaping if placed inside a script block). The framework should enforce this encoding automatically before writing the chunk to the response buffer.

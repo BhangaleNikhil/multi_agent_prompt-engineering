@@ -1,0 +1,6 @@
+Vulnerability: Improper Input Validation / Header Injection
+Severity: High
+CWE: CWE-20
+Location: Line 34
+Description: The function processes header names (`n`) and values (`v`) retrieved from the `headers` object without strictly validating their content against established HTTP protocol standards (RFC 7230). While the code attempts to prevent newlines, it does not validate that the keys or values contain only allowed characters (e.g., ASCII printable characters, specific reserved characters). An attacker could potentially inject non-standard control characters or malformed header data into the `headers` object, which could confuse downstream HTTP parsers, violate protocol integrity, or lead to unexpected state changes in the application layer.
+Remediation: Implement strict input validation and sanitization for all header names and values. Headers must be validated against a whitelist of allowed characters defined by relevant RFCs (e.g., ensuring keys are case-insensitive and conform to token rules). Furthermore, ensure that any user-supplied data used in headers is properly encoded before being written to the stream.

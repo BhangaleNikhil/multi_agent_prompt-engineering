@@ -1,0 +1,6 @@
+Vulnerability: CSRF (Cross-Site Request Forgery) via OAuth State Parameter Bypass
+Severity: High
+CWE: CWE-313
+Location: Line 13
+Description: The function initiates the OAuth flow by redirecting the user to Google's authorization endpoint but fails to generate, store, or validate a unique `state` parameter. Without a state parameter, an attacker can trick a logged-in user into completing the OAuth flow (e.g., by visiting a malicious site that initiates the redirect). The attacker can then capture the resulting authorization code and potentially complete the authentication process, leading to session hijacking or unauthorized access, as the application cannot verify that the callback request originated from its own legitimate session.
+Remediation: Before calling `self.authorize_redirect`, the application must generate a cryptographically secure, unique, and unpredictable `state` parameter. This state value must be stored in the user's session and must be validated upon the callback (when the `code` is received) to ensure the request originated from the application itself.

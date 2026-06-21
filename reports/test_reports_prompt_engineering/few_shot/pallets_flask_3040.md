@@ -1,0 +1,6 @@
+Vulnerability: Path Traversal / Improper Input Validation
+Severity: High
+CWE: CWE-22
+Location: Lines 7-14 (Parameters handling file system paths)
+Description: The constructor accepts several parameters (`static_folder`, `template_folder`, `root_path`) that define critical application directories. If these path inputs are sourced from untrusted user input, environment variables, or configuration files without proper sanitization and validation, an attacker could inject directory traversal sequences (e.g., `../../etc/passwd`). This allows the application to load templates, static assets, or blueprints from unintended locations on the file system, potentially leading to information disclosure or arbitrary code execution if those paths are later used in a way that executes content.
+Remediation: All path-related inputs must be strictly validated and sanitized. Before using these paths, canonicalize them (e.g., using `os.path.realpath()` or similar functions) and ensure they resolve to directories within an expected, safe root directory structure. Implement explicit checks to prevent the use of relative path components (`..`).

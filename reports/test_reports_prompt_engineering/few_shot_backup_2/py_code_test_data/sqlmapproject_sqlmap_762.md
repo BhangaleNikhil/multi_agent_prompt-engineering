@@ -1,0 +1,6 @@
+Vulnerability: SQL Injection
+Severity: High
+CWE: CWE-89
+Location: Lines containing `agent.prefixQuery` and `agent.postfixQuery` within the loops.
+Description: The function constructs database queries by dynamically building strings using string formatting (`%d`) and multiple helper methods (`agent.prefixQuery`, `agent.postfixQuery`). While the current inputs (the loop variables for version numbers) are integers, relying on string concatenation or formatting to build query components is highly susceptible to SQL Injection if any part of the input chain—or if the underlying database driver/API layer fails to properly sanitize the resulting string—is compromised by unexpected characters. The pattern violates the principle of separating code (the query structure) from data (the version number).
+Remediation: All database interactions must use parameterized queries. Instead of building the query string with `%d` and then passing it, the application should pass the SQL template and the variable values separately to the `Request.queryPage()` function, allowing the underlying database driver to handle safe type casting and escaping automatically.

@@ -1,0 +1,6 @@
+Vulnerability: Improper Output Encoding / Data Sanitization
+Severity: Medium
+CWE: CWE-116
+Location: Line 10
+Description: The function passes raw data attributes (e.g., `rt.name`, `rt.source_ip`, `rt.dest_ip`) directly to the output stream via `self.table_row`. If the data source (`rt`) is populated with untrusted input, and that input contains control characters (such as newline characters `\n` or carriage returns `\r`), an attacker could perform a log injection attack or corrupt the structured output format. This is particularly risky if the output stream (`outfd`) is being used for logging or subsequent parsing by other systems.
+Remediation: Implement strict sanitization and encoding for all data fields before they are written to the output stream. Specifically, all input data should be stripped of control characters and escaped according to the expected output format (e.g., replacing newlines with a safe placeholder or simply stripping them). If the data is expected to be a specific type (like an IP address), validation should be performed to ensure it matches the required pattern.

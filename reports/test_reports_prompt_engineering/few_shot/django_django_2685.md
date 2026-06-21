@@ -1,0 +1,6 @@
+Vulnerability: Open Redirect / Inadequate Input Validation
+Severity: High
+CWE: CWE-601
+Location: Lines 8-25 (The entire block testing `bad_url` inputs)
+Description: The code snippet is a security test designed to prevent malicious redirects and input injection. If the underlying application logic fails these checks, it indicates a critical vulnerability class: Open Redirect or insufficient input validation. Specifically, allowing protocols like `javascript:` or external domains (`http://example.com`) in redirect parameters can lead to phishing attacks, credential harvesting, or Cross-Site Scripting (XSS) if the destination is not properly sanitized and validated against an allowlist.
+Remediation: The application must implement strict whitelisting for all allowed redirect destinations. Instead of attempting to blacklist malicious protocols or domains, the system should only permit redirects to a predefined set of trusted internal paths or explicitly approved external domains. All user-supplied URL parameters used for redirection must be validated against this allowlist before being processed by the server.

@@ -1,0 +1,6 @@
+Vulnerability: Information Leakage / Database Fingerprinting
+Severity: High
+CWE: CWE-200
+Location: Entire function body (Lines 1-60)
+Description: The function systematically executes numerous complex, database-specific queries (e.g., checking `information_schema`, using version comparison functions, querying `CURRENT_USER()`) to determine the exact version, patch level, and internal structure of the backend DBMS (MySQL). This process, known as database fingerprinting, provides an attacker with a detailed blueprint of the target system. This information is critical for an attacker to select specific, known exploits (e.g., exploiting a vulnerability only present in MySQL 5.1.2) and tailor their attack payload, significantly lowering the bar for a successful breach.
+Remediation: Database fingerprinting logic should never be exposed or run in a production environment. If version checking is absolutely necessary, the application should abstract this information and only report high-level, non-specific details (e.g., "MySQL 5.x") rather than the precise minor version or internal schema details. Furthermore, ensure that the underlying `inject.checkBooleanExpression` mechanism is robustly protected against injection attacks, even if the current code appears safe.

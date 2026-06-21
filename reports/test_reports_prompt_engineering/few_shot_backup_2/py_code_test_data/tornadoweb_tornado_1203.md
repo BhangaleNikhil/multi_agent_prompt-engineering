@@ -1,0 +1,6 @@
+Vulnerability: Scheme Downgrade / Misconfiguration
+Severity: High
+CWE: CWE-16
+Location: Line 34
+Description: The code attempts to normalize the WebSocket scheme (`ws` or `wss`) by replacing it with a standard HTTP scheme (`http` or `https`) and updating `request.url`. This modification is dangerous because if the original connection was intended to be secure (e.g., `wss://`), forcing the URL to start with `https:` might mislead subsequent network layers or fail to correctly maintain the required TLS context, potentially leading to a downgrade attack or an insecure connection setup. The library should handle the scheme transition without explicitly rewriting the base URI in this manner if it risks losing security information.
+Remediation: Instead of manually manipulating and overwriting `request.url`, the WebSocket client implementation should rely on the underlying HTTP client's ability to correctly interpret the original URL structure while adding the necessary upgrade headers, ensuring that the transport layer security (TLS) is maintained if the input URI specified a secure scheme (`wss`).

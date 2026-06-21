@@ -1,0 +1,6 @@
+Vulnerability: State Management Failure / Non-Persistent Hashing
+Severity: High
+CWE: CWE-312
+Location: Line 2
+Description: The function relies on Python's built-in `hash()` function to generate a unique identifier (`flag`) for a log message, which is then used to track if the message has been logged before. Python's built-in `hash()` function is not guaranteed to be stable across different process executions, sessions, or even different Python interpreter runs due to hash randomization. If the application restarts, the hash generated for the same `message` will likely change, causing the system to incorrectly believe that the message has never been logged, thus defeating the purpose of the "single time" logging mechanism and potentially bypassing rate limits or audit controls.
+Remediation: If the goal is to ensure persistence across application restarts, the message's unique identifier must be stored in a persistent data store (e.g., a database, Redis cache, or persistent file system). Instead of using `hash(message)` for state tracking, use a cryptographically secure, deterministic hash function (like SHA-256) and store the resulting hash in a persistent key-value store.

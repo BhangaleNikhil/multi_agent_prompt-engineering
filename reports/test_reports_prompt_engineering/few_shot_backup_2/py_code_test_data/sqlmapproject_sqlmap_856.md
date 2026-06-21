@@ -1,0 +1,6 @@
+Vulnerability: Path Traversal / Arbitrary File System Modification
+Severity: Critical
+CWE: CWE-22
+Location: Line 1 (Function entry point)
+Description: The function accepts a `directory` path as an argument and uses it directly in multiple file system operations (`os.path.isdir`, `os.walk`, `os.chmod`, `openFile`, `os.rename`, `shutil.rmtree`). If the input `directory` is sourced from untrusted user input without proper validation or sanitization, an attacker can use path traversal sequences (e.g., `../../etc/`) to force the script to operate on sensitive system directories outside of its intended scope. This allows for arbitrary file modification and deletion across the filesystem.
+Remediation: Before using the provided directory path in any critical file system operation, implement strict validation checks. Ensure that the resolved absolute path remains within an expected, confined root directory (a concept known as "jail" or "chroot"). If possible, use libraries or functions designed to restrict file operations to a specific sandbox environment.

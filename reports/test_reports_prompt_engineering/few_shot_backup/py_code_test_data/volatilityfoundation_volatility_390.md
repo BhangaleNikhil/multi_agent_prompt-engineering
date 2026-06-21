@@ -1,0 +1,6 @@
+Vulnerability: Output/Log Injection
+Severity: High
+CWE: CWE-117
+Location: Line 11, Line 12, Line 13, Line 14, Line 15, Line 16, Line 17, Line 18, Line 23
+Description: The function writes various attributes from the `rec` object and the retrieved `val` directly to the output file descriptor (`outfd`) using string formatting. If any of the attributes (e.g., `rec.ServiceName.dereference()`, `rec.DisplayName.dereference()`, or `val`) contain control characters, such as newline characters (`\n`) or carriage returns (`\r`), an attacker could inject arbitrary data into the output file. This can corrupt the structured data, mislead analysts, or potentially lead to command injection if the output file is later processed by a shell or other system that interprets these control characters.
+Remediation: Before writing any user-controlled or external data to the output stream, the data must be rigorously sanitized. Specifically, strip or escape all control characters (like `\n`, `\r`, `\t`) from the input strings to ensure they cannot break the intended structure of the output file. If the output is intended for a specific format (e.g., CSV), use a dedicated serialization library that handles escaping automatically.

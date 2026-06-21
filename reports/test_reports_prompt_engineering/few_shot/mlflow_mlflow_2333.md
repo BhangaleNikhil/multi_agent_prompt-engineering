@@ -1,0 +1,6 @@
+Vulnerability: Path Traversal
+Severity: High
+CWE: CWE-22
+Location: Line 2
+Description: The function accepts an external path parameter (`root`) and uses it directly in `os.path.join()` without proper validation or sanitization. An attacker could supply a malicious value for `root` (e.g., `../../../etc/`) containing directory traversal sequences (`../`). This allows the attacker to manipulate the file system operations, potentially creating directories or writing files outside of the intended sandbox location, leading to arbitrary file write vulnerabilities if permissions are insufficient.
+Remediation: Before using the input path `root`, it must be rigorously validated and sanitized. Implement checks to ensure that the resolved absolute path remains within a predefined, safe base directory (e.g., using `os.path.abspath()` combined with prefix checking). If possible, use dedicated libraries or frameworks designed for secure file system operations rather than relying solely on string concatenation and basic path joining.

@@ -1,0 +1,9 @@
+Vulnerability: Path Traversal / Information Leakage (System Introspection)
+Severity: High
+CWE: CWE-22
+Location: Line 11 (Function `linux_common.do_get_path`)
+Description: The function iterates through kernel-level mount points and constructs file system paths using `linux_common.do_get_path`. If the underlying implementation of `do_get_path` does not properly sanitize or validate the components (root, parent, root mount point) or if the memory structures (`vfsmnt.mnt_sb.s_root`, `vfsmnt.mnt_parent`, `vfsmnt.mnt_root`) contain malicious or malformed pointers, an attacker could potentially exploit this to read arbitrary memory locations or construct paths that traverse outside the intended scope (Path Traversal). Furthermore, the function exposes highly sensitive internal system state (full mount point details, device names, etc.), which constitutes a significant information leak if the calling context is not properly authorized.
+Remediation:
+1. **Input Validation:** Ensure that all inputs used to construct the path (e.g., `s_root`, `mnt_parent`, `mnt_root`) are strictly validated against expected kernel memory boundaries and types before being passed to `do_get_path`.
+2. **Principle of Least Privilege:** Implement robust authorization checks at the entry point of the `calculate` method to ensure that only authorized processes can access and enumerate system mount points.
+3. **Memory Safety:** If this code operates in a kernel or emulated environment, ensure that the underlying memory access functions (`obj.Object`, `dereference_as`) are protected against Use-After-Free or Out-of-Bounds reads/writes.

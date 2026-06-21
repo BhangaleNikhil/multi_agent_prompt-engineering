@@ -1,0 +1,5 @@
+Vulnerability: Command Injection / Path Traversal
+Severity: High
+CWE: CWE-78
+Location: Multiple points, specifically in calls to `ctx.run()` and file path construction using external inputs (`key_id`, filenames from `incoming`).
+Description: The function executes multiple system commands (e.g., `debsign`, `sha256sum`, `apt-ftparchive`, `gpg`) and constructs file paths based on user-controlled or externally sourced variables, such as `key_id` or the filenames found within the `incoming` directory. If an attacker can control these inputs (e.g., by placing a specially crafted file in the repository source or providing a malicious key ID), they could inject shell metacharacters (like `;`, `&&`, `$()`) into the arguments passed to `ctx.run`. This allows for arbitrary command execution on the host system, leading to severe compromise of the build environment. Furthermore, relying

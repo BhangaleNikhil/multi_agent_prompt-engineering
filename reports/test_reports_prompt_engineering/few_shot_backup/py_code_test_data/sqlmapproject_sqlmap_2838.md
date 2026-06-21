@@ -1,0 +1,6 @@
+Vulnerability: Custom/Insufficient Encoding
+Severity: Medium
+CWE: CWE-116
+Location: Line 1
+Description: The function implements a custom encoding mechanism (`escaper`) intended to sanitize or neutralize potentially dangerous characters by converting them into a structured string format (e.g., `CODE(123)`). Relying on custom encoding schemes is highly discouraged because they are often incomplete, brittle, and difficult to maintain. If the output of this function is later used in a context (such as HTML rendering, JavaScript execution, or a specific parser) that interprets the structure `CODE(...)` or the delimiter `||`, an attacker may be able to bypass the encoding mechanism, leading to injection vulnerabilities.
+Remediation: Instead of implementing custom escaping logic, always use established, context-aware encoding libraries provided by the framework or language. For example, if the output is destined for HTML, use HTML entity encoding. If it is destined for JavaScript, use JavaScript encoding. Never assume that a custom encoding function is sufficient for security.

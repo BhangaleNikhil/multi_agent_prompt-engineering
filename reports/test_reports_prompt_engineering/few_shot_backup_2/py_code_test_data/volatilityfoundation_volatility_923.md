@@ -1,0 +1,6 @@
+Vulnerability: Out-of-Bounds Read / Information Leakage
+Severity: High
+CWE: CWE-125
+Location: Line 3
+Description: The function reads data from memory using an offset (`self.CmNtCSDVersion`) which is passed to the `obj.Object` constructor. If this offset value is derived from untrusted input (e.g., configuration files, network packets) or if it is not strictly validated against the known boundaries of the object structure, an attacker could manipulate this offset. This would force the function to read data from arbitrary memory locations outside the intended scope, potentially leading to information leakage (reading sensitive system data) or a denial of service (crash).
+Remediation: Implement strict input validation and bounds checking on all offsets used for memory access. The application must verify that `self.CmNtCSDVersion` falls within the safe, expected range defined by the object structure before attempting to read any data. If possible, use safer APIs or structured parsing methods instead of direct offset manipulation.

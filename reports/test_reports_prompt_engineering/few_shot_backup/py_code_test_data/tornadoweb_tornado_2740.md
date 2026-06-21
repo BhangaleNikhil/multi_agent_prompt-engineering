@@ -1,0 +1,6 @@
+Vulnerability: Potential Resource Exhaustion / Data Integrity Risk
+Severity: Medium
+CWE: CWE-400 (Uncontrolled Resource Consumption)
+Location: Line 2
+Description: The function implements a hard limit (clipping) on the input data size to 1GB due to underlying SSL socket limitations. While this prevents immediate buffer overflow, relying on a fixed, arbitrary limit can lead to data truncation and potential data integrity violations if the application logic requires the full dataset. Furthermore, if the calling context fails to handle the `WANT_WRITE` state correctly, repeated calls could lead to resource exhaustion or indefinite blocking.
+Remediation: Instead of hard-clipping the data, the application should implement a robust chunking mechanism that iteratively sends the data until all bytes are successfully transmitted, handling the `WANT_WRITE` state gracefully and ensuring the entire payload is processed or an explicit failure is raised. If the 1GB limit is a hard requirement of the underlying library, this limitation must be documented and handled by the calling code, not silently truncated.

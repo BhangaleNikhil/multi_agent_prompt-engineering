@@ -1,0 +1,6 @@
+Vulnerability: OS Command Injection
+Severity: Critical
+CWE: CWE-77
+Location: Line 30
+Description: The function constructs a command list (`cmd`) and appends user/configuration input stored in `cmd_added` using the `-c` flag. This pattern is highly susceptible to OS Command Injection. If `shell_params.command_passed` (which populates `cmd_added`) contains unsanitized or malicious input, an attacker can inject arbitrary shell commands (e.g., using semicolons `;`, pipes `|`, or backticks ``) that will be executed by the underlying operating system when the command is run via Docker/Docker Compose. This could allow an attacker to execute code with the privileges of the process running this function.
+Remediation: Never pass user-controlled input directly as a string argument intended for shell execution (especially after flags like `-c`). If external commands must be executed, implement strict whitelisting validation on all inputs that populate `cmd_added`. Alternatively, if possible, refactor the command construction to use direct arguments rather than relying on a shell interpreter (`-c`) to process user input.

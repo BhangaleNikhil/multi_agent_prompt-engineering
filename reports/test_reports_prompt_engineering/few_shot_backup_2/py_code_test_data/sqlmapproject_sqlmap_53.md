@@ -1,0 +1,6 @@
+Vulnerability: SQL Injection
+Severity: Critical
+CWE: CWE-89
+Location: Line 2, Line 16, Line 30 (Multiple instances)
+Description: The function is designed to construct and execute complex database queries using user-supplied or dynamically generated expressions (`expression`). Multiple lines utilize string formatting (`%s`) and concatenation with inputs derived from `expression` or internal vectors to build SQL query components (e.g., in `hashDBRetrieve`, `agent.forgeUnionQuery`, and the final regex construction). This practice allows an attacker to inject malicious SQL code, leading to unauthorized data retrieval, modification, or even denial of service. The function's entire purpose is centered around exploiting UNION-based injection techniques.
+Remediation: All database interactions must be refactored to use parameterized queries (prepared statements) provided by the underlying database connector library. Never construct SQL query strings by concatenating user input or external variables directly into the query text. If dynamic column names are required, they should be validated against a strict whitelist of allowed identifiers rather than being passed as executable data.

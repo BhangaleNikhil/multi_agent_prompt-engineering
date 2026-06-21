@@ -1,0 +1,6 @@
+Vulnerability: Improper Method Wrapping / Logic Flaw
+Severity: High
+CWE: CWE-682
+Location: Line 1
+Description: This code snippet implements a method wrapper or proxy pattern, storing the original function (`orig_method`) for later execution. While this pattern is common (e.g., in decorators), it introduces significant risk if the wrapping logic does not correctly enforce security policies before calling `self.orig_method`. If the developer forgets to add necessary authorization checks, input validation, or context handling within the wrapper's execution method, an attacker could bypass critical business logic or access restricted functionality by simply invoking the wrapped method.
+Remediation: When implementing wrappers (decorators), ensure that all security-critical operations—such as authentication checks, role-based access control (RBAC) enforcement, and input sanitization—are performed *within* the wrapper's execution logic before calling `orig_method`. Always validate the context and permissions explicitly.

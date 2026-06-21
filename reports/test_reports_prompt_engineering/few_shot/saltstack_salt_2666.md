@@ -1,0 +1,6 @@
+Vulnerability: Input Validation / Improper Domain Parsing
+Severity: Medium
+CWE: CWE-20
+Location: Line 13 (Regex usage)
+Description: The function attempts to parse complex domain names using a combination of manual string manipulation (`find`, slicing) and a hardcoded regular expression for TLD extraction. This approach is fragile because it does not strictly validate the input against established standards like RFC 1035 or RFC 2181. An attacker could provide malformed, excessively long, or non-standard domain strings (e.g., containing multiple consecutive dots `..`, or unusual Unicode characters) which might cause the regex fallback to fail unexpectedly, leading to incorrect business logic results or potential runtime exceptions that could be exploited for information leakage or denial of service.
+Remediation: Always use dedicated, well-maintained libraries designed specifically for domain name parsing (such as a robust version of `tldextract` or similar networking utilities) and ensure all inputs are validated against strict RFC standards before processing the domain structure. Avoid relying on complex regex patterns for structural data like DNS names.

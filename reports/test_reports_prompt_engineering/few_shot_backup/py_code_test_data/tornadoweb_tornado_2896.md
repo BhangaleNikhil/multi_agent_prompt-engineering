@@ -1,0 +1,6 @@
+Vulnerability: Information Leakage via Detailed Error Logging
+Severity: High
+CWE: CWE-200
+Location: Line 1
+Description: The function uses `app_log.error(..., exc_info=True)` to log exceptions. While logging errors is necessary, passing `exc_info=True` often results in logging the full stack trace, internal file paths, system details, and specific exception messages. This detailed information can be highly valuable to an attacker, allowing them to map the application's internal structure, identify dependencies, and plan targeted exploits (e.g., path traversal or exploiting known library vulnerabilities).
+Remediation: When logging exceptions, ensure that the logged message is generic and does not contain sensitive internal details (like full stack traces or database connection strings). Instead of logging the full `exc_info`, the application should catch the exception, log a high-level, non-technical error message (e.g., "An internal processing error occurred"), and potentially log the detailed stack trace only to a secure, restricted logging system, ensuring that the error message presented to the user or general logs is sanitized.

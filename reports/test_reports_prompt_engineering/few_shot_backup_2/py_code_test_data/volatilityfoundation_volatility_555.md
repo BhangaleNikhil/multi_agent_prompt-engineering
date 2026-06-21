@@ -1,0 +1,6 @@
+Vulnerability: Improper Input Validation / Data Sanitization
+Severity: Medium
+CWE: CWE-20
+Location: Lines 31, 34, and 36 (All calls to `outfd.write` using process attributes)
+Description: The function writes system data retrieved from process objects (`task.SeAuditProcessCreationInfo.ImageFileName.Name`, `process_params.CommandLine`, `process_params.ImagePathName`) directly to the output file descriptor (`outfd`). These strings are assumed to be safe, but they may contain control characters (like newlines `\n` or carriage returns `\r`), null bytes, or other formatting elements that could confuse downstream log parsers, lead to log forging, or corrupt structured data formats.
+Remediation: Before writing any system-derived string attributes to the output stream, implement strict sanitization and validation. This should include stripping control characters (especially newlines) and ensuring that the data conforms to the expected format for the target file type (e.g., escaping quotes if writing CSV). If the process is intended to write structured logs, consider using a dedicated logging library or serialization method instead of raw string formatting.

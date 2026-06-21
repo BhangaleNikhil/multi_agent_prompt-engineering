@@ -1,0 +1,6 @@
+Vulnerability: Cross-Site Scripting (XSS) via Improper Input Handling
+Severity: High
+CWE: CWE-79
+Location: Line 1
+Description: The function manually performs HTML unescaping using simple string replacements. While this function attempts to decode entities, the primary vulnerability lies in the assumption that this decoding process is safe. If the output of this function is subsequently rendered directly into an HTML page without proper context-aware output encoding (e.g., using a templating engine's auto-escaping features), an attacker can inject malicious scripts. Furthermore, relying on manual string replacement for encoding/decoding is inherently brittle and prone to missing edge cases or double-encoding vulnerabilities.
+Remediation: Do not rely on manual string replacement for security-critical encoding/decoding. If the data must be unescaped, use a robust, standard library function (e.g., Python's `html.unescape`). More importantly, when rendering the data, always apply context-aware output encoding (escaping) immediately before the data is inserted into the HTML document to neutralize any potential script tags or malicious characters.

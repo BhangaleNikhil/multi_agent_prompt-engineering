@@ -1,0 +1,6 @@
+Vulnerability: Path Traversal / Arbitrary File Read
+Severity: High
+CWE: CWE-22
+Location: General function logic (Use of `basedir` and variable substitution)
+Description: The function is designed for template variable replacement, and the presence of the `basedir` parameter suggests that variables might resolve to file paths or templates relative to a base directory. If an attacker can control the values within the `vars` dictionary, they may inject path traversal sequences (e.g., `../../etc/passwd`) into a variable name or its replacement value. If the underlying logic (or subsequent code using this function) resolves these variables by reading files from disk based on the provided `basedir`, an attacker could read arbitrary sensitive system files outside of the intended scope.
+Remediation: Implement strict path validation and canonicalization checks on all inputs derived from variable replacements. Before resolving any file path, ensure that the resulting absolute path remains strictly within the designated base directory (`basedir`). Use functions like `os.path.abspath()` combined with checks to prevent traversal outside of the intended root directory. If possible, restrict variables to only accept whitelisted values or identifiers rather than raw strings that could contain paths.

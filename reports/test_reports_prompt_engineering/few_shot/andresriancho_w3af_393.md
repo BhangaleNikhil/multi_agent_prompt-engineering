@@ -1,0 +1,6 @@
+Vulnerability: Information Leakage / Excessive Data Exposure
+Severity: High
+CWE: CWE-200
+Location: Lines 13-26 (The entire function body)
+Description: The function aggregates and returns a comprehensive status dictionary that exposes excessive internal operational details. Specifically, the inclusion of methods like `get_current_fuzzable_request` can leak sensitive information, such as full request payloads, headers, or internal processing states, which should not be visible to an external API consumer. Exposing detailed queue sizes, speeds, and ETAs also provides valuable reconnaissance data that could aid an attacker in planning a targeted attack (e.g., identifying bottlenecks or operational limits).
+Remediation: Implement strict filtering and sanitization of the returned status object. Only expose high-level metrics necessary for general monitoring (e.g., "running" vs. "paused," total queue length) and never raw, detailed internal states or request payloads. If sensitive data must be included, ensure it is masked or truncated before being serialized into JSON.

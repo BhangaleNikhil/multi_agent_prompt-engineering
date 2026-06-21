@@ -1,0 +1,6 @@
+Vulnerability: SQL Injection
+Severity: Critical
+CWE: CWE-89
+Location: Line 34 (and throughout the use of `inject.checkBooleanExpression`)
+Description: The function relies on executing arbitrary SQL queries constructed via string formatting and the `inject.checkBooleanExpression()` method. While the current inputs (e.g., version numbers, `LENGTH(SYSDATE)=LENGTH(SYSDATE)`) are hardcoded, the architectural pattern allows for the construction and execution of dynamic SQL statements using variables derived from the application logic. If any part of the input used to construct the query (such as `number` or the version string itself) were ever derived from untrusted user input, an attacker could inject malicious SQL payloads, leading to data exfiltration, modification, or denial of service.
+Remediation: The application must avoid constructing SQL queries using string concatenation or formatting with external data. Instead, all database interactions must utilize parameterized queries (prepared statements) provided by the underlying database connector. If dynamic logic is required, the input must be strictly validated and cast to the expected data type (e.g., integer, string literal) before being used in the query structure.

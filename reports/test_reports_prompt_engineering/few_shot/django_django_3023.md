@@ -1,0 +1,6 @@
+Vulnerability: Insecure Direct Object Reference (IDOR)
+Severity: High
+CWE: CWE-284
+Location: Line 30
+Description: The function retrieves a target object (`target`) solely based on user-supplied parameters (`content_type` and `object_pk`). While the use of Django's ORM prevents direct SQL Injection, it does not enforce authorization. An attacker can manipulate the `object_pk` to reference private or restricted resources (e.g., another user's profile, a confidential document) that they are not authorized to view or comment on. The application assumes that simply existing and being retrievable is sufficient for access control.
+Remediation: After successfully retrieving the target object (`target`), an explicit authorization check must be performed using Django's permission system or custom logic (e.g., checking if `target.owner == request.user` or if the user belongs to a group authorized to view this resource). If the user lacks permission, the function should immediately return a 403 Forbidden error before proceeding with form rendering or saving data.

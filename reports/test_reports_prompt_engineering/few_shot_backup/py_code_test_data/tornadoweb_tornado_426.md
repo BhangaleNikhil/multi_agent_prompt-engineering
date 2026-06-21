@@ -1,0 +1,6 @@
+Vulnerability: Injection (Improper Input Validation)
+Severity: High
+CWE: CWE-20
+Location: Line 11
+Description: The function decodes raw network data (`data`) into a string (`decoded`) and then passes this string directly to a callback function (`self.handler.on_message`). Since the input data originates from an external network source, it is inherently untrusted. If the `on_message` callback handler processes this string without proper sanitization, validation, or context-aware encoding, an attacker could inject malicious payloads (e.g., XSS scripts, SQL commands, or OS commands) leading to remote code execution or data compromise.
+Remediation: Implement strict input validation and sanitization on the `decoded` string immediately after decoding. Before passing the data to the callback, the application must validate that the data conforms to the expected format, type, and length. If the data is intended for database use, parameterized queries must be used within the callback handler. If the data is displayed in a web context, context-aware output encoding must be applied.

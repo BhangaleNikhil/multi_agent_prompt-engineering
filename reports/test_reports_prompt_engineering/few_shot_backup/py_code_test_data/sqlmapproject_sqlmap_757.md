@@ -1,0 +1,6 @@
+Vulnerability: Regular Expression Denial of Service (ReDoS)
+Severity: High
+CWE: CWE-400
+Location: Multiple lines, particularly where `regex` is constructed and used in `re.sub` (e.g., `_retVal[0] = re.sub(r"(?i)%s" % regex, REFLECTED_VALUE_MARKER, _retVal[0])`)
+Description: The function constructs and executes multiple complex regular expressions dynamically based on the user-supplied `payload`. While the code attempts to limit complexity using `REFLECTED_MAX_REGEX_PARTS`, the process of building and applying these regex patterns is highly susceptible to ReDoS attacks. An attacker can craft a malicious `payload` that, when processed into the final `regex` pattern, contains overlapping or highly repetitive groups. When this pattern is executed against the `content`, it can force the regex engine to backtrack exponentially, consuming excessive CPU resources and leading to a Denial of Service (DoS) condition.
+Remediation: Avoid using user-controlled input to construct complex regular expressions. If regex is necessary, use libraries or techniques that enforce bounded backtracking (e.g., using specialized regex engines or limiting the depth of recursion). Furthermore, implement strict limits on the length and complexity of the input `payload` before it is used to generate the regex pattern.

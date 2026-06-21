@@ -1,0 +1,6 @@
+Vulnerability: Incomplete HTML Decoding Leading to Cross-Site Scripting (XSS) Risk
+Severity: High
+CWE: CWE-79
+Location: Line 1
+Description: The function attempts to decode HTML entities using manual string replacements. This approach is highly fragile, incomplete, and prone to failure because it does not account for all possible encoding schemes or nested entities. If the input contains complex or unusual character encodings that this limited set of replacements misses, an attacker could bypass the decoding mechanism and inject malicious scripts when the output is rendered in a browser context (Stored/Reflected XSS). Relying on manual string manipulation for security-critical tasks like encoding/decoding is inherently unsafe.
+Remediation: Do not implement custom unescaping logic. Instead, use established, robust libraries designed specifically for HTML processing and sanitization (e.g., Python's built-in `html` module or dedicated sanitization libraries like Bleach). Crucially, the primary defense against XSS is always Context-Aware Output Encoding at the point where data is rendered to the user, rather than relying on pre-processing functions like this one.

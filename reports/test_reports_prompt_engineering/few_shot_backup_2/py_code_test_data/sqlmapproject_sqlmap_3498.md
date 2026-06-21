@@ -1,0 +1,6 @@
+Vulnerability: Blind SQL Injection
+Severity: Critical
+CWE: CWE-89
+Location: Entire function body (Systemic)
+Description: The provided code implements sophisticated logic specifically designed to perform blind SQL injection attacks. By utilizing techniques like character-by-character inference, prefix/suffix querying, and bisection algorithms (`_goInference`, `agent.prefixQuery`, etc.), the function allows an attacker to extract sensitive data from a database even when the application does not return direct error messages or visible query results (i.e., blind exploitation). This represents a severe vulnerability if any part of this logic is exposed or used with untrusted input.
+Remediation: The fundamental architectural flaw here is the reliance on dynamic, user-controlled construction and execution of SQL queries for data extraction. All database interactions must be refactored to use parameterized queries (prepared statements) exclusively. Never allow external input to influence the structure or content of a query string. If this code belongs to an internal tool, ensure it operates within a highly restricted environment with least privilege access credentials.

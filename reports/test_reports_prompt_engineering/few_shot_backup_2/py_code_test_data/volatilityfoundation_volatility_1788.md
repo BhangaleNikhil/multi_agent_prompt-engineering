@@ -1,0 +1,6 @@
+Vulnerability: Injection
+Severity: High
+CWE: CWE-79
+Location: Line 8 - Line 16 (All calls to `self.table_row` and `self.table_header`)
+Description: The function takes data attributes (such as `rt.name`, which represents arbitrary string input) from the `data` list and passes them directly to the rendering methods (`self.table_row` and `self.table_header`). If the output stream (`outfd`) is interpreted by a system that supports markup languages (e.g., HTML, rich text format, or even certain terminal emulators), an attacker who can control the input data could inject malicious payloads (like script tags or formatting commands). This leads to potential Cross-Site Scripting (XSS) or general data corruption/injection.
+Remediation: All untrusted string inputs retrieved from the `data` objects must be properly sanitized and contextually encoded before being written to the output stream. If the output is intended for HTML, use an escaping function (e.g., converting `<` to `&lt;`). If it's plain text, ensure that any special control characters are filtered or escaped according to the expected terminal/log format.

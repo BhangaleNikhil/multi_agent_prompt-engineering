@@ -1,0 +1,6 @@
+Vulnerability: SQL Injection (Exploit Logic)
+Severity: Critical
+CWE: CWE-89
+Location: Entire function body (`_findUnionCharCount`)
+Description: This function is designed to systematically perform a Union-based SQL Injection attack by determining the correct number of columns in the target query. It iteratively tests column counts and constructs payloads using `agent.forgeUnionQuery` and executes them against the target endpoint. If this code were exposed or its parameters manipulated, it represents highly sophisticated logic for bypassing database security controls and extracting data.
+Remediation: This function is an exploit mechanism (part of a scanner/tester) and should not be considered vulnerable in a traditional application sense. However, if this component were integrated into a production system that could be misused or compromised, strict access control must be enforced. The underlying principle remains: all database interactions must use parameterized queries to prevent the execution of injected code fragments. If this logic is used for testing, it must operate within a strictly sandboxed environment with limited permissions (e.g., read-only credentials) that cannot affect production data integrity or availability.

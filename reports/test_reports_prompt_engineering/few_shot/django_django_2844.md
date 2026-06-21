@@ -1,0 +1,6 @@
+Vulnerability: Potential Cross-Site Scripting (XSS) via Exception Reporting
+Severity: Medium
+CWE: CWE-79
+Location: Line 10
+Description: The code demonstrates passing a string containing HTML markup (`mark_safe('<p>Final exception</p>')`) as part of an exception message. While this is done for testing purposes, it highlights a potential vulnerability in the underlying `ExceptionReporter` mechanism. If the reporter fails to properly sanitize or contextually escape all data (including exception messages) before rendering them into HTML format (`get_traceback_html()`), an attacker could inject malicious scripts (e.g., `<script>alert('XSS')</script>`) through a custom exception message, leading to XSS when the traceback is viewed by another user.
+Remediation: The `ExceptionReporter` must implement robust output encoding for all data rendered into HTML. All dynamic content derived from exceptions or input should be escaped (e.g., converting `<` to `&lt;`, and `>` to `&gt;`) unless the system explicitly requires and validates raw, safe HTML using a strict whitelisting approach (like using the Bleach library).

@@ -1,0 +1,6 @@
+Vulnerability: None Found
+Severity: Informational
+CWE: N/A
+Location: N/A
+Description: The function `fetch_stream_end` appears to be an internal method responsible for signaling the completion of a data stream or parsing block. It operates exclusively on internal object state variables (`self.unwind_indent`, `self.get_mark()`, `self.tokens`, etc.). Since this code does not accept, process, or utilize any external user-controlled input (such as HTTP parameters, file contents, or database query strings), it is immune to common injection vulnerabilities like SQL Injection, Command Injection, or XSS based on the provided scope. The logic flow for marking stream completion is structurally sound.
+Remediation: No remediation is required for this specific function body. Ensure that any upstream functions calling `fetch_stream_end` properly validate and sanitize external inputs before they reach the streaming mechanism to prevent resource exhaustion (e.g., excessive recursion or memory allocation).

@@ -1,0 +1,6 @@
+Vulnerability: Cross-Site Scripting (XSS) Potential / Improper Output Encoding
+Severity: Medium
+CWE: CWE-79
+Location: Line 3, Line 5
+Description: The function handles and returns translated strings (`message` or `plural_message`). If the input parameters passed to this function originate from untrusted user sources (e.g., a custom message field) and are later rendered directly into an HTML page without proper context-aware encoding, it creates a Cross-Site Scripting vulnerability. The application assumes that the returned string is safe for display, which may not be true if the input contains malicious scripts (e.g., `<script>alert('XSS')</script>`).
+Remediation: While this function itself does not introduce the vulnerability, all consumers of the output must ensure that the resulting translated text is properly encoded (HTML entity encoding) immediately before being rendered into a web page or any interpreted document format. Utilize modern templating engines that provide automatic context-aware escaping by default.

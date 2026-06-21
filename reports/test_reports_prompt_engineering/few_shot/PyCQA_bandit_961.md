@@ -1,0 +1,6 @@
+Vulnerability: Cross-Site Scripting (XSS)
+Severity: High
+CWE: CWE-79
+Location: Line 105 (and all lines utilizing `.format()` with external data)
+Description: The function constructs an HTML report by inserting various pieces of data—such as test descriptions (`issue.text`), file paths (`issue.fname`), and code snippets (`code`, `candidate_list`)—directly into template strings using Python's standard string formatting (`.format()`). This process fails to perform proper HTML entity encoding on the dynamic content. If any input variable contains malicious characters (e.g., `<script>alert('XSS')</script>` or event handlers like `onmouseover`), these scripts will be rendered and executed by a browser viewing the generated report, leading to a stored XSS vulnerability.
+Remediation: All untrusted data inserted into HTML templates must be properly encoded before rendering. Instead of using raw string formatting, utilize a secure templating engine (such as Jinja2) that automatically escapes variables by default. If manual encoding is required, ensure functions like `html.escape()` are applied to every variable sourced from the `manager` object or external inputs (`issue.text`, `issue.fname`, etc.) before they are placed into the HTML structure.

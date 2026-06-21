@@ -1,0 +1,6 @@
+Vulnerability: Denial of Service (DoS) via Resource Exhaustion
+Severity: High
+CWE: CWE-400
+Location: Line 12
+Description: The function utilizes `copy.deepcopy(dest)` when `in_place` is False. If the input dictionary (`dest`) contains extremely large data structures, or deeply nested objects (e.g., lists within dictionaries containing other lists, etc.), the deep copy operation can consume excessive amounts of CPU time and memory. An attacker could potentially pass a maliciously constructed, massive object graph to trigger resource exhaustion, leading to a Denial of Service condition for the application process.
+Remediation: Implement safeguards around the merging process. Before performing `deepcopy`, validate the size (number of keys/items) and depth of the input dictionaries (`dest` and `src`). If strict resource limits are necessary, consider using iterative or partial copying mechanisms instead of a full deep copy for large inputs. Alternatively, enforce maximum recursion depth during the merge operation if possible.

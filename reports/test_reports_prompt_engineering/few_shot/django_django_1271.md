@@ -1,0 +1,6 @@
+Vulnerability: Broken Access Control (Potential IDOR)
+Severity: High
+CWE: CWE-284
+Location: Line 3
+Description: The function retrieves the user object using `get_object_or_404(self.model, pk=id)` based solely on a provided primary key (`id`). While there is an initial check for general change permission (`if not self.has_change_permission(request):`), this check may only validate if *any* user can change passwords, but it does not enforce that the currently authenticated user (the one making the request) must own or be authorized to modify the specific user object identified by `id`. An attacker could potentially guess or enumerate valid IDs belonging to other users and force a password change on those accounts.
+Remediation: Before retrieving or processing the user object, implement an explicit ownership check. The query should restrict the target object (`user`) to only those records where the owner matches the authenticated user's ID, unless the current user is explicitly an administrator with elevated privileges. Example modification: `user = get_object_or_404(self.model, pk=id, owner=request.user)` (assuming a foreign key relationship exists).

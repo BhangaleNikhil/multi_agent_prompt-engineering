@@ -1,0 +1,6 @@
+Vulnerability: Path Traversal (or Improper Path Handling)
+Severity: High
+CWE: CWE-22
+Location: Line 3
+Description: The code constructs a file path by concatenating a hardcoded root segment (`/root_static`) with a locally derived file path (`path`). While this specific test uses a fixed, internal path, the structure demonstrates a reliance on string concatenation for path building. If the `path` variable were ever derived from user input (e.g., a URL parameter or a file name provided by a user), an attacker could inject directory traversal sequences (such as `../`) to escape the intended static directory and access sensitive files on the server's filesystem.
+Remediation: When handling file paths, especially those that might incorporate user input, always use dedicated path handling libraries (like `pathlib` in Python) that automatically normalize and resolve paths. Crucially, implement strict validation checks to ensure that the resulting absolute path remains within the designated, safe root directory, preventing any traversal attempts.

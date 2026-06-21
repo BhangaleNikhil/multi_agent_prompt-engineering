@@ -1,0 +1,6 @@
+Vulnerability: Resource Exhaustion / Lack of Input Validation
+Severity: High
+CWE: CWE-690
+Location: Line 24 (The block reading `data = process_space.zread(vad.Start, vad.Length)`)
+Description: The code reads raw memory data (`process_space.zread`) based on the length provided by the Virtual Address Descriptor (VAD). While the developer notes that event logs are unlikely to be multiple GB or TB in size, relying solely on this assumption is dangerous. If an attacker can manipulate the process memory structure (or if the underlying OS/API returns a maliciously large `vad.Length`), the function could attempt to read excessive amounts of data, leading to severe memory exhaustion and a Denial of Service (DoS) condition for the host system or the application itself.
+Remediation: Implement strict validation checks on the reported size (`vad.Length`) before calling the reading function. The length should be capped at a reasonable maximum limit (e.g., 10MB or 50MB, depending on the expected data type) to prevent resource exhaustion attacks. Additionally, ensure proper error handling is in place if memory mapping fails or returns unexpected sizes.

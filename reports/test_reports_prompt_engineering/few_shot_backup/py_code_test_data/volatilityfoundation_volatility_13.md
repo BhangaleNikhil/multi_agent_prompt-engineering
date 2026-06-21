@@ -1,0 +1,6 @@
+Vulnerability: Information Leakage (Sensitive Data Exposure)
+Severity: High
+CWE: CWE-200
+Location: Lines 10-16
+Description: The function is designed to dump highly detailed internal memory structures (Virtual Address Descriptors - VADs) to an output stream. This includes raw memory addresses (`obj_offset`, `Flink`, `Blink`), internal flags, and potentially full file paths (`file_object.FileName`). If this logging function is executed in a production environment or by an unprivileged user, it constitutes a severe information leak, providing an attacker with critical data necessary for memory mapping, understanding the process layout, or planning subsequent exploitation steps.
+Remediation: This function should be strictly restricted to debugging or development environments. If logging is required in production, implement data sanitization and redaction for all sensitive fields. Specifically, memory addresses and file names should be masked or replaced with generic identifiers to prevent the exposure of internal system state. Furthermore, ensure that the logging mechanism itself is protected by robust access controls.

@@ -1,0 +1,6 @@
+Vulnerability: Path Traversal / Improper Input Validation
+Severity: High
+CWE: CWE-22
+Location: Lines 30-45 (Handling of `details['private_key']`)
+Description: The code retrieves file paths for private keys (`details['private_key']`) directly from the configuration options (`__opts__`). While it checks if the file exists and validates its permissions, it does not perform sufficient sanitization or canonicalization on the provided path. If an attacker can manipulate the configuration to include relative path traversal sequences (e.g., `../../etc/passwd`), they could potentially trick the application into checking the existence or reading metadata of sensitive system files outside the intended key directory, leading to information disclosure or potential privilege escalation if the underlying library processes these malicious paths.
+Remediation: Before using any configuration-derived file path for security checks (like `os.path.exists` or `os.stat`), the application must strictly validate and sanitize the input path. Use functions like `os.path.abspath()` combined with whitelisting logic to ensure the resolved path remains within a designated, secure root directory structure, preventing traversal outside of expected configuration boundaries.

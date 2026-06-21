@@ -1,0 +1,6 @@
+Vulnerability: Output Injection / Log Forging
+Severity: Medium
+CWE: CWE-20
+Location: Line 7, Line 8
+Description: The function writes process data, including the command line and version strings, directly to an output stream (`outfd`) using string formatting. If the underlying system structures (e.g., `task.Peb.ProcessParameters.CommandLine` or `task.Peb.CSDVersion`) contain control characters such as newline characters (`\n`), carriage returns (`\r`), or other non-printable sequences, an attacker could inject arbitrary data into the output stream. This allows them to forge log entries, break the intended structure of the forensic report, and mislead the analyst reviewing the evidence.
+Remediation: Before writing any external or system-derived string input (like command lines or version strings) to a logging or output stream, implement strict sanitization. Specifically, strip or escape all control characters, especially newlines (`\n`, `\r`), to ensure that the data cannot prematurely terminate or inject fake log entries. Use functions like `str.replace('\n', ' \\n').replace('\r', '')` on all input variables before passing them to `outfd.write()`.

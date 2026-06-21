@@ -1,0 +1,6 @@
+Vulnerability: SQL Injection
+Severity: High
+CWE: CWE-89
+Location: Line 10, Line 15
+Description: The function utilizes `inject.checkBooleanExpression` to execute raw, constructed SQL queries. Although the current inputs appear to be hardcoded literals, this pattern represents a significant vulnerability risk (Injection Flaw). If any part of the query strings—such as database names or schema identifiers—were ever derived from user input, external configuration files, or network parameters without proper sanitization and parameterization, an attacker could inject malicious SQL commands.
+Remediation: The application should avoid constructing complex queries using raw string literals for execution. Instead, utilize parameterized queries provided by the underlying database connector library (e.g., `cursor.execute(sql, params)`). If dynamic query construction is absolutely necessary, implement strict whitelisting and validation on all variables used in the SQL structure to ensure they only contain expected characters and formats.

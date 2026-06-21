@@ -1,0 +1,6 @@
+Vulnerability: Improper Input Validation / Injection
+Severity: High
+CWE: CWE-20
+Location: Line 8
+Description: The function processes attributes (`attrs`) which are assumed to contain user-supplied data. While it attempts sanitization via `self.unescape_attr_if_required(val)`, relying solely on a single internal helper method for security is insufficient and brittle. If this helper function fails to properly escape all malicious characters (e.g., angle brackets, quotes) or if the resulting dictionary (`self._option`) is later used in an unsafe context (such as rendering HTML directly or constructing database queries), it could lead to Cross-Site Scripting (XSS) or other injection attacks.
+Remediation: Implement strict input validation using an allow-list approach for all attributes. If the data is intended for display, always use context-aware output encoding (e.g., escaping HTML entities). Furthermore, if these parsed options are used to build database queries, ensure that parameterized statements are utilized at the point of execution, not just during parsing.

@@ -1,0 +1,6 @@
+Vulnerability: Path Traversal / Arbitrary File Write
+Severity: High
+CWE: CWE-22
+Location: Line 103
+Description: The function uses the external `output` parameter directly to construct a file path (`"file://" + output`) and sets it as the configuration location. If this input is not properly sanitized, an attacker could provide paths containing directory traversal sequences (e.g., `../../../etc/passwd`). This vulnerability allows an attacker to redirect the resulting memory dump data to arbitrary locations on the filesystem, potentially overwriting critical system files or dumping sensitive memory contents outside the intended scope of the forensic analysis.
+Remediation: Implement strict input validation and sanitization for file paths. The function must validate that the `output` parameter does not contain directory traversal sequences (`..`, absolute path indicators) and should enforce that the resulting path is confined to a designated, safe output directory. Use platform-specific APIs designed for secure file writing rather than simple string concatenation.

@@ -1,0 +1,6 @@
+Vulnerability: Denial of Service (Resource Exhaustion)
+Severity: High
+CWE: CWE-400
+Location: Line 12 (and subsequent lines involving `ast.parse`)
+Description: The function processes the entire input code content (`fdata`) by first reading all lines into memory (`lines = fdata.readlines()`) and then concatenating them before parsing the full Abstract Syntax Tree using `ast.parse("".join(lines))`. If an attacker provides a very large file or a syntactically complex, deeply nested piece of code (e.g., millions of lines, or highly recursive structures), this process can consume excessive amounts of memory and CPU time, leading to resource exhaustion and crashing the service.
+Remediation: Implement strict input validation and size limits on the `fdata` parameter. Before parsing, check the length of the input string/file content against a predefined maximum limit (e.g., 1MB). For extremely large files, consider implementing chunking or streaming parsers that process code segments sequentially rather than loading the entire file into memory at once.

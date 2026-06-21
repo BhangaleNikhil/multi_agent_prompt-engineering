@@ -1,0 +1,6 @@
+Vulnerability: Violation of Principle of Least Privilege / Over-Collection
+Severity: Medium
+CWE: CWE-2845
+Location: Lines 2-6
+Description: The constructor initializes multiple instance attributes by blindly assigning every available attribute from the passed `handler` object. This violates the Principle of Least Privilege (PoLP) and increases the application's attack surface by potentially storing more data or references than are strictly necessary for the class's functionality. If the `handler` object contains sensitive, transient, or unnecessary state (e.g., temporary session tokens, raw request bodies), this class will retain access to that data longer than required, increasing the risk of accidental data leakage or unauthorized use later in the application lifecycle.
+Remediation: Only initialize and store attributes that are absolutely essential for the functionality of this specific class. If a dependency object (`handler`) is large, consider implementing an interface or using a dedicated Data Transfer Object (DTO) to explicitly extract only the required fields, thereby limiting the scope of data collection.

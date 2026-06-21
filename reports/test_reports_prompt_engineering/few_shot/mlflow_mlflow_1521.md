@@ -1,0 +1,6 @@
+Vulnerability: Insecure Deserialization / Denial of Service
+Severity: High
+CWE: CWE-502
+Location: Line 3, Line 17
+Description: The function relies on `pyfunc_scoring_server.parse_json_input` to deserialize JSON strings back into a DataFrame structure. If the underlying server or parsing mechanism does not strictly validate the input schema and data types, an attacker could provide malformed or excessively large/complex JSON payloads. This could lead to type confusion vulnerabilities, unexpected memory consumption (leading to Denial of Service), or even remote code execution if the deserialization process uses unsafe object instantiation methods.
+Remediation: Implement strict input validation on all incoming JSON data before passing it to the parsing function. Ensure that `pyfunc_scoring_server` utilizes safe deserialization practices and enforces schema constraints rigorously, rejecting any payload that deviates from expected types or exceeds defined resource limits (e.g., maximum array length, integer size).

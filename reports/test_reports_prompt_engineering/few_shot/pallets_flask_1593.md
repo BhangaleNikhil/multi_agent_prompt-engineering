@@ -1,0 +1,6 @@
+Vulnerability: Remote Code Execution (RCE) via Hook Injection
+Severity: High
+CWE: CWE-94
+Location: Lines 13, 22
+Description: The function executes arbitrary functions (`func`) retrieved from internal dictionaries (`self.url_value_preprocessors` and `self.before_request_funcs`). These hooks are designed to run before the main request logic. If an attacker can manipulate or register a malicious function into these preprocessor lists (e.g., through exploiting blueprint registration mechanisms, configuration file parsing, or deserialization vulnerabilities), they could inject arbitrary code that executes with the privileges of the web application process. This bypasses standard input validation and allows full control over the execution flow.
+Remediation: Implement strict security controls and sandboxing for all registered hooks and preprocessors. Ensure that any mechanism allowing external registration (like blueprint loading or configuration parsing) validates the source, type, and content of the callable functions to prevent arbitrary code injection. If possible, restrict the scope of operations allowed within these hook functions.

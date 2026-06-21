@@ -1,0 +1,6 @@
+Vulnerability: Resource Exhaustion / Unvalidated Input URI
+Severity: High
+CWE: CWE-400
+Location: Line 6 (`for model_info in model_infos:`) and Line 7 (`loaded_model = mlflow.pyfunc.load_model(model_info.model_uri)`)
+Description: The function iterates over a list of `model_infos` and loads models using the URI provided by `model_info.model_uri`. If an attacker can control or influence the contents of this list, they could provide URIs pointing to excessively large, complex, or malicious model files. Loading such resources without validation can lead to uncontrolled resource consumption (CPU, memory) resulting in a Denial of Service (DoS) condition for the application or testing environment. Furthermore, if the underlying MLflow loader does not enforce strict path boundaries, this could potentially expose the system to Path Traversal attacks.
+Remediation: Implement rigorous input validation and sanitization on `model_info.model_uri`. Before loading any model, validate that the URI points to an expected directory structure and enforce size limits for the resource being loaded. For critical environments, execute model loading within a sandboxed container or process with strict resource quotas (e.g., using cgroups) to prevent resource exhaustion from affecting the host system.

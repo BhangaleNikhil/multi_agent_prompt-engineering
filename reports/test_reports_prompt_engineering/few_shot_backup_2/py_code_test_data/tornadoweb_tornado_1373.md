@@ -1,0 +1,6 @@
+Vulnerability: Improper Certificate Validation / Man-in-the-Middle Vulnerability
+Severity: High
+CWE: CWE-295
+Location: Function scope (Handling of `server_hostname` and `kwargs`)
+Description: The function handles SSL wrapping, which is critical for secure communication. However, the implementation relies heavily on external inputs (`ssl_options`, `**kwargs`). If the calling code or the provided options allow disabling hostname verification (e.g., by passing flags that set `check_hostname=False` or similar insecure configurations), the application becomes vulnerable to Man-in-the-Middle (MITM) attacks. An attacker could intercept and modify traffic without the client detecting the fraudulent certificate, as validation would be bypassed.
+Remediation: The function should enforce strict adherence to hostname verification whenever `server_hostname` is provided. Developers must ensure that default configurations for `ssl_options` mandate proper trust store usage and always enable hostname checking (`check_hostname=True`) unless there is an explicit, documented operational requirement otherwise. Input validation should be added to reject any configuration parameters that disable critical security checks.

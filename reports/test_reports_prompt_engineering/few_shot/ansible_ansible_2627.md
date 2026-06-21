@@ -1,0 +1,6 @@
+Vulnerability: OS Command Injection / Insecure External Command Execution
+Severity: High
+CWE: CWE-78
+Location: Line 10
+Description: The function executes system commands using `module.run_command` to install packages (`dnf`). While passing arguments as a list (e.g., `['dnf', 'install', '-y', package]`) mitigates classic shell injection by preventing the use of metacharacters, this pattern represents an insecure trust boundary. If the variable `package` were ever derived from untrusted user input or configuration variables that are not strictly validated against a known allowlist, an attacker could inject malicious arguments (e.g., using quotes or command separators) to execute arbitrary commands with elevated privileges (root).
+Remediation: Strictly validate all inputs used in system calls. The package name (`package`) should be checked against a predefined allowlist of acceptable values before being passed to the `run_command` function. Furthermore, review if the entire installation process can be handled by native module functions or APIs rather than relying on external shell commands.

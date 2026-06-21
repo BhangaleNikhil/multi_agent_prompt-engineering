@@ -1,0 +1,6 @@
+Vulnerability: Missing or Inadequate Authorization Checks
+Severity: High
+CWE: CWE-284
+Location: Line 13 (The API call)
+Description: The test case simulates accessing a specific resource (`dagRuns/{TEST_DAG_RUN_ID}`) using an environment override for the user (`"REMOTE_USER": "test"`). While the test asserts that the response status code is 200, it does not validate whether the underlying API endpoint enforces proper Role-Based Access Control (RBAC) or ownership checks. If the application logic relies solely on the presence of a `REMOTE_USER` variable without verifying if this user has explicit read permissions for the specified DAG ID and Run ID, an attacker could potentially bypass authorization controls by simply guessing valid resource IDs.
+Remediation: Ensure that every API endpoint accessing sensitive resources (like DAG runs) implements robust authorization checks. The backend must verify not only that the user is authenticated but also that their assigned role or permissions grant them explicit access to the specific resource ID being requested, preventing unauthorized data exposure.

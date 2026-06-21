@@ -1,0 +1,6 @@
+Vulnerability: Information Disclosure / Broken Access Control
+Severity: High
+CWE: CWE-284
+Location: Line 13
+Description: The code demonstrates a mechanism to retrieve source code (`dag_code`) directly from the database using `DagCode.get_code_by_fileloc(example_dag.fileloc)`. While this functionality is intended for resilience (when file access fails), if the underlying implementation of `get_code_by_fileloc` does not enforce strict authorization checks, an attacker who can manipulate or predict a valid `fileloc` could potentially retrieve the source code of sensitive internal modules or proprietary logic that they are not authorized to view. This bypasses standard file system permissions and relies solely on database access control.
+Remediation: Before calling any function that retrieves source code content (e.g., `get_code_by_fileloc`), implement a robust authorization layer. This layer must verify that the currently authenticated user has explicit read permission for the specific resource identified by `example_dag.fileloc` and that this permission is tied to the user's role or scope, preventing unauthorized information leakage.

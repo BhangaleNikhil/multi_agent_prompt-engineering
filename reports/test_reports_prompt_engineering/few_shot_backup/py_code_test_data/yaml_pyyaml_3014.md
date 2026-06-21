@@ -1,0 +1,6 @@
+Vulnerability: SQL Injection
+Severity: High
+CWE: CWE-89
+Location: Line 1 - Line 45 (Entire function body)
+Description: The function attempts to manually escape single quotes (`u'\'\''`) when writing user-provided text (`text`) to a stream (`self.stream`). While this specific escaping mechanism mitigates basic SQL injection, relying on manual string escaping is inherently fragile and highly prone to failure. The function does not account for all potential injection vectors (e.g., backticks, semicolons, or context-specific control characters) that might be meaningful in the target database environment. Furthermore, if the calling code uses the output of this function in a manner other than simple data insertion (e.g., concatenating it with column names or table names), the application remains vulnerable.
+Remediation: Do not implement custom escaping logic. Instead, ensure that all database interactions use parameterized queries (prepared statements). This method separates the SQL command structure from the user-supplied data, guaranteeing that the input is always treated as literal data and never as executable code.

@@ -1,0 +1,6 @@
+Vulnerability: Server-Side Request Forgery (SSRF)
+Severity: High
+CWE: CWE-694
+Location: Line 30 (The entire redirect resolution block, specifically where `url = resp.headers['location']` is used and subsequently passed to `self.send()`)
+Description: The function resolves redirects by trusting the destination URL provided in the HTTP response's `Location` header (`resp.headers['location']`). Since this input originates from an external server controlled by an attacker, it can be exploited to redirect the client to internal or private network resources (e.g., cloud metadata services like AWS EC2 metadata endpoints, or local administrative APIs). The code lacks validation on the resolved URL's scheme and hostname, allowing an attacker to force the application to make requests against unauthorized internal IP addresses.
+Remediation: Implement strict input validation on the resolved URL before making a new request. This validation must include whitelisting allowed schemes (e.g., only `https`) and enforcing network boundaries by validating that the resolved hostname or IP address belongs only to expected, public domains, thereby preventing access to private IP ranges (RFC 1918 addresses).

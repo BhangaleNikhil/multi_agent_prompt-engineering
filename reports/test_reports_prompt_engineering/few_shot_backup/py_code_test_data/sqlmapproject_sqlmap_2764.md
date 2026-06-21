@@ -1,0 +1,6 @@
+Vulnerability: Man-in-the-Middle (MITM) Vulnerability / Improper Certificate Validation
+Severity: Critical
+CWE: CWE-295
+Location: Lines 20-21 (The block setting `check_hostname` and `verify_mode`)
+Description: The code explicitly disables critical security checks by setting `_contexts[protocol].check_hostname = False` and `_contexts[protocol].verify_mode = ssl.CERT_NONE`. This configuration instructs the SSL context to accept connections without verifying the server's identity or ensuring that the hostname matches the certificate. An attacker can therefore intercept the communication and present a self-signed or invalid certificate, allowing the attacker to decrypt, read, and modify the data stream without the client detecting the compromise.
+Remediation: The application must enforce strict certificate validation. Set `_contexts[protocol].check_hostname = True` and `_contexts[protocol].verify_mode = ssl.CERT_REQUIRED`. Furthermore, ensure that the root Certificate Authority (CA) bundle is correctly loaded using `_contexts[protocol].load_default_certs()` or by explicitly providing a trusted CA file to prevent reliance on potentially compromised system trust stores.

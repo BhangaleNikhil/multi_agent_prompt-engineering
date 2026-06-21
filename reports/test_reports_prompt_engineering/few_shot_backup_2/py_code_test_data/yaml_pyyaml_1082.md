@@ -1,0 +1,6 @@
+Vulnerability: Cross-Site Scripting (XSS)
+Severity: High
+CWE: CWE-79
+Location: Line 25 (and subsequent lines where `suffix_text` is constructed and returned)
+Description: The function processes user-supplied input (`tag`) and performs custom percent-encoding for invalid characters. While this encoding attempts to sanitize the data, it does not implement context-aware output escaping. If the resulting `suffix_text` (or the final formatted tag string) is later rendered directly into an HTML page or XML document without additional, proper escaping mechanisms (e.g., HTML entity encoding), an attacker could inject malicious scripts or markup. The custom nature of this sanitization makes it prone to bypasses if the consuming application assumes that `%XX` encoding is sufficient for all contexts.
+Remediation: Never rely solely on custom input validation or encoding schemes for security. When preparing data intended for display in a web context (HTML, XML), always use standard library functions or templating engine features (like Jinja2 autoescaping) to perform output escaping based on the specific rendering context. If the tag is used within an attribute value, ensure both HTML and attribute escaping are applied.

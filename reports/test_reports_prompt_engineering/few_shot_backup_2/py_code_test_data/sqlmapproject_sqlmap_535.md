@@ -1,0 +1,6 @@
+Vulnerability: Payload Obfuscation / SQL Injection Bypass
+Severity: Critical
+CWE: CWE-20
+Location: Line 13 (The `re.sub` call)
+Description: This function is designed specifically to obfuscate standard SQL keywords (like `UNION`) by inserting non-standard characters (`e0`). While the code itself is a utility, its explicit purpose is to bypass security mechanisms such as Web Application Firewalls (WAFs), input filters, and basic pattern matching used to detect classic SQL Injection attempts. By transforming recognizable attack payloads into obfuscated forms, it significantly increases the likelihood of successful exploitation against backend databases that rely on simple string filtering for protection.
+Remediation: The primary defense must be implemented at the application layer, not by relying on input filters or WAFs alone. Always use parameterized queries (prepared statements) to ensure that user-supplied data is treated strictly as data and never executed as code. Furthermore, security controls should employ advanced techniques like semantic analysis rather than simple regex matching to detect malicious intent regardless of obfuscation methods used.

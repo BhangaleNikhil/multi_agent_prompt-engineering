@@ -1,0 +1,6 @@
+Vulnerability: Potential Format String Vulnerability / Information Leakage
+Severity: Medium
+CWE: CWE-20
+Location: Line 20
+Description: The function constructs a formatted string using the exception name and the extracted message (`retVal`). While the format string `"%s: %s"` is hardcoded, the variable `retVal` originates from the exception object (`ex.message`, `ex.msg`, or `str(ex)`), which can contain arbitrary, untrusted data (potentially user-controlled input that triggered the exception). If this output is later processed by a system or logging mechanism that interprets format specifiers (e.g., using `printf`-style formatting), an attacker could inject format specifiers (like `%s`, `%d`, or `%n`) into the exception message, leading to a format string vulnerability or information leakage.
+Remediation: When combining untrusted data into a string, avoid using string formatting mechanisms that interpret format specifiers. Instead, use explicit string concatenation or, preferably, ensure that the output is properly encoded (e.g., HTML entity encoding) before being displayed or logged to prevent injection attacks. If the goal is simply to combine two strings, use f-strings or simple concatenation: `f"{type(ex).__name__}: {retVal}"`.

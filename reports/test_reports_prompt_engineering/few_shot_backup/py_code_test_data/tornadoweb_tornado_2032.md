@@ -1,0 +1,6 @@
+Vulnerability: Path Traversal
+Severity: High
+CWE: CWE-22
+Location: Line 1 (The entire function body, specifically the concatenation of `path`)
+Description: The function constructs the static URL by directly concatenating the `path` input into the URL string (`url = settings.get('static_url_prefix', '/static/') + path`). If the `path` variable is controlled by an untrusted source (e.g., a user-supplied parameter), an attacker can inject directory traversal sequences (e.g., `../`, `..\`) to manipulate the resulting URL. While this function only constructs a string, if the calling code uses this resulting URL to load or access a file system resource, it could lead to unauthorized access to sensitive files outside the intended static directory.
+Remediation: Implement strict input validation and sanitization on the `path` parameter. The input should be validated to ensure it does not contain directory separators (`/`, `\`) or traversal sequences (`..`). Use dedicated path manipulation libraries (e.g., `pathlib` in Python) to safely join and normalize paths, ensuring the final path remains within the intended root directory.

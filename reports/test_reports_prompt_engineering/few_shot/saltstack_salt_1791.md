@@ -1,0 +1,6 @@
+Vulnerability: Unauthorized System Modification / Insufficient Authorization
+Severity: Critical
+CWE: CWE-639
+Location: Line 45 (Usage of `name` parameter in utility calls)
+Description: The function accepts an arbitrary string path (`name`) representing a registry key. If this function is exposed to untrusted input, it allows an attacker to specify any valid registry path and attempt to delete the corresponding key using `reg.delete_key_recursive`. This lack of scope validation or authorization checks means that an attacker could potentially delete critical system keys (e.g., those belonging to HKEY_LOCAL_MACHINE) if the application process runs with elevated privileges, leading to a Denial of Service (DoS) or system instability.
+Remediation: Implement strict input validation and whitelisting for the `name` parameter to ensure that only expected and safe registry paths can be targeted. Furthermore, before executing any destructive operation (like key deletion), the application must perform granular authorization checks to verify that the calling user or process has explicit permissions (ACLs) to modify the target key path.

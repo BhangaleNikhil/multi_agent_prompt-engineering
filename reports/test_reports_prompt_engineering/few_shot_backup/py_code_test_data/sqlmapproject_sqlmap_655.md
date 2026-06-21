@@ -1,0 +1,6 @@
+Vulnerability: Database Fingerprinting / Information Leakage
+Severity: High
+CWE: CWE-200
+Location: Lines 10 and 15
+Description: The function `checkDbms` executes multiple, complex, and highly specific SQL payloads (e.g., `" AND VAL(CVAR(1))=1"`, `" AND IIF(ATN(2)>0,1,0) BETWEEN 2 AND 0"`) against the underlying database. While this mechanism is intended for legitimate database detection, it inherently leaks significant amounts of sensitive information about the database's internal structure, versioning, and specific SQL dialect capabilities. This detailed fingerprinting information is invaluable to an attacker, allowing them to bypass generic security controls and craft highly targeted, exploitable payloads (e.g., knowing the exact syntax for date functions or specific stored procedure calls).
+Remediation: If database fingerprinting is absolutely necessary, ensure that the function operates under the principle of least privilege. The database account used by this function should only have `SELECT` permissions on non-sensitive metadata tables and should be strictly isolated from the main application data. Furthermore, consider abstracting or generalizing the detection logic to minimize the exposure of specific, proprietary SQL syntax.

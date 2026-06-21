@@ -1,0 +1,6 @@
+Vulnerability: Time-of-Check to Time-of-Use (TOCTOU) / Data Integrity Violation
+Severity: Critical
+CWE: CWE-362
+Location: Line 10 - Line 24 (Systemic)
+Description: The function performs deep memory introspection by reading complex, live kernel data structures (`mac_policy_list`, `mac_policy_ops`). The code assumes that the memory contents of these structures remain consistent and untampered between the time the pointers are read (the "Check") and the time the data is processed (the "Use"). If an attacker (e.g., a rootkit or kernel exploit) can modify the contents of the kernel structures or the pointers within them *after* they are read but *before* the function processes them, the function will operate on corrupted or malicious data. This can lead to incorrect security assessments (false negatives, allowing rootkits to hide) or system crashes (Denial of Service).
+Remediation: When inspecting critical kernel data structures, the system must employ robust synchronization mechanisms (e.g., kernel locks, read-write semaphores) to ensure that the data remains immutable and consistent throughout the entire inspection process. Alternatively, the use of kernel memory protection mechanisms (like read-only memory mapping for critical structures) should be enforced where possible.

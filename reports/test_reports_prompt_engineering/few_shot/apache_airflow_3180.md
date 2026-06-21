@@ -1,0 +1,6 @@
+Vulnerability: Over-Privileged Access / Misconfiguration of Credentials
+Severity: High
+CWE: CWE-23
+Location: Line 10 - Line 24 (Entire function scope)
+Description: The function relies on credentials obtained via `GoogleBaseHook(gcp_conn_id=conn_id)` to initialize the GCS FileSystem. The primary vulnerability is not in the code structure itself, but in the potential for over-privileged access granted by the underlying service account associated with `conn_id`. If the connection ID or the default configuration parameters (like `access` or `project`) are not strictly scoped using the Principle of Least Privilege (PoLP), an attacker who compromises this function could gain unauthorized read/write access to sensitive data across multiple Google Cloud Storage buckets, far exceeding the scope required for normal operation.
+Remediation: Implement strict Identity and Access Management (IAM) policies on the service account used by `conn_id`. The service account should only be granted the minimum necessary permissions (e.g., read/write access to specific, designated buckets) required for this function's intended use case. Furthermore, validate all inputs derived from external sources (`storage_options`) to ensure they do not attempt to modify critical resource identifiers or escalate privileges.

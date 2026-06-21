@@ -1,0 +1,6 @@
+Vulnerability: Insecure Deserialization / Arbitrary Code Execution
+Severity: Critical
+CWE: CWE-502
+Location: Line 2
+Description: The function uses `mlflow.sklearn.load_model()` to load a serialized machine learning model artifact. Serialization libraries (such as pickle, which scikit-learn often relies on) are inherently dangerous when dealing with untrusted input. If an attacker can control the content or path of the artifact specified by `context.artifacts["custom_model"]`, they can point to a malicious payload. Loading this object will attempt deserialization, potentially executing arbitrary code within the application's process space (Remote Code Execution).
+Remediation: Never deserialize data from untrusted sources. If possible, validate the integrity and source of the model artifact using cryptographic signatures. Alternatively, if the ML framework supports it, use safer serialization formats or implement strict sandboxing mechanisms to limit the capabilities of the loaded object during deserialization.

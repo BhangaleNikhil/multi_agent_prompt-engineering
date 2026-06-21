@@ -1,0 +1,6 @@
+Vulnerability: Information Disclosure (Unauthorized Memory Read)
+Severity: High
+CWE: CWE-200
+Location: Line 20 (The entire function body)
+Description: The function reads raw memory contents (`proc_as.zread`) from a target process (`proc`). If the calling context does not enforce strict privilege checks (e.g., checking if the current user owns the target process or if elevated privileges are required), an attacker could exploit this function to read the memory space of unrelated, sensitive processes (e.g., reading credentials, private keys, or proprietary data from other users' sessions).
+Remediation: Implement robust access control checks at the entry point of this function. Before executing any memory read operation, the application must verify that the calling process has the necessary permissions (e.g., `CAP_SYS_PTRACE` or equivalent OS-level permissions) to inspect the memory of the target process. Furthermore, consider implementing rate limiting or size checks to prevent Denial of Service (DoS) attacks via excessive memory dumping.

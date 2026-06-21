@@ -1,0 +1,6 @@
+Vulnerability: SQL Injection
+Severity: Critical
+CWE: CWE-89
+Location: Multiple instances (e.g., Line 17, Line 21, Line 30)
+Description: The function constructs and executes multiple SQL queries by directly embedding variables and formatted strings into the SQL command text using string formatting (`%s`). This pattern, particularly visible in calls like `inject.checkBooleanExpression("COALESCE(%s, NULL)=%s" % (randInt, randInt))`, is highly susceptible to SQL Injection. If any of the variables (like `randInt` or the strings used in the `elif` blocks) were derived from or influenced by untrusted external input, an attacker could inject malicious SQL payloads, leading to data exfiltration, modification, or denial of service.
+Remediation: While this function is designed for database interaction, if the inputs used to construct the queries (e.g., `randInt` or the values used in the `elif` statements) could ever be influenced by external user input, the application must use parameterized queries exclusively. For internal logic, ensure that all variables passed into the SQL string are strictly type-checked and sanitized before concatenation. Ideally, the underlying `inject.checkBooleanExpression` function should enforce the use of prepared statements or parameterized execution to separate the SQL command structure from the data values.

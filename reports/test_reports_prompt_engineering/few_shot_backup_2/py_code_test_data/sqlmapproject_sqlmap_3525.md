@@ -1,0 +1,6 @@
+Vulnerability: SQL Injection
+Severity: Critical
+CWE: CWE-89
+Location: Line 3 (The execution of `Request.queryPage(payload)`)
+Description: The function constructs and executes a dynamic SQL payload (`agent.fullPayload(...)`). While the current example shows a hardcoded string, this pattern is highly susceptible to injection if any part of the payload construction relies on external or user-controlled input. By executing arbitrary SQL fragments (like `AND EXISTS(SELECT CURRENT_DATE FROM RDB$DATABASE)`), an attacker could potentially manipulate the query structure to bypass intended logic, extract sensitive data, or perform unauthorized database operations.
+Remediation: Instead of constructing and executing raw SQL strings for dialect checking, utilize the built-in, safe methods provided by the underlying database connector or Object-Relational Mapping (ORM) framework. If dynamic queries are absolutely necessary, ensure all input variables are passed as parameters to the query execution function, never concatenated into the SQL string itself.

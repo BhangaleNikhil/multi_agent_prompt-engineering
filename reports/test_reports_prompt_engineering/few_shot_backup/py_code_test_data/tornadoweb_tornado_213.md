@@ -1,0 +1,6 @@
+Vulnerability: None
+Severity: Informational
+CWE: N/A
+Location: N/A
+Description: The provided code snippet is a unit test function (`test_redirect_without_location`). It does not contain any direct security vulnerabilities such as injection, insecure cryptography, or improper input handling. The code merely asserts the expected behavior of a redirect response (HTTP 301) when the underlying system (the API or library being tested) fails to provide a `Location` header. The comment correctly identifies a potential design flaw in the system under test (allowing a redirect without a `Location` header), but this is an architectural concern for the system's error handling, not a vulnerability in the test code itself.
+Remediation: While the test code is safe, the system being tested should be reviewed. If a redirect response (3xx status code) is generated, the system should enforce the presence of a `Location` header to ensure the client knows where to redirect, preventing ambiguous or non-functional redirects.

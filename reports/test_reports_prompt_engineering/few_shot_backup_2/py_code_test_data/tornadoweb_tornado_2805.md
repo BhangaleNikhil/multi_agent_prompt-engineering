@@ -1,0 +1,6 @@
+Vulnerability: Logic Flaw / Complex State Management
+Severity: Medium
+CWE: CWE-682
+Location: Entire function body (Lines 1 - 45)
+Description: The method implements a highly complex state machine for managing asynchronous generator execution. While not an immediate injection vulnerability, the sheer complexity, deep nesting of `try...except` blocks, and reliance on multiple internal framework states (`self.running`, `self.exc_info`, `self.yield_point`) significantly increases the surface area for logic flaws, race conditions, or unexpected state transitions. Improper handling of these complex interactions could lead to resource leaks (Denial of Service) or allow an attacker who can control the input flow (e.g., through manipulated generator results) to bypass intended execution paths and corrupt application state.
+Remediation: Refactor the code into smaller, single-responsibility methods to improve readability and testability. Implement formal verification techniques or use a dedicated state machine library to model and enforce valid transitions between states, ensuring that all exit conditions (success, failure, cancellation) are explicitly handled without relying on broad `except Exception:` clauses which can mask critical bugs.

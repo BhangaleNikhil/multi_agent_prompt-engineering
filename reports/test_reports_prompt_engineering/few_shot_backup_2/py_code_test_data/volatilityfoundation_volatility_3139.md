@@ -1,0 +1,6 @@
+Vulnerability: Denial of Service (DoS) / Resource Exhaustion
+Severity: High
+CWE: CWE-400
+Location: Line 15
+Description: The initialization process, particularly the call to `self.build_page_cache()`, involves complex parsing and construction of internal data structures (`PageDict`, `AddressList`). If the input file (e.g., a memory dump or hibernation file) is maliciously crafted with excessively large, deeply nested, or circular references in its page table structure, the `build_page_cache()` function could enter an infinite loop, consume excessive CPU cycles, or exhaust available memory resources, leading to a Denial of Service condition and crashing the analysis tool.
+Remediation: Implement strict resource limits (e.g., maximum number of pages/entries allowed in the cache, time boxing for initialization). Furthermore, refactor complex data loading functions like `build_page_cache()` to use generators or iterative processing rather than attempting to load the entire structure into memory at once.

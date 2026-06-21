@@ -1,0 +1,6 @@
+Vulnerability: Denial of Service (DoS) / Resource Exhaustion
+Severity: High
+CWE: CWE-400
+Location: Line 12
+Description: The prime generation process utilizes an infinite `while 1:` loop without any explicit termination condition or resource limit. If the underlying random number generator struggles to find a suitable prime for the requested bit length, or if an attacker repeatedly forces the system to search for extremely large primes with specific constraints, this function could enter an indefinite computational state. This excessive CPU consumption would lead to a Denial of Service (DoS) condition, making the key exchange mechanism unavailable.
+Remediation: Implement strict safeguards around cryptographic parameter generation. Specifically, introduce a maximum iteration count or a time limit within the prime search loop (`while 1:`). If the required parameters cannot be generated within these defined limits, the function must fail gracefully and return an error rather than continuing to consume resources indefinitely. Furthermore, ensure that all random number generation relies on a cryptographically secure pseudo-random number generator (CSPRNG) with proper entropy management.

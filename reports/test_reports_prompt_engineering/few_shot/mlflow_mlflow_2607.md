@@ -1,0 +1,6 @@
+Vulnerability: SQL Injection
+Severity: Critical
+CWE: CWE-89
+Location: Lines 10-23 (The use of `filter_string` in calls to `self.store.search_experiments`)
+Description: The function relies on passing raw, unvalidated string input (`filter_string`) that contains SQL query logic directly into the database search mechanism (`self.store.search_experiments`). If this `filter_string` were ever derived from user input (e.g., a search bar or API parameter), an attacker could inject malicious SQL fragments. This allows them to bypass intended filters, modify queries, extract unauthorized data, or even perform destructive actions like dropping tables.
+Remediation: The application must never construct database queries using raw string concatenation of external inputs. Instead, implement one of the following strategies: 1) **Use Parameterized Queries:** If possible, refactor the search logic to accept parameters that are bound separately from the query structure. 2) **Utilize an ORM (Object-Relational Mapper):** Use a robust ORM framework which automatically handles input sanitization and parameter binding, abstracting away raw SQL construction. 3) **Input Validation/Whitelisting:** If dynamic filtering is absolutely necessary, implement strict whitelisting for allowed keywords and operators, ensuring that only expected characters are processed.

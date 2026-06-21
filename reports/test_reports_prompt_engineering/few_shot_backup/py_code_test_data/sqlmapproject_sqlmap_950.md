@@ -1,0 +1,6 @@
+Vulnerability: SQL Injection
+Severity: Critical
+CWE: CWE-89
+Location: Lines 190-195 (The loop constructing the `cmd` variable)
+Description: The function constructs a database command string (`cmd`) by directly concatenating user-provided parameter values (`parValue`) into the command. The input received via `readInput(msg)` is completely untrusted and is not sanitized or escaped before being appended to the command string. An attacker can inject malicious SQL payloads (e.g., `' OR 1=1 -- `) to bypass intended logic, modify data, or execute arbitrary commands against the underlying database.
+Remediation: When constructing SQL queries or command strings that incorporate user input, always use parameterized queries (prepared statements). If direct string formatting is unavoidable (which should be avoided), ensure that all user inputs are rigorously escaped according to the specific database dialect (e.g., using `mysqli_real_escape_string` in PHP or equivalent functions in other languages) to treat them strictly as data, not executable code.

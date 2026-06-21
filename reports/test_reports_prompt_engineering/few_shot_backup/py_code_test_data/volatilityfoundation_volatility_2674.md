@@ -1,0 +1,6 @@
+Vulnerability: Denial of Service (DoS) / Resource Exhaustion
+Severity: Medium
+CWE: CWE-400
+Location: Lines 15-23 (The main scanning and reading loop)
+Description: The function processes an entire address space (`aspace`) and iterates through every offset found by the `KDBGScanner`. For each offset, it reads a potentially large chunk of memory (`val = aspace.read(offset, maxlen + 0x10)`). If the input memory dump (the address space) is extremely large, or if the scanner finds a high density of overlapping or closely spaced matches, the repeated reading and processing of large memory buffers can lead to excessive CPU consumption, memory exhaustion, or an infinite loop, causing the application to crash or become unresponsive.
+Remediation: Implement resource limits and safeguards. Before iterating, calculate an estimated maximum number of iterations or limit the total amount of memory read. Consider adding a check to skip processing if the current offset is too close to the previously processed offset, or introduce a configurable limit on the total number of memory chunks processed to prevent resource exhaustion.

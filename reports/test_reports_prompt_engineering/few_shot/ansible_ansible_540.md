@@ -1,0 +1,6 @@
+Vulnerability: Command Injection / Path Traversal
+Severity: High
+CWE: CWE-78
+Location: Line 20, Line 34, Line 39
+Description: The function constructs system commands by appending user-controlled inputs (`repo`, `dest`, `remote`, `version`, `refspec`) directly to the command list without proper sanitization or validation. While using a list structure for arguments mitigates classic shell injection (e.g., using `;` or `&`), it does not prevent an attacker from injecting malicious path components (Path Traversal) or unexpected argument values that could cause the underlying Git process to operate on unintended files, directories, or execute arbitrary commands if the inputs are not strictly validated against expected formats.
+Remediation: Implement strict input validation for all parameters used in command construction (`repo`, `dest`, `remote`, etc.). Paths should be sanitized and resolved using safe library functions (e.g., `os.path.abspath` combined with whitelisting allowed characters) to ensure they do not contain directory traversal sequences (`../`) or unexpected shell metacharacters. If possible, use a dedicated Git library wrapper instead of constructing command lists manually.

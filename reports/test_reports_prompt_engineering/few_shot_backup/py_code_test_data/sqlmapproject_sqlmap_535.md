@@ -1,0 +1,6 @@
+Vulnerability: Injection Payload Obfuscation / Security Filter Bypass
+Severity: High
+CWE: CWE-200 (Exposure of Sensitive Information to an Unauthorized Actor) / CWE-79 (Improper Neutralization of Input During Web Page Generation)
+Location: Entire function body
+Description: This function is designed to obfuscate known SQL injection patterns (specifically replacing `UNION` with `e0UNION`). While the function itself is a utility, its existence and purpose demonstrate a mechanism for bypassing security filters (such as Web Application Firewalls or simple input sanitization routines) that rely on matching literal keywords. By programmatically modifying payloads, an attacker can evade detection systems that only look for standard, unencoded attack strings.
+Remediation: The primary defense against this type of attack must be implemented at the perimeter (e.g., using a robust Web Application Firewall or API Gateway) that employs advanced behavioral analysis rather than simple signature matching. Furthermore, all application code that interacts with databases must strictly use parameterized queries, ensuring that user input is always treated as data, never as executable code. This utility should never be integrated into the application's core logic.

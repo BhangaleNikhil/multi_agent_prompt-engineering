@@ -1,0 +1,6 @@
+Vulnerability: Path Traversal
+Severity: High
+CWE: CWE-22
+Location: Line 30 (and surrounding file system operations using `fixture_dir` and `fixture_name`)
+Description: The function constructs file paths for searching fixtures by combining components derived from the user input (`fixture_label`). If an attacker can manipulate the path components (e.g., through directory traversal sequences like `../`), they could potentially force the application to search directories outside of the intended fixture root. This vulnerability allows unauthorized access to files on the system, leading to information disclosure or potential denial of service if sensitive configuration files are read.
+Remediation: All user-controlled path components used in file system operations (like `os.path.join` and `glob.iglob`) must be rigorously sanitized and validated. Before using a path component, canonicalize it (e.g., using `os.path.realpath`) and ensure that the resulting absolute path remains within an expected, safe root directory defined by the application's configuration. Never trust input provided for file paths without validation.

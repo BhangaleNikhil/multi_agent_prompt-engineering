@@ -1,0 +1,6 @@
+Vulnerability: Resource Exhaustion / Denial of Service (DoS) via Reflection
+Severity: High
+CWE: CWE-400
+Location: Line 13
+Description: The initialization method relies heavily on iterating over potentially unbounded collections (`application.ui_methods` and `application.ui_modules`) to build internal structures (`self.ui`). If an attacker or a misconfigured application provides an excessively large number of methods or modules, the list comprehensions and subsequent object creation (e.g., `ObjectDict((n, self._ui_method(m)) for n, m in ...)` ) can consume excessive CPU time and memory during the application startup phase, leading to a Denial of Service condition.
+Remediation: Implement strict limits on the size of collections processed during initialization. Before iterating over `application.ui_methods` or `application.ui_modules`, validate that the number of items is within an acceptable operational range. Consider using pagination or lazy loading for large sets of resources to prevent resource exhaustion at startup.

@@ -1,0 +1,6 @@
+Vulnerability: Path Traversal / Improper Input Validation
+Severity: High
+CWE: CWE-22
+Location: Line 7 (The call to `self.add_rules(rules)`)
+Description: The function accepts a list of rules (`rules`), which are expected to contain path definitions (e.g., `/handler`). If the underlying implementation within `self.add_rules` or subsequent logic uses these paths to access local resources, files, or templates without proper sanitization and validation, an attacker could inject directory traversal sequences (e.g., `../../../etc/passwd`) into the rule definition. This allows unauthorized reading of sensitive system files.
+Remediation: All path components derived from user-supplied input (`rules`) must be strictly validated. Implement canonicalization checks to resolve all paths and ensure they remain within an expected, restricted root directory. Reject any path that contains traversal sequences (`..`, `../`). If the router is intended only for URL matching, ensure that no file system operations are performed based on the rule content without explicit, secure validation.

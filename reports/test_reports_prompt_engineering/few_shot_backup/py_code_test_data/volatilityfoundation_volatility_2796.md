@@ -1,0 +1,6 @@
+Vulnerability: Data Injection / Output Encoding Failure
+Severity: High
+CWE: CWE-116
+Location: Line 17
+Description: The function writes multiple pieces of data (`offset`, `pid`, `otype`, `name`) directly to the output stream (`outfd`) using string formatting. The data elements, particularly `name` and `otype`, are assumed to be clean, but if they contain control characters (such as newline characters `\n`, carriage returns `\r`, or excessive whitespace), they will break the structured format of the output file. This can lead to data corruption, parsing errors, or misinterpretation of the data by any downstream application consuming this output.
+Remediation: Before writing any untrusted data to the output stream, implement strict sanitization and encoding. Specifically, all string inputs (`pid`, `otype`, `name`) should have control characters (like newlines) escaped or stripped to ensure the integrity of the structured output format. If the output format is CSV or similar, use a dedicated serialization library that handles escaping automatically.

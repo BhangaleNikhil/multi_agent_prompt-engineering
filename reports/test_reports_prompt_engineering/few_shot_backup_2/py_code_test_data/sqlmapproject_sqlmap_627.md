@@ -1,0 +1,6 @@
+Vulnerability: Improper Sanitization of Console Output
+Severity: Medium
+CWE: CWE-20
+Location: Line 16 (and subsequent calls to `sys.stdout.write`)
+Description: The function writes user-supplied data (`data`) directly to the standard output stream (`sys.stdout`). While helper functions like `stdoutEncode`, `clearColors`, and `setColor` are used, there is no explicit validation or sanitization of the raw input `data`. If an attacker provides input containing malicious terminal control sequences (e.g., ANSI escape codes) or other non-printable characters, these could potentially be exploited to manipulate the console display, confuse logging systems, or cause a denial of service in environments that rely on clean standard output streams.
+Remediation: Before writing user-supplied data to `sys.stdout`, implement strict sanitization routines. These routines should filter out or escape known malicious control characters and terminal escape sequences (like ANSI codes) unless the function's explicit purpose is to render such formatting. If the input must support formatting, ensure that all raw user content is passed through a dedicated escaping mechanism that treats it as literal text rather than executable console commands.

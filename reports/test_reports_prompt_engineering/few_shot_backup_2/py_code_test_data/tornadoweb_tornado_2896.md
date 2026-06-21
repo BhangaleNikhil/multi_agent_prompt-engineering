@@ -1,0 +1,6 @@
+Vulnerability: Information Leakage / Sensitive Data Exposure
+Severity: High
+CWE: CWE-200
+Location: Line 14
+Description: By using `exc_info=True` within an exception handler, the application logs the full stack trace and detailed context of the failure. While necessary for debugging, logging comprehensive stack traces in a production environment can expose sensitive system information (e.g., internal file paths, library versions, database connection details, or variable states) to anyone who gains access to the log files. This information is invaluable for an attacker performing reconnaissance.
+Remediation: Implement structured logging that sanitizes exception data before writing it to persistent storage. In production environments, consider logging only a high-level error message and the type of exception (e.g., "Database connection failed") rather than the full stack trace, unless the log destination is highly restricted and monitored. Ensure strict access controls are placed on all application logs.

@@ -1,0 +1,6 @@
+Vulnerability: Remote Code Execution (RCE) / Dynamic Loading Vulnerability
+Severity: Critical
+CWE: CWE-94
+Location: Line 23 (and surrounding lines involving `self.get_trigger_by_classpath` and instantiation)
+Description: The function relies on retrieving a trigger class using a classpath string (`new_trigger_orm.classpath`) stored in the database record. If an attacker can modify this field, they could potentially point it to malicious code or exploit the underlying mechanism of `self.get_trigger_by_classpath` (which likely involves dynamic loading or import mechanisms) to execute arbitrary code on the server. This pattern is highly susceptible to injection attacks if the classpath resolution is not strictly controlled.
+Remediation: Implement a strict whitelisting mechanism for all allowed classpaths and modules that can be loaded as triggers. The system must never allow dynamic execution based on unvalidated or user-controlled input (such as database fields). If possible, use pre-registered, safe factory patterns instead of relying on string-based classpath resolution.

@@ -1,0 +1,6 @@
+Vulnerability: Path Traversal / Directory Traversal
+Severity: High
+CWE: CWE-22
+Location: Line 3 (and subsequent use of `find_file` in path logic)
+Description: The function accepts a file path (`find_file`) which is used to determine the search scope and passed into recursive traversal methods. If the input `find_file` is controlled by an attacker, they can inject directory traversal sequences (e.g., `../../../etc/passwd`). Although some filtering logic attempts to restrict the paths using `first_dir`, this mechanism relies on string prefix matching (`startswith`) which is easily bypassed by malicious inputs that manipulate path components or use mixed slashes. This vulnerability allows an attacker to force the application to traverse directories outside of the intended search root, potentially exposing sensitive system files or unauthorized data stored in other storage buckets (sbs).
+Remediation: Before using `find_file` for any file system operation, the input must be strictly validated and canonicalized. Use platform-specific libraries (e.g., Python's `pathlib` or `os.path`) to resolve the absolute path and then enforce that the resulting path remains within a predefined, secure root directory boundary. Never trust user-supplied paths for traversal operations without rigorous sanitization and validation.

@@ -1,0 +1,6 @@
+Vulnerability: Remote Code Execution (RCE) via Dynamic Import
+Severity: Critical
+CWE: CWE-94
+Location: Line 10 (within the loop using `import_string`)
+Description: The function retrieves module names from a configuration file (`conf.get("database", ...)`). These module names are then passed to `import_string(module)`, which dynamically imports and executes code based on an input string. If an attacker can modify the application's configuration file, they can inject arbitrary Python module names or malicious strings that trigger the execution of unauthorized code (e.g., importing a module that executes system commands upon initialization).
+Remediation: Never use dynamic import functions (`import_string`, `eval()`) with input derived from untrusted sources (including configuration files that could be modified by an attacker). Implement strict whitelisting for all allowed modules. If the list of required managers is fixed, they should be hardcoded or loaded from a validated source, and the application must validate that the provided module name exists in the approved whitelist before attempting any import.

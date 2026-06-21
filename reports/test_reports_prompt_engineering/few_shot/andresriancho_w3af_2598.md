@@ -1,0 +1,6 @@
+Vulnerability: Information Leakage / Excessive Detail Disclosure
+Severity: High
+CWE: CWE-209
+Location: Lines 3-25 (Entire function body)
+Description: The function is designed to collect, format, and return highly detailed system information, including web server fingerprints (`kb.headersFp`), back-end DBMS OS fingerprints (`kb.bannerFp`), specific database versions, and even HTML error message fingerprints (`getHtmlErrorFp()`). This practice constitutes severe information leakage. By providing an attacker with the exact technology stack, version numbers, and internal structure details of the application and its dependencies, the function significantly reduces the effort required for reconnaissance and allows attackers to target known vulnerabilities (CVEs) specific to those versions.
+Remediation: Implement strict controls on system detail disclosure. In production environments, error handling should be generic, displaying only non-technical messages to the user. If debugging information is necessary, it must be logged securely on the server side and never returned to the client or included in publicly accessible endpoints. Review all functions that format fingerprints (e.g., `formatFingerprint`, `getHtmlErrorFp`) to ensure they sanitize or generalize sensitive version data before inclusion.

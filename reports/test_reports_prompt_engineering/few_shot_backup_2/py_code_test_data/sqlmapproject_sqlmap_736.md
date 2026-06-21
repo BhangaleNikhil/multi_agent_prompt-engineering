@@ -1,0 +1,6 @@
+Vulnerability: Uncontrolled System File Write / Privilege Escalation Risk
+Severity: Critical
+CWE: CWE-269
+Location: Line 58
+Description: The function attempts to write directly to the `/proc/sys/net/ipv4/icmp_echo_ignore_all` file. Writing to files within the `/proc` filesystem modifies kernel parameters, which is a highly privileged operation (requiring root access). While this action may be necessary for the tool's intended functionality (ICMP tunneling), it represents an uncontrolled write operation to critical system state. If the application fails to properly validate permissions or if the environment changes, this could lead to system instability, denial of service, or potential privilege escalation if the process is compromised.
+Remediation: The application must strictly adhere to the Principle of Least Privilege (PoLP). Instead of direct file writes to kernel pseudo-filesystems like `/proc`, utilize dedicated, audited APIs provided by the operating system's networking stack (e.g., using `sysctl` calls via a wrapper library) that handle privilege checks and resource management internally. The code should also implement robust error handling and logging specifically for permission failures.

@@ -1,0 +1,6 @@
+Vulnerability: SQL Injection
+Severity: Critical
+CWE: CWE-89
+Location: Line 10 (and subsequent calls to `inject.checkBooleanExpression`)
+Description: The function relies on the `inject.checkBooleanExpression()` method, which executes arbitrary SQL strings provided as arguments. This design pattern is highly susceptible to SQL Injection if any part of the input string—even indirectly through configuration or external parameters not shown—is derived from untrusted sources. An attacker could manipulate these inputs (e.g., by appending `' OR 1=1 --`) to alter the intended logic, bypass authentication checks, extract sensitive data, or modify database records.
+Remediation: Never construct SQL queries using direct string concatenation or formatting with potentially untrusted input. Instead, utilize parameterized queries provided by the underlying database connector or an Object-Relational Mapping (ORM) framework. This ensures that user input is always treated as data and never executed as code.

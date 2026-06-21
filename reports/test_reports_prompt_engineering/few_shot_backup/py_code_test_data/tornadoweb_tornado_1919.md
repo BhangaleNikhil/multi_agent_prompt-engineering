@@ -1,0 +1,6 @@
+Vulnerability: Cross-Site Request Forgery (CSRF) / Missing State Parameter
+Severity: High
+CWE: CWE-352
+Location: Function Scope (OAuth Flow Handling)
+Description: The function implements the OAuth 2.0 authorization code exchange flow but does not appear to validate or utilize a `state` parameter. The `state` parameter is a critical security measure in OAuth flows designed to prevent Cross-Site Request Forgery (CSRF) attacks. Without it, an attacker could trick a victim into initiating an authorization request and completing the flow using the victim's credentials, potentially allowing the attacker to gain unauthorized access or misuse the resulting access token.
+Remediation: The application must generate a cryptographically secure, unique, and time-limited `state` parameter before redirecting the user to the authorization endpoint. This state value must be stored in the user's session and then strictly validated upon receiving the callback code to ensure the request originated from the application itself and was not hijacked by a third party.

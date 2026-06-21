@@ -1,0 +1,6 @@
+Vulnerability: Security Fingerprinting / Information Disclosure
+Severity: Medium
+CWE: CWE-200
+Location: Line 1
+Description: The function implements active security fingerprinting logic by iterating through predefined attack vectors (`WAF_ATTACK_VECTORS`) and checking the HTTP headers for specific signatures (e.g., "Protected by COMODO WAF"). While this function may be intended for internal testing, if this code or its functionality is exposed or accessible to unauthorized users, it constitutes a significant information disclosure risk. It provides attackers with valuable intelligence regarding the specific Web Application Firewall (WAF) protecting the target, allowing them to tailor subsequent attacks to bypass known vendor signatures or weaknesses.
+Remediation: If this functionality is necessary, it must be strictly confined to internal, controlled testing environments. If the code is part of a public-facing service or library, the probing logic must be removed or heavily restricted to prevent unauthorized reconnaissance. Implement robust rate limiting and access controls around any function that performs network probing or security detection.

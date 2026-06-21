@@ -1,0 +1,6 @@
+Vulnerability: Information Leakage / Sensitive Data Exposure
+Severity: High
+CWE: CWE-200
+Location: Lines 19-24 (The entire loop writing data to `outfd`)
+Description: The function is designed to extract and write highly technical, low-level system identifiers (such as `SessionId`, `dwAllocTag`, `fnDestroy`, and internal handle flags) into an output stream (`outfd`). This process constitutes a significant information leak. If this function is accessible or used in a context where the calling user should not have access to raw memory structure details, it provides attackers with valuable reconnaissance data that can aid in developing targeted exploits against the underlying operating system or application components.
+Remediation: Implement strict authorization checks (ACLs) on any function that dumps internal system state or low-level object metadata. If this information is only required for debugging or forensic purposes, ensure the output stream (`outfd`) is restricted to highly privileged, isolated environments and never exposed through standard API endpoints accessible by general users. Furthermore, consider sanitizing or abstracting these technical details before they are written to a user-facing report.

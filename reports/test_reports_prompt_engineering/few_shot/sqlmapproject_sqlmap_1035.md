@@ -1,0 +1,6 @@
+Vulnerability: SQL Injection (Potential)
+Severity: Critical
+CWE: CWE-89
+Location: Line 17, Line 20
+Description: The function constructs database boolean expressions by concatenating multiple strings (`randStr1`, `FROM_DUMMY_TABLE.get(dbms, "")`, `SINGLE_QUOTE_MARKER`, etc.) using Python's `%s` formatting operator. If any of the variables used in these constructions (such as `randStr1`, `randStr2`, or values derived from external sources) are controlled by an attacker and not properly escaped or parameterized before being passed to `checkBooleanExpression`, it creates a severe SQL Injection vulnerability. An attacker could inject malicious characters (like single quotes, semicolons, or comments) to alter the logic of the database query, potentially leading to data exfiltration or unauthorized command execution.
+Remediation: The underlying function responsible for executing the check (`checkBooleanExpression`) must be refactored to accept parameters separately rather than relying on string formatting. All inputs that represent data (like `randStr1` and `randStr2`) must be passed as parameterized values to the database driver, ensuring that they are treated only as literal data and never as executable code. If this function is part of a library or tool, robust input validation and escaping mechanisms must be implemented for all dynamic components.

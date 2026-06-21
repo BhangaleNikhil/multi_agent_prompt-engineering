@@ -1,0 +1,6 @@
+Vulnerability: Information Disclosure / Excessive Data Exposure
+Severity: Medium
+CWE: CWE-200
+Location: Entire function body
+Description: The `get_capabilities` method aggregates and returns a highly detailed dictionary containing internal system metadata, including specific RPC endpoints (`rpc`), precise version numbers (`network_os_version`), operational flags (e.g., `supports_diff_replace`, `supports_commit`), and supported formats. While this information is necessary for the application's function, exposing such comprehensive details without strict authorization allows an attacker to perform detailed reconnaissance, mapping out the entire attack surface of the network device or system under test. This significantly lowers the bar for a subsequent targeted exploit.
+Remediation: Implement robust access control checks (Authorization) before executing this method. The endpoint should only be accessible by trusted internal services or administrators with explicit permission. Furthermore, consider implementing data filtering to redact highly sensitive details (like specific version numbers or detailed operational flags) if the calling context does not require them.

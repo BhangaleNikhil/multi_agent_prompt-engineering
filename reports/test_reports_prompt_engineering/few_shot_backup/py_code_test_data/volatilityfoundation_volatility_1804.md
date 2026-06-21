@@ -1,0 +1,6 @@
+Vulnerability: Information Leakage (Sensitive Data Exposure)
+Severity: High
+CWE: CWE-200
+Location: Lines 15-24
+Description: The function processes and outputs highly sensitive, low-level system memory and process metadata (e.g., `SessionId`, `dwAllocTag`, `fnDestroy`, `bObjectCreateFlags`, and detailed OS version information). By aggregating and rendering this data, the application risks exposing internal system structures, memory layout details, and active session identifiers. This information is invaluable to an attacker for developing targeted exploits, performing privilege escalation, or mapping the internal architecture of the system.
+Remediation: Implement strict data filtering and access control mechanisms. The function should only expose the minimum necessary data required for the intended user role. If the output is intended for debugging or forensic purposes, ensure that the output stream (`outfd`) is only accessible by highly privileged, audited accounts, and consider sanitizing or masking highly sensitive fields (like raw memory addresses or internal tags) before rendering.

@@ -1,0 +1,6 @@
+Vulnerability: SQL Injection / Arbitrary Code Execution
+Severity: Critical
+CWE: CWE-89
+Location: Entire function body (Systemic vulnerability)
+Description: This function is designed to process and execute arbitrary, untrusted SQL payloads (`expression`) provided by the caller. By accepting and executing complex, user-defined SQL logic (including techniques for inband and blind injection), the code inherently bypasses standard application security controls. If this logic were ever integrated into a production application environment, it would allow an attacker to execute any arbitrary SQL command, leading to data exfiltration, data modification, or even database structure manipulation.
+Remediation: This code represents an exploitation mechanism, not application logic. If any component with similar functionality (i.e., accepting and executing user-provided SQL fragments) were to be integrated into a production application, it must be immediately removed. All database interactions must strictly use parameterized queries or safe ORM methods to ensure that user input is always treated as data, never as executable code.

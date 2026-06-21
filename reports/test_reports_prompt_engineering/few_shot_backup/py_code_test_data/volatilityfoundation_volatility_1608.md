@@ -1,0 +1,6 @@
+Vulnerability: Path Traversal (Directory Traversal)
+Severity: High
+CWE: CWE-22
+Location: Line 24
+Description: The function constructs a file path using `os.path.join` and incorporates the `name` variable (derived from `task.ImageFileName`) directly into the filename component. If the `task.ImageFileName` can be controlled or manipulated by an attacker to include directory traversal sequences (e.g., `../../etc/passwd`), the attacker could write the dumped data to arbitrary locations on the file system, potentially overwriting sensitive system files.
+Remediation: Before incorporating any user-controlled or external input (like `name`) into a file path, the input must be rigorously sanitized. Specifically, ensure that the filename component is stripped of any directory separators (`/` or `\`) and that the resulting path is canonicalized and checked to ensure it remains within the intended `DUMP_DIR`. Use functions like `os.path.basename()` on the input variable before constructing the path to prevent traversal.

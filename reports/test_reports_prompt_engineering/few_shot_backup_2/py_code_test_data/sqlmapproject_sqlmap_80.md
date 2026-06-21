@@ -1,0 +1,6 @@
+Vulnerability: Module Tampering / Unsafe Runtime Modification
+Severity: High
+CWE: CWE-472
+Location: Line 10
+Description: The function performs "monkey patching" by directly overwriting critical attributes (`module.socket.socket` and `module.socket.create_connection`) of an imported module at runtime. This practice is highly dangerous because it bypasses the standard library's internal safeguards, assumptions, and compatibility layers. If the original module relies on specific behaviors or initialization steps of the standard socket implementation (especially regarding SSL/TLS context management), replacing these components can lead to unpredictable behavior, security bypasses, denial of service, or data corruption without warning.
+Remediation: Instead of directly overwriting core library attributes, developers should use established proxy patterns or wrapper classes that maintain compatibility with the original module's expected interfaces while injecting the desired proxy logic. For network configuration, utilize official API methods provided by networking libraries (e.g., passing proxy settings during connection initialization) rather than modifying the global namespace of imported modules.

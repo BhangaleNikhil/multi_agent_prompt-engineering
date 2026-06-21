@@ -1,0 +1,6 @@
+Vulnerability: Insecure Deserialization
+Severity: Critical
+CWE: CWE-502
+Location: Function `represent_object` (General)
+Description: This function processes object representation using Python's internal serialization hooks (`__reduce__`, `__reduce_ex__`). By allowing arbitrary objects to define their reconstruction process and by generating YAML tags like `!!python/object/apply:` or `!!python/object/new:`, the application is highly susceptible to Insecure Deserialization. If an attacker can inject a malicious payload into the serialized data (the input that this function would eventually represent), they could force the deserializer (the corresponding loading mechanism) to instantiate arbitrary classes and execute harmful code, leading to Remote Code Execution (RCE).
+Remediation: When handling YAML serialization/deserialization, never use full-featured loaders (like `yaml.load()` in PyYAML). Instead, always utilize safe loading functions (e.g., `yaml.safe_load()`) which restrict the types of objects that can be instantiated and prevent the execution of custom constructors defined by methods like `__reduce__`. If complex object handling is required, implement a strict whitelist validation mechanism for all allowed classes and tags.

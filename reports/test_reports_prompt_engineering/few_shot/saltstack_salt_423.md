@@ -1,0 +1,6 @@
+Vulnerability: Path Traversal
+Severity: High
+CWE: CWE-22
+Location: Line 1
+Description: The function constructs the root directory (`root_dir`) using `salt_factories.get_root_dir_for_daemon(prev_master_id)`. If the input argument `prev_master_id` is derived from untrusted user input and is not properly sanitized or validated, an attacker could potentially inject path traversal sequences (e.g., `../`, `..\`) into this ID. This could allow the application to create configuration directories (`conf_dir`) outside of the intended scope, leading to arbitrary file write capabilities or information disclosure if subsequent code reads from these manipulated paths.
+Remediation: Implement strict validation and sanitization on all inputs used for path construction, especially `prev_master_id`. The input should be validated against a whitelist (e.g., alphanumeric characters only) and the resulting directory path must be canonicalized and checked to ensure it remains within an expected base directory boundary before any file operations occur.

@@ -1,0 +1,6 @@
+Vulnerability: Excessive Polling / Potential Denial of Service (DoS)
+Severity: High
+CWE: CWE-400
+Location: Line 7 (The `for` loop and the API call within it)
+Description: The function implements a fixed polling mechanism, repeatedly calling an external API endpoint (`/scans/`) at a constant interval (every 0.5 seconds) up to 100 times. In a production or high-volume testing environment, this aggressive, continuous polling can lead to resource exhaustion on the target server side, potentially triggering rate limiting mechanisms or causing a Denial of Service condition for other legitimate users or processes accessing the same API.
+Remediation: Instead of fixed interval polling, implement an exponential backoff strategy (e.g., wait 1s, then 2s, then 4s, etc.) to gradually increase the delay between requests. Furthermore, ensure that the application respects any documented rate limits provided by the target service API. If possible, use webhooks or event-driven architecture instead of polling entirely.

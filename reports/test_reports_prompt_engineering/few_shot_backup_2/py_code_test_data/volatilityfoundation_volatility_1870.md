@@ -1,0 +1,6 @@
+Vulnerability: Resource Exhaustion / Uncontrolled Memory Allocation
+Severity: High
+CWE: CWE-400
+Location: Line 23
+Description: The function calculates the number of chunks (`count`) based directly on `desired_section.Misc.VirtualSize`. Since this size metadata is read from an untrusted binary file (the PE structure), a malicious input could set `VirtualSize` to an extremely large value. If this value exceeds system limits or available memory, the subsequent call to `obj.Object("Array", ..., count = ...)` could trigger excessive resource consumption, leading to a Denial of Service (DoS) condition or potentially causing integer overflow in the underlying library implementation.
+Remediation: Before calculating and using any size parameter derived from file metadata, implement strict validation checks. The calculated `count` must be bounded by reasonable maximum limits (e.g., checking against system memory capacity or predefined application limits) to prevent resource exhaustion attacks. Additionally, ensure that all arithmetic operations involving sizes are checked for potential integer overflow/underflow.

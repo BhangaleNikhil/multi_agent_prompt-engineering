@@ -1,0 +1,6 @@
+Vulnerability: Template Injection / Arbitrary Code Execution
+Severity: Critical
+CWE: CWE-94
+Location: Lines 50-73 (The entire block handling `included_files` and subsequent task execution)
+Description: The function processes and executes tasks defined within included files (`IncludedFile.process_include_results`). This process inherently involves loading external content and rendering templates using variables retrieved from the playbook context, inventory, and variable manager. If an attacker can control the contents of any included file (e.g., via malicious inventory data or manipulated roles/playbooks), they may inject template directives (such as Jinja2) that execute arbitrary code during the task loading or execution phase. This vulnerability could lead to Remote Code Execution (RCE) with the privileges of the running Ansible process.
+Remediation: Implement strict sandboxing for all templating engines used within the framework. Ensure that user-controlled variables are strictly validated and sanitized before being passed into template rendering contexts. Furthermore, restrict the capabilities of loaded tasks and handlers to prevent them from accessing sensitive system functions or executing arbitrary shell commands unless explicitly required and whitelisted.

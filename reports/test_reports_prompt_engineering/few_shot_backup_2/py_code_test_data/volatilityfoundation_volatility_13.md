@@ -1,0 +1,6 @@
+Vulnerability: Information Leakage / Sensitive Data Exposure
+Severity: High
+CWE: CWE-200
+Location: Lines 10-23
+Description: The function is designed to dump detailed internal memory metadata, including virtual address descriptors (VAD) structure details, object offsets (`obj_offset`), and raw pointers (Flink/Blink). If the output stream (`outfd`) is accessible to an unauthorized user or process, this information constitutes a severe leak. An attacker can use these leaked addresses and structural details (e.g., memory layout, pointer relationships) to bypass security mechanisms, perform targeted memory corruption attacks, or construct Return-Oriented Programming (ROP) chains.
+Remediation: Implement strict access control lists (ACLs) on the function call itself, ensuring that only highly privileged processes or authorized debugging tools can execute this code and write to the output stream. If logging is required, sensitive pointers and raw memory addresses should be masked, obfuscated, or truncated before being written to persistent storage or an external stream.

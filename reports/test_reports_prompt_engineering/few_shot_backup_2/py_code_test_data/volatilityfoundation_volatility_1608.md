@@ -1,0 +1,6 @@
+Vulnerability: Path Traversal
+Severity: High
+CWE: CWE-22
+Location: Line 24
+Description: The function constructs file paths by concatenating `self._config.DUMP_DIR` with components derived from process metadata, specifically `task.ImageFileName` (used as `{0}`). If the `task.ImageFileName` contains directory traversal sequences (e.g., `../`, `..\`), an attacker could manipulate the resulting path to write dump files outside of the intended `self._config.DUMP_DIR`. This allows for arbitrary file writing in accessible directories, potentially leading to data leakage or system compromise.
+Remediation: Before constructing the final path, sanitize all user-controlled or external inputs (like `task.ImageFileName`) to ensure they do not contain directory separators (`/` or `\`). Additionally, use functions like `os.path.abspath()` and validate that the resulting absolute path remains strictly within the boundaries of the intended dump directory using techniques such as checking if the resolved path starts with the canonicalized base directory path.

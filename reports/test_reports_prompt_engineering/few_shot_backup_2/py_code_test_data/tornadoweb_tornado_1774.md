@@ -1,0 +1,6 @@
+Vulnerability: Server-Side Template Injection (SSTI)
+Severity: High
+CWE: CWE-20
+Location: Line 2 (Template initialization)
+Description: While this code snippet is a test case, the underlying pattern demonstrates the use of a templating engine. If the template string (`"{% if x > 4 %}yes{% else %}no{% end %}"`) were to be constructed or modified using untrusted user input in a production environment, it would create a Server-Side Template Injection vulnerability. An attacker could inject malicious template syntax (e.g., calling system functions or accessing sensitive variables) leading to arbitrary code execution or data leakage.
+Remediation: Never allow unvalidated user input to define the structure of a template. If dynamic content must be included, use strict whitelisting and sanitization mechanisms specific to the templating engine being used. For maximum security, ensure that the rendering context is restricted to only necessary variables and functions, preventing access to underlying system objects or dangerous Python features.

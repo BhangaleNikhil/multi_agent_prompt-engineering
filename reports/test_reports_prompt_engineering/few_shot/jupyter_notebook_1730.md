@@ -1,0 +1,6 @@
+Vulnerability: Cross-Site Scripting (XSS)
+Severity: High
+CWE: CWE-79
+Location: Line 16 - Line 18 (The process of constructing and writing content to the temporary file)
+Description: The function constructs a local resource URI (`uri`) using path components derived from potentially untrusted sources (`self.file_to_run`). While `url_escape` is used, this only ensures the URI structure is valid; it does not guarantee that the resulting data written into the temporary HTML file will be safe when rendered by a web browser. If any part of the input path or derived URI contains unescaped characters (like `<`, `>`, or quotes), an attacker could inject malicious scripts that execute in the context of the user's browser, leading to session hijacking or unauthorized actions.
+Remediation: Before writing the `uri` content into the temporary HTML file (`self._write_browser_open_file`), all path components and dynamic data must be explicitly sanitized and encoded for HTML display (HTML entity encoding). Furthermore, ensure that any user-controlled input used to construct the resource URI is strictly validated against an allowlist of safe characters.

@@ -1,0 +1,6 @@
+Vulnerability: Blind SQL Injection / Data Exfiltration via DNS
+Severity: Critical
+CWE: CWE-89
+Location: Line 30
+Description: The function implements a sophisticated mechanism to perform data exfiltration by embedding database query results into DNS requests. By constructing and executing payloads that leverage database functions (such as `dns_request` in MSSQL/PGSQL) to leak data over the network, an attacker can extract sensitive information (e.g., passwords, user data) even if the application does not return the query results directly. This technique constitutes a highly effective Blind SQL Injection attack, allowing unauthorized data retrieval without direct access to the database output.
+Remediation: The application must strictly validate and sanitize all inputs used in the `expression` variable. Furthermore, the underlying database connection and query execution layer must be hardened to prevent the use of functions that facilitate external network communication (like DNS lookups) based on user-supplied data. Implement parameterized queries for all data inputs and enforce the principle of least privilege for the database user account, ensuring the account cannot execute network-related functions.

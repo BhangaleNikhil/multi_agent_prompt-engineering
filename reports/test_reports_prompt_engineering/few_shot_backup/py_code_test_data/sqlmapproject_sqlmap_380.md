@@ -1,0 +1,6 @@
+Vulnerability: SQL Injection (Potential)
+Severity: Critical
+CWE: CWE-89
+Location: Line 20 (and throughout the function)
+Description: The function handles user input to select databases, tables, and columns for data dumping. While the visible code uses `unsafeSQLIdentificatorNaming()` for display purposes, the core logic relies on passing these user-selected identifiers (database names, table names, column names) to underlying database functions (`self.dumpTable` and `conf.dumper.dbTableValues`). If these functions do not properly sanitize or parameterize the identifiers derived from user input (e.g., `db`, `table`, `column`), an attacker could inject malicious SQL code, allowing them to dump unauthorized data, modify the database structure, or execute arbitrary commands.
+Remediation: When constructing queries that rely on user-provided identifiers (like table or column names), ensure that the identifiers are strictly validated against a whitelist of allowed characters (e.g., alphanumeric characters and underscores) and that they are properly escaped using the database driver's specific identifier quoting mechanism (e.g., `sqlite3`'s `?` or `psycopg2`'s quoting functions). Never trust user input to define database structure elements.

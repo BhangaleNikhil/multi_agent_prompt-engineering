@@ -1,0 +1,6 @@
+Vulnerability: Memory Safety / Out-of-Bounds Access
+Severity: Critical
+CWE: CWE-787
+Location: Line 10 (The loop iteration and object creation)
+Description: The function relies on system-provided values (`max_fds`) to determine the bounds of iteration. If an attacker can manipulate the process memory structure or if the underlying operating system data is corrupted, `max_fds` could be set to an excessively large number or point to invalid offsets. Iterating up to this potentially incorrect limit and accessing `fds[i]` or constructing `obj.Object` with arbitrary offsets can lead to reading or writing outside of allocated memory boundaries (Out-of-Bounds Read/Write). This vulnerability can result in a Denial of Service (crash) or, critically, allow for arbitrary code execution if the attacker controls the data used for pointer arithmetic.
+Remediation: Implement strict bounds checking on all offsets and counts derived from system structures. Before accessing `fds[i]` or creating an object using an offset, validate that the calculated address falls within known, allocated memory regions associated with the process structure to prevent memory corruption attacks. Use safe memory access libraries designed for low-level parsing.

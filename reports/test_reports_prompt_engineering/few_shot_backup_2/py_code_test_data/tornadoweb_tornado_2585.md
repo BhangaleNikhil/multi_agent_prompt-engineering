@@ -1,0 +1,6 @@
+Vulnerability: Path Traversal / Directory Traversal
+Severity: High
+CWE: CWE-22
+Location: Line 3
+Description: The code constructs a file path by concatenating a hardcoded prefix (`/root_static`) with a dynamically generated path component (`path`). While this specific snippet is contained within a unit test, the underlying pattern demonstrates poor path handling. If the `path` variable were derived from user input or an untrusted source (rather than being calculated internally using `os.path.join`), an attacker could inject directory traversal sequences (e.g., `../`) to access files outside the intended static directory structure, potentially leading to unauthorized information disclosure.
+Remediation: When constructing file paths that involve multiple components, always use dedicated path manipulation libraries like `os.path.join()` or Python's modern `pathlib` module. These tools automatically handle platform-specific separators and help prevent simple string concatenation errors that could lead to traversal vulnerabilities. Furthermore, implement strict validation checks (e.g., ensuring the resolved absolute path remains within a designated root directory) before accessing any file system resource.

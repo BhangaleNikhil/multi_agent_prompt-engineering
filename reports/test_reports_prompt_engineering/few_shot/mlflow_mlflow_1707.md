@@ -1,0 +1,6 @@
+Vulnerability: Command Injection
+Severity: Critical
+CWE: CWE-78
+Location: Line 3
+Description: The function executes an external operating system command (`databricks fs cp`) using parameters (`uri` and `local_path`) that are derived from user input. If these inputs are not rigorously sanitized, an attacker can inject malicious shell metacharacters (e.g., `;`, `&`, `|`) into either the `uri` or `local_path`. This allows the attacker to execute arbitrary commands on the underlying host system with the privileges of the running process.
+Remediation: Avoid passing user-controlled input directly into OS command execution functions. If external processes must be called, ensure that all arguments are strictly validated against an allowlist (whitelisting) and that the function used for execution handles arguments as literal strings rather than allowing shell interpretation. Ideally, use dedicated library functions or APIs provided by the underlying system/platform instead of shelling out to command-line tools.

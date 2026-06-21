@@ -1,0 +1,6 @@
+Vulnerability: SQL Injection
+Severity: Critical
+CWE: CWE-89
+Location: Lines 10, 16
+Description: The function relies on `inject.checkBooleanExpression()` to execute dynamic SQL queries for database fingerprinting. The arguments passed to this function (e.g., `"{}" SUBSETEQ (CAST ({} AS SET))"`) contain placeholders (`{}`) that are intended to be filled by variables. If the values used to populate these placeholders are derived from untrusted sources (such as configuration files, environment variables, or network input), an attacker can inject malicious SQL payloads. This allows the attacker to bypass the intended logic, potentially leading to data exfiltration, modification, or denial of service.
+Remediation: Avoid constructing complex, dynamic SQL queries using string formatting. If database compatibility checks are necessary, utilize the specific, safe functions provided by the underlying database connector library (e.g., SQLAlchemy, psycopg2) rather than building raw SQL strings. If raw SQL must be used, ensure that all variable inputs are passed exclusively through parameterized queries, never concatenated directly into the query string.

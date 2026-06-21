@@ -1,0 +1,6 @@
+Vulnerability: Database Fingerprinting / Information Leakage
+Severity: High
+CWE: CWE-200
+Location: Lines 13 - 45 (Entire function body)
+Description: The code explicitly attempts to detect, initialize connections for, and confirm the presence of a wide array of specific database management systems (MySQL, Oracle, PostgreSQL, SQLite, etc.). This process constitutes highly detailed database fingerprinting. An attacker who gains access to this endpoint or library can use the resulting information (e.g., knowing that the application supports both MySQL and MSSQL) to tailor their attack payload precisely, bypassing generic security controls and significantly increasing the chances of a successful exploit.
+Remediation: Implement defensive coding practices by abstracting or limiting the scope of database detection. If fingerprinting is necessary for functionality, ensure that the resulting information does not leak specific version numbers or detailed connection capabilities. Ideally, the application should use configuration files or environment variables to define supported DBMS types rather than relying on complex runtime detection logic that exposes this information. Furthermore, all error handling during connection attempts must be generic and non-descriptive (e.g., "Database connection failed" instead of "Could not connect to Oracle 12c").

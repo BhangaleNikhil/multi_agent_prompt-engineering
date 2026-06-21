@@ -1,0 +1,6 @@
+Vulnerability: Insecure Direct Object Reference (IDOR) / Improper Authorization
+Severity: High
+CWE: CWE-284
+Location: Line 5
+Description: The function tests an endpoint (`/public/connections/`) that accepts arbitrary query parameters (`query_params`). If the backend API uses these parameters to filter or retrieve specific resources (e.g., by connection ID, user ID) without verifying that the authenticated user has explicit permission to view those resources, it creates a vulnerability. An attacker could manipulate `query_params` to access private data belonging to other users simply by knowing the resource identifier.
+Remediation: The backend API must implement strict server-side authorization checks for all parameters used in filtering or retrieving objects. Before fetching any connection data based on user input, the system must verify that the requesting user is authorized to view the requested object(s). Use role-based access control (RBAC) and ensure ownership validation at the data layer.

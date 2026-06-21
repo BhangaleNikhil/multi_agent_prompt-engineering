@@ -1,0 +1,6 @@
+Vulnerability: Path Traversal / Arbitrary File Access
+Severity: High
+CWE: CWE-22
+Location: Line 10, Line 11
+Description: The code constructs file paths (`input_nb` and `output_nb`) using templated variables (e.g., `{{ dag.dag_id }}`). If the value of `dag.dag_id` or any other variable used in path construction is not strictly sanitized, an attacker could inject directory traversal sequences (like `../`, `..\`) to read sensitive files outside the intended `/tmp/` working directory. This vulnerability allows unauthorized access to system files or configuration data.
+Remediation: Always validate and sanitize user-controlled inputs before using them in file path construction. Use dedicated library functions (e.g., Python's `pathlib` combined with strict validation) that automatically resolve and restrict paths to a designated safe directory, preventing traversal attempts. If the framework provides a mechanism for sanitizing templated variables used in file system operations, it must be utilized.

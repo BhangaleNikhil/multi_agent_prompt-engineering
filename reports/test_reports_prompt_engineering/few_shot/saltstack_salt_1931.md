@@ -1,0 +1,6 @@
+Vulnerability: Command Injection
+Severity: Critical
+CWE: CWE-78
+Location: Line 7
+Description: The function constructs command-line arguments by directly embedding user-supplied `key` and `value` into a string format using Python's `.format()` method. Since this output is intended for use in an operating system shell context (passing options to `yum`), any special characters (like quotes, semicolons, or backticks) present in the input arguments (`key` or `value`) can be used by an attacker to break out of the intended argument structure and execute arbitrary commands.
+Remediation: Never construct command strings using direct string formatting with user-controlled inputs when those strings are executed by a shell. If possible, pass arguments as a list of separate elements to subprocess functions (e.g., `subprocess.run(['--key', 'value'], ...)`), which avoids invoking the system shell entirely and prevents injection. If shell execution is unavoidable, all input variables must be rigorously escaped using OS-specific quoting mechanisms (e.g., Python's `shlex.quote()`).

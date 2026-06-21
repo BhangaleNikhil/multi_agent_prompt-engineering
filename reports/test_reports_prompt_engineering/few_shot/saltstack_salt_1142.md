@@ -1,0 +1,6 @@
+Vulnerability: Command Injection
+Severity: Critical
+CWE: CWE-78
+Location: Line 40
+Description: The function constructs a complex shell command string by using Python's `.format()` method to embed values from `ssh_config` (which contains data derived from external sources like VM configuration). If any of the values within `ssh_config` (e.g., `IdentityFile`, `User`, `HostName`) contain malicious characters such as semicolons (`;`), ampersands (`&`), or backticks (``), an attacker can inject arbitrary shell commands that will be executed by `__salt__["cmd.shell"]`. This allows for Remote Code Execution (RCE) on the host machine running SaltStack.
+Remediation: Never construct shell commands using string formatting with untrusted inputs. Instead, use the underlying execution mechanism's capability to pass arguments as a list or array of parameters. If possible, sanitize all input variables used in command construction to ensure they only contain expected characters (e.g., alphanumeric and hyphens). For example, if `__salt__["cmd.shell"]` supports it, execute the command components separately rather than building one large string.

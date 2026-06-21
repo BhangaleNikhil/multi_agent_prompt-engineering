@@ -1,0 +1,6 @@
+Vulnerability: Server-Side Request Forgery (SSRF)
+Severity: High
+CWE: CWE-22
+Location: Line 10
+Description: The function accepts an arbitrary `url` parameter and uses it to initiate a network connection via `httpclient.HTTPRequest(url)`. Without proper validation or sanitization of this input, an attacker can supply malicious URLs (e.g., internal IP addresses like `127.0.0.1`, cloud metadata endpoints, or restricted internal services). This allows the application to perform requests against resources that should not be publicly accessible, potentially leading to unauthorized data retrieval or service disruption.
+Remediation: Implement strict input validation and allow-listing for the `url` parameter. The application must validate that the provided URL scheme (e.g., only `wss://`) and hostname belong to an expected set of domains. Furthermore, configure the underlying HTTP client library to enforce network boundaries, preventing connections to private IP ranges (RFC 1918 addresses) or loopback interfaces.

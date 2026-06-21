@@ -1,0 +1,6 @@
+Vulnerability: Broken Access Control / Insecure Direct Object Reference (IDOR)
+Severity: High
+CWE: CWE-284
+Location: Line 13 (`return skey.delete_key(match_dict=match)`)
+Description: The function performs a destructive operation (deleting keys) based entirely on the `match` dictionary provided by the caller. There is no visible authorization check to ensure that the user executing this function has the necessary permissions or ownership rights over the specific keys listed in the `match` dictionary. An attacker could potentially supply a dictionary containing identifiers for sensitive data belonging to other users, leading to unauthorized deletion of critical resources.
+Remediation: Before calling `skey.delete_key()`, implement robust authorization checks. The system must verify that the authenticated user is explicitly authorized (e.g., owner or administrator) to delete every single key specified within the input `match` dictionary. This check should occur *before* any database interaction takes place.

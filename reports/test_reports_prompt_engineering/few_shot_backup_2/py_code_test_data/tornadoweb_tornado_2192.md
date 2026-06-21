@@ -1,0 +1,6 @@
+Vulnerability: Warning Suppression
+Severity: Medium
+CWE: CWE-16
+Location: Line 7
+Description: The code uses `warnings.filterwarnings("ignore", ...)` to suppress specific deprecation warnings related to event loops and Python versions. While this is done for compatibility with older library releases, overly aggressive warning suppression can mask critical runtime issues, architectural changes, or security-related deprecations that should be addressed by updating dependencies or modifying the application logic. This practice hinders maintainability and increases the risk of silent failures in production environments.
+Remediation: Instead of globally suppressing warnings, developers should aim to update the underlying libraries (e.g., `tornado`) to versions that support modern Python standards without requiring warning suppression. If suppression is absolutely necessary for testing compatibility, consider using context managers (`with warnings.catch_warnings():`) around the specific code block where the warning occurs, rather than applying a broad filter.

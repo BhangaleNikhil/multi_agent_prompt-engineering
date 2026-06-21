@@ -1,0 +1,6 @@
+Vulnerability: Improper Output Encoding / Data Sanitization
+Severity: High
+CWE: CWE-20
+Location: Line 24
+Description: The function writes raw, unsanitized data (`pid`, `otype`, `name`) directly to the output stream (`outfd`). If the destination of this output (the sink) is an environment that interprets special characters—such as HTML, XML, or Markdown—an attacker could inject malicious content (e.g., script tags, formatting commands) leading to Cross-Site Scripting (XSS) or data corruption. Furthermore, if the input `data` contains sensitive information (like full file paths or credentials), it is being logged without any redaction or masking.
+Remediation: Before writing any user-controlled or external data fields (`name`, `otype`), implement strict output encoding appropriate for the destination format of `outfd`. If the output is destined for HTML, use an escaping function (e.g., `html.escape()`). Additionally, review all input sources to determine if sensitive information needs to be masked or redacted before logging/reporting.

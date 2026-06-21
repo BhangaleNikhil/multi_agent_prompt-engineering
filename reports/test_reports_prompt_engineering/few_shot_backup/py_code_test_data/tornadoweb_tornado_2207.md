@@ -1,0 +1,6 @@
+Vulnerability: Regular Expression Denial of Service (ReDoS)
+Severity: High
+CWE: CWE-400
+Location: Line 14 (self.regex = re.compile(regex))
+Description: The application accepts a regular expression pattern (`regex`) directly from the user input and compiles it using `re.compile()`. If this input is not properly validated, an attacker can provide a maliciously crafted regex (e.g., one containing excessive nested quantifiers like `(a+)*`) that causes catastrophic backtracking. When this regex is later executed against a specific input string (such as a long log entry), it can consume excessive CPU resources, leading to a Denial of Service (DoS) condition.
+Remediation: Implement strict input validation on the `regex` parameter. This validation should include checks for pattern complexity, maximum length, and the use of known vulnerable constructs (like nested quantifiers). If possible, use a dedicated library or framework that provides built-in safeguards against catastrophic backtracking, or limit the maximum allowed execution time for regex matching.

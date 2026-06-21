@@ -1,0 +1,6 @@
+Vulnerability: Credential Dumping / Sensitive Data Exposure
+Severity: Critical
+CWE: CWE-200
+Location: Entire function body
+Description: The function `dump_hashes` is designed to extract and yield user hashes (both LM and NT hashes) from a directory service structure. This functionality, if executed by an attacker who has gained unauthorized access or elevated privileges, constitutes a direct credential dump. It bypasses standard authentication mechanisms and provides attackers with the raw material needed for offline password cracking, leading to complete account compromise.
+Remediation: Implement strict security controls and authorization checks around this function. Credential dumping functionality should only be available in highly controlled, audited environments (e.g., forensic workstations). If this code is part of a legitimate utility, it must enforce the Principle of Least Privilege, requiring explicit, high-level administrative credentials and logging every execution attempt to prevent misuse by compromised processes or unauthorized users. Furthermore, consider implementing memory protection mechanisms to detect and block attempts at hash extraction.

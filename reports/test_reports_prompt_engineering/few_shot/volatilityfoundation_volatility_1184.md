@@ -1,0 +1,6 @@
+Vulnerability: Incomplete Filtering / Information Disclosure Risk
+Severity: Medium
+CWE: CWE-200 (Exposure of Sensitive Information to an Unauthorized Actor)
+Location: Line 6, Line 9
+Description: The function relies on broad data collection methods (`obj_ref.profile.get_all_addresses()` and `lsmod.mac_lsmod(...)`) without implementing stringent filtering or validation for the collected kernel symbols and module addresses. This incompleteness means that the returned address lists might include non-executable, irrelevant, or overly generalized memory regions (e.g., data segments instead of just `.text` sections), potentially leaking excessive system information to an attacker who could use this knowledge for targeted exploitation or further reconnaissance.
+Remediation: Implement strict filtering logic immediately. Specifically, ensure that `kernel_symbol_addresses` only includes addresses confirmed to belong to executable code sections (`.text`). Furthermore, the module parsing loop must be updated to strictly validate and parse each kext in-memory to guarantee that only whitelisted, expected memory regions are included, preventing the inclusion of potentially sensitive or non-executable data segments.

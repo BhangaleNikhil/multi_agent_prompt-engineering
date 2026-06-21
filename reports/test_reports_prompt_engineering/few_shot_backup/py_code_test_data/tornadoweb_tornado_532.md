@@ -1,0 +1,6 @@
+Vulnerability: Overly Broad Exception Handling
+Severity: Medium
+CWE: CWE-754
+Location: Line 4
+Description: The function uses a bare `except Exception:` block, which catches all types of exceptions, including system-level errors, memory errors, and unexpected runtime exceptions. While the intent is to ensure resource cleanup (closing the socket) and proper error propagation, catching all exceptions masks critical bugs and prevents the application from distinguishing between expected operational failures (e.g., connection reset) and unexpected, potentially exploitable internal errors. This practice severely degrades the application's robustness and security posture.
+Remediation: Narrow the scope of the `except` block. Instead of catching `Exception`, the code should explicitly catch only the specific, expected exception types that the callback is designed to raise (e.g., `IOError`, `ConnectionResetError`, or specific exceptions defined by the underlying I/O framework). This ensures that unexpected system failures are allowed to propagate and be logged/handled by higher-level monitoring systems.

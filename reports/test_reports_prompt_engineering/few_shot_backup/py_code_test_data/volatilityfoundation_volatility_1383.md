@@ -1,0 +1,6 @@
+Vulnerability: Memory Corruption / Out-of-Bounds Read
+Severity: Critical
+CWE: CWE-125
+Location: Line 20
+Description: The function relies on calculated offsets and sizes (`entry.obj_offset + entry_size` and `entry.Size * entry_size`) to define a memory region for reading the string data (`text`). If the underlying heap structure (`entry`) is malformed, corrupted, or if the calculated offsets/lengths exceed the actual boundaries of the process's virtual memory space or the segment's allocated memory, the `obj.Object` constructor will attempt an out-of-bounds read. This can lead to a Denial of Service (DoS) crash or, critically, the leakage of sensitive data from adjacent, unrelated memory structures.
+Remediation: Before constructing the `obj.Object`, the code must implement rigorous boundary checks. It should validate that the calculated `offset + length` does not exceed the known end boundary of the current heap segment or the process's address space. If the memory structure cannot guarantee the integrity of the offset and size, the read operation must be aborted safely.

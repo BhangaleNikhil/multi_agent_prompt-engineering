@@ -1,0 +1,6 @@
+Vulnerability: SQL Injection
+Severity: Critical
+CWE: CWE-89
+Location: Multiple lines, particularly where `expression` is passed to `agent.concatQuery` or used in `agent.forgeUnionQuery`.
+Description: The function accepts an arbitrary input parameter (`expression`) and uses it directly or indirectly to construct parts of a database query (e.g., via `agent.concatQuery` and `agent.forgeUnionQuery`). If the value passed as `expression` originates from untrusted user input, an attacker can inject malicious SQL commands, allowing them to bypass intended logic, extract sensitive data, modify records, or even drop tables.
+Remediation: The application must never construct database queries by concatenating unvalidated external inputs. All dynamic query components derived from user input (like `expression`) must be handled using parameterized queries (prepared statements) provided by the underlying database connector library. If an ORM is used, ensure that all data fields are bound as parameters rather than being interpolated into the SQL string.

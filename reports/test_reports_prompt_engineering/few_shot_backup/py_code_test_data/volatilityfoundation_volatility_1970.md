@@ -1,0 +1,6 @@
+Vulnerability: SQL Injection (Identifier Injection)
+Severity: Critical
+CWE: CWE-89
+Location: Line 5, Line 19, Line 30
+Description: The code constructs SQL queries by concatenating strings that include identifiers (table names and column names), such as `self._plugin_name` and the results of `self._sanitize_name(i.name)`. While the actual data values are safely handled using `executemany` with placeholders (`?`), the table and column names themselves are derived from inputs that are not guaranteed to be safe. If an attacker can control the input that determines the plugin name or the column names, they can inject malicious SQL fragments, leading to unauthorized data access, modification, or even denial of service.
+Remediation: Never use untrusted input to construct SQL identifiers (table names, column names). Instead, implement strict whitelisting for all identifiers. If the input must be used, ensure that the input is rigorously validated against a predefined list of allowed characters and names, or use database-specific functions designed to quote and escape identifiers safely, rather than simple string concatenation.

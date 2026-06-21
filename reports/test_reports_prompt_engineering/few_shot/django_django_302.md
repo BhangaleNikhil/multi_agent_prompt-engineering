@@ -1,0 +1,6 @@
+Vulnerability: Insecure Deserialization / Remote Code Execution
+Severity: Critical
+CWE: CWE-502
+Location: Line 13 (Use of `pickle.loads(data)`) and Line 24 (Execution via `subprocess.check_output` using pickled data).
+Description: The code utilizes Python's standard `pickle` module for serialization and deserialization. The `pickle` protocol is inherently insecure because it can execute arbitrary code during the unpickling process if the input data (`data`) is crafted by a malicious actor. By passing serialized objects to a subprocess that executes them, the application creates a critical Remote Code Execution (RCE) vulnerability.
+Remediation: Never use `pickle` to deserialize data received from untrusted sources or external inputs. Instead, use safer, language-agnostic serialization formats such as JSON (JavaScript Object Notation), which only supports basic data types and cannot execute code upon loading. If complex object graph preservation is absolutely necessary, consider using specialized, secure alternatives that explicitly restrict the classes and functions allowed during deserialization.

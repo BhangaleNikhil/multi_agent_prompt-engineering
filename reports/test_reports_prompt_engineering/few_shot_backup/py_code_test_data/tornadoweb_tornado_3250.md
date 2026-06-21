@@ -1,0 +1,6 @@
+Vulnerability: Logic Complexity and State Management Issues
+Severity: Medium
+CWE: CWE-664
+Location: Function Scope
+Description: The function is highly complex, dealing with internal Python mechanisms such as `Future` objects, generators, and asynchronous state transitions. This level of complexity significantly increases the surface area for subtle bugs, race conditions, and resource leaks (e.g., improper cleanup of `Future` objects or `Runner` instances). While not an immediate injection vulnerability, the difficulty in auditing the state transitions makes the code brittle and prone to Denial of Service (DoS) if resource cleanup fails under specific execution paths.
+Remediation: Refactor the code into smaller, more manageable units. Implement comprehensive unit and integration tests covering all possible execution paths (success, exception, cancellation, generator yield). Where possible, utilize established, battle-tested asynchronous frameworks rather than implementing core concurrency logic manually.

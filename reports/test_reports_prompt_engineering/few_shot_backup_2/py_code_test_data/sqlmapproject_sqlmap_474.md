@@ -1,0 +1,6 @@
+Vulnerability: Logic Flaw / Brittle Security Detection
+Severity: High
+CWE: CWE-207
+Location: Line 3
+Description: The function relies on checking for an exact, hardcoded string (`"The page you are trying to access is restricted due to a security rule"`) within the retrieved page content to determine if a security restriction was triggered. This approach is extremely brittle and prone to bypass (a "magic string" vulnerability). Attackers can easily circumvent this detection mechanism by using different encodings, slight variations in wording, or alternative payloads that trigger the WAF but return slightly modified error messages. Security logic should never depend on exact text matching of expected failure responses.
+Remediation: Instead of relying on parsing the content for a specific string, the underlying `get_page` mechanism should be updated to provide programmatic indicators of restriction. This could involve checking HTTP status codes (e.g., 403 Forbidden), analyzing dedicated security headers added by the WAF, or having the `get_page` function return a structured object that explicitly indicates if the request was blocked, rather than just returning the page content.

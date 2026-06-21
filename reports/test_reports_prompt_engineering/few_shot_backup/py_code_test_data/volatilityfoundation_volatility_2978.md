@@ -1,0 +1,6 @@
+Vulnerability: Path Traversal
+Severity: High
+CWE: CWE-22
+Location: Line 24
+Description: The function constructs a file path using `os.path.join` and several variables, including `self._config.DUMP_DIR`, `name`, `offset`, `vad_start`, and `vad_end`. If any of these variables, particularly `self._config.DUMP_DIR` or `name`, are derived from untrusted user input and are not properly sanitized, an attacker could inject directory traversal sequences (e.g., `../`) to write files outside the intended dump directory. This allows for arbitrary file write operations on the system.
+Remediation: Before constructing the path, validate and sanitize all input components. Specifically, ensure that `self._config.DUMP_DIR` is an absolute path within a designated, restricted directory (a "jail"). Additionally, sanitize `name` and `offset` to strip any path separators (`/` or `\`) to prevent traversal attempts. Use functions like `os.path.abspath` combined with path validation checks to ensure the final resolved path remains within the intended base directory.

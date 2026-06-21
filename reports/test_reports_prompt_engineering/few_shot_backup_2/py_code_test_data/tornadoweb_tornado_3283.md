@@ -1,0 +1,6 @@
+Vulnerability: Race Condition / Improper State Management
+Severity: High
+CWE: CWE-362
+Location: Line 15 (Accessing `_state.contexts`)
+Description: The function relies on accessing and comparing module-level or global state variables, specifically `_state.contexts`. If this decorator is used in a multi-threaded environment (e.g., a web server handling concurrent requests) or an asynchronous context without proper synchronization mechanisms (like locks), multiple threads could read or write to `_state.contexts` simultaneously. This lack of thread safety can lead to race conditions, resulting in corrupted execution state, unpredictable behavior, or incorrect context propagation.
+Remediation: All access and modification of shared global state variables like `_state.contexts` must be protected by synchronization primitives (e.g., `threading.Lock`). Alternatively, the module should utilize thread-local storage (`threading.local`) to ensure that each execution context maintains its own isolated view of the stack context state, preventing interference between concurrent operations.

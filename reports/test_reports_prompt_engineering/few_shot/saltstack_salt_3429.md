@@ -1,0 +1,6 @@
+Vulnerability: Insecure Use of Global State / Context Manipulation
+Severity: High
+CWE: CWE-668
+Location: Lines 7, 14 (Reliance on `global compconn`, `__active_provider_name__`, and `__opts__`)
+Description: The function relies heavily on mutable global variables (`compconn`, `__active_provider_name__`, and `__opts__`) to determine the operational context (e.g., which provider is active, what options are available). This design pattern makes the function non-thread-safe and highly susceptible to state manipulation. An attacker who can control or predict the environment's global state could force the function to operate on incorrect data, list unauthorized resources, or bypass intended security checks. Additionally, the use of a bare `except:` block (Line 18) masks potential runtime errors, making debugging difficult and potentially allowing unexpected execution paths.
+Remediation: Refactor the code to eliminate reliance on global state. All necessary configuration parameters (connection details, active provider name, options) should be passed explicitly as arguments to the function or managed within a dedicated class instance (using dependency injection). This ensures that the function's behavior is predictable and isolated from external environmental changes.

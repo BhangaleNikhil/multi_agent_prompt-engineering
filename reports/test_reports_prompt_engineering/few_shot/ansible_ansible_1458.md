@@ -1,0 +1,6 @@
+Vulnerability: Time-of-Check to Time-of-Use (TOCTOU) Race Condition
+Severity: High
+CWE: CWE-362
+Location: Lines 19-24 (The entire file processing loop)
+Description: The function reads and checks metadata about the file path (`os.stat(path).st_mode`) and opens it for reading (`with open(path, 'rb') as path_fd:`). Because these operations are not atomic, an attacker could exploit a race condition by modifying the file's permissions or content between the time the security checks (like checking `executable` status) are performed and when the code actually uses the file handle. This could allow an attacker to bypass permission checks or trick the system into processing malicious data that was written after the initial check.
+Remediation: When performing multiple dependent operations on a file path, use atomic file system calls where possible. If atomicity is not guaranteed by the underlying OS/language functions, consider using mandatory access controls (MAC) or implementing robust locking mechanisms to ensure the file state remains consistent throughout the entire processing block.

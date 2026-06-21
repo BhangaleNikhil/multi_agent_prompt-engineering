@@ -1,0 +1,6 @@
+Vulnerability: SQL Injection
+Severity: Critical
+CWE: CWE-89
+Location: Line 150 (within the parameter value collection loop)
+Description: The function collects user input for UDF parameters using `readInput(msg)` and then directly concatenates these untrusted values into the command string (`cmd`) via `cmd += "%s," % parValue`. This lack of proper sanitization or use of parameterized queries allows an attacker to inject malicious SQL payloads (e.g., `' OR 1=1; --`) through any parameter value, potentially leading to unauthorized data retrieval, modification, or execution of arbitrary commands.
+Remediation: When constructing dynamic SQL queries that incorporate user-provided parameters, always use prepared statements or parameterized query APIs provided by the database connector library. Never concatenate raw user input directly into the query string. If possible, the underlying `self.udfEvalCmd` and `self.udfExecCmd` methods should accept a list of parameters separate from the SQL template to ensure safe execution.

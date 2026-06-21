@@ -1,0 +1,6 @@
+Vulnerability: Information Leakage (Sensitive Data Exposure)
+Severity: High
+CWE: CWE-200
+Location: Lines 20-30 (Throughout the `draw_branch` function)
+Description: The function is designed to enumerate and dump detailed system process information, including unique process IDs (PID), parent process IDs (PPID), handle counts, creation times, and critically, the full command line arguments (`process_params.CommandLine`) and executable paths (`process_params.ImagePathName`). If this function is called by an endpoint or service that does not enforce strict authorization checks, an attacker could exploit it to gather extensive system intelligence, aiding in lateral movement, privilege escalation, or targeted attacks.
+Remediation: Implement robust authorization checks (e.g., Role-Based Access Control) before executing this function. Determine the minimum necessary data required for the calling context and filter out highly sensitive details (like full command lines or internal object offsets) unless the user has explicit, elevated permissions (e.g., root or system administrator).

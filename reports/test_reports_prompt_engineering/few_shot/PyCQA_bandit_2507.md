@@ -1,0 +1,6 @@
+Vulnerability: Identifier Injection / Unsanitized Input
+Severity: High
+CWE: CWE-20 (Improper Input Validation)
+Location: Line 13
+Description: The function constructs a qualified name string using inputs (`prefix` and `node.attr`) derived from AST traversal or external aliases. These values are not validated or sanitized to ensure they contain only valid identifier characters (e.g., alphanumeric, underscores). If the resulting string is later used in an execution context—such as building a SQL query, calling a system command, or using it within `eval()`—an attacker could inject malicious code fragments via these unsanitized inputs.
+Remediation: Implement strict validation on all input components (`prefix` and `node.attr`) to ensure they conform only to expected identifier patterns (e.g., using regular expressions that restrict characters to a safe subset). If the resulting string is destined for a database, always use parameterized queries or ORM mechanisms that handle identifier quoting automatically, rather than concatenating raw strings.

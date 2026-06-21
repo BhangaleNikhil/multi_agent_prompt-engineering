@@ -1,0 +1,6 @@
+Vulnerability: Regular Expression Denial of Service (ReDoS)
+Severity: High
+CWE: CWE-400
+Location: Line 1 (The entire function body, specifically the use of `pattern`)
+Description: The constructor accepts a regular expression pattern (`pattern`) which is derived from external or user-controlled input. If this pattern is not properly validated for complexity and structure, an attacker can supply a malicious regex that causes catastrophic backtracking when matched against specific inputs. This exponential time complexity consumption can exhaust the CPU resources of the application, leading to a Denial of Service (DoS) condition.
+Remediation: Implement strict validation on the provided regular expression pattern. Techniques include limiting the maximum length and complexity of the regex, or using specialized libraries that analyze the regex structure to detect potential backtracking issues before compilation. If possible, use simpler matching mechanisms (like path segment checks) instead of full regex matching for routing logic.

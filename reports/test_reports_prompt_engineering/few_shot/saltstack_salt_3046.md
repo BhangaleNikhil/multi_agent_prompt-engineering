@@ -1,0 +1,6 @@
+Vulnerability: Insecure Deserialization
+Severity: Critical
+CWE: CWE-427
+Location: Line 10
+Description: The function uses `pickle.loads()` to deserialize data read from files located in a directory structure (`jid_dir`). The Python `pickle` module is inherently unsafe when used with untrusted input because it can execute arbitrary code during the deserialization process, leading directly to Remote Code Execution (RCE). An attacker who can write or manipulate any file within the specified job directory could inject malicious serialized data that executes commands upon loading.
+Remediation: Never use `pickle` to deserialize data received from untrusted sources. If the data is expected to be structured data (like dictionaries, lists, or simple objects), switch to a safer serialization format such as JSON (`json.loads`) or YAML using safe loaders. If complex object state must be preserved, consider implementing cryptographic signing and integrity checks on the serialized payload before deserialization.

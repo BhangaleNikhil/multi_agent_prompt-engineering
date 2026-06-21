@@ -1,0 +1,6 @@
+Vulnerability: Information Leakage / Improper Memory Boundary Checking
+Severity: High
+CWE: CWE-200
+Location: Lines 18, 34 (Page iteration loops)
+Description: This function operates at a very low level, performing memory enumeration across kernel and user address spaces. The code relies on external system calls (`addr_space.get_available_pages()`, `task_space.vtop(vpage)`, etc.) to define boundaries. If the underlying operating system or library functions fail to strictly enforce process isolation or if an attacker can manipulate the input parameters (e.g., by providing a malicious `addr_space` object), it is possible for the function to read memory outside of the intended, authorized address space. This could lead to leaking sensitive kernel data, private keys, or information from unrelated processes that should be inaccessible.
+Remediation: Implement rigorous boundary checks and privilege validation at every point where physical or virtual addresses are accessed. The system must validate that the caller has explicit read permissions for the entire memory range being mapped. Furthermore, utilize established OS APIs designed specifically for safe cross-process memory inspection (e.g., using dedicated kernel debugging interfaces) rather than relying on raw address space iteration to prevent unauthorized data exposure.

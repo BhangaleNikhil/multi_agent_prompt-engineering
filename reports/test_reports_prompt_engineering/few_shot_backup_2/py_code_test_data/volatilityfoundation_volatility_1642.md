@@ -1,0 +1,6 @@
+Vulnerability: Path Traversal / Improper Canonicalization
+Severity: High
+CWE: CWE-22
+Location: Line 19
+Description: The function constructs file paths by manually concatenating components derived from filesystem nodes (`paths[parent_key] + str(vnode.v_name.dereference())`). This approach is highly susceptible to path traversal vulnerabilities if the underlying system allows directory names or node names that contain sequences like `../` (dot-dot-slash). If the calculated path is not properly canonicalized and validated against an expected root directory, an attacker could potentially manipulate the input structure to calculate a full path pointing outside the intended scope.
+Remediation: Never manually concatenate filesystem paths using string addition. Instead, utilize dedicated, safe library functions provided by the operating system or language runtime (e.g., `os.path.join` in Python) which are designed to correctly handle and resolve directory separators and traversal sequences. Additionally, implement strict validation checks immediately after path construction to ensure the resulting canonical path remains within an allowed root boundary.

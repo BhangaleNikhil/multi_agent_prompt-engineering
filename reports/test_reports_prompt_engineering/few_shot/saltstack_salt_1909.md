@@ -1,0 +1,6 @@
+Vulnerability: Remote Code Execution / Injection
+Severity: Critical
+CWE: CWE-20
+Location: Lines 65-73 (Construction of `payload_kwargs` and subsequent call to `sreq.send()`)
+Description: The function accepts several user-controlled inputs, notably `fun` (the target function name) and `arg` (arguments for the function), which are then packaged into a payload intended for remote execution on minion nodes. These inputs are used directly without sufficient validation or sanitization. An attacker could potentially manipulate these strings to inject malicious code, escape the intended function call context, or execute arbitrary commands on the target host(s) when the payload is processed by the receiving node.
+Remediation: Implement strict input validation and whitelisting for all parameters that define remote execution targets (`fun` and `arg`). The system should maintain a whitelist of allowed modules and functions that can be called remotely. Furthermore, ensure that arguments are properly serialized and executed within a sandboxed environment to prevent code injection or privilege escalation.

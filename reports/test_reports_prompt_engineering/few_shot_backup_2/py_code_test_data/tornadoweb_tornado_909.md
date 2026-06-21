@@ -1,0 +1,6 @@
+Vulnerability: Resource Exhaustion / Regular Expression Denial of Service (ReDoS)
+Severity: High
+CWE: CWE-400
+Location: Line 13
+Description: The function uses `re.split(r',\s*', headers["Content-Length"])` to parse potentially duplicated or comma-separated values in the `Content-Length` header, which is a common pattern used by proxies. If an attacker can provide an extremely long string containing complex patterns (e.g., many commas followed by varying whitespace), the regular expression processing and subsequent list comprehension (`any(i != pieces[0] for i in pieces)`) could consume excessive CPU time or memory, leading to a Denial of Service condition.
+Remediation: Implement strict limits on the length of the `Content-Length` header value before attempting regex splitting. If possible, use simpler string manipulation methods (like standard Python split functions) instead of complex regular expressions for basic delimiter parsing, or ensure that the input size is capped to prevent resource exhaustion attacks.

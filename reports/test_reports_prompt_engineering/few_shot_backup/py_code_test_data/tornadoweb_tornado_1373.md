@@ -1,0 +1,6 @@
+Vulnerability: Improper Certificate Validation / Weak TLS Configuration
+Severity: High
+CWE: CWE-295
+Location: Line 1 (Systemic vulnerability related to `ssl_options_to_context`)
+Description: The function relies on an external helper (`ssl_options_to_context`) to create the SSL context. If the resulting `ssl.SSLContext` is not explicitly configured to enforce strict certificate validation (e.g., using `ssl.CERT_REQUIRED` and verifying the hostname), the connection is vulnerable to Man-in-the-Middle (MITM) attacks. An attacker could intercept traffic by presenting a self-signed or invalid certificate, and the application might accept it if validation is not strictly enforced.
+Remediation: Ensure that the `ssl_options_to_context` function, or the calling code, mandates the use of `ssl.CERT_REQUIRED` when creating the `SSLContext`. Furthermore, always verify that the `server_hostname` is correctly passed and used by the underlying SSL library to validate the certificate against the expected domain name.

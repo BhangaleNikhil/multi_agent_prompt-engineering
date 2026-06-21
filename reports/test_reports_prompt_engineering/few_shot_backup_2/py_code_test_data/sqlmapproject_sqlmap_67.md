@@ -1,0 +1,6 @@
+Vulnerability: Regex Injection / Unsafe Input Handling
+Severity: High
+CWE: CWE-20
+Location: Function body (All lines involving `re.finditer`, `re.search`, or string concatenation)
+Description: The function accepts three parameters (`pattern`, `repl`, and `string`) where the first two are used to construct complex regular expression matching and replacement logic. If the `pattern` or `repl` arguments are derived from untrusted user input, an attacker could inject malicious regex syntax (e.g., overly complex lookaheads/lookbehinds) leading to a Denial of Service (ReDoS attack), or manipulate the substitution process to extract or modify data outside the intended scope. The manual and complex handling of backreferences (`\g<...>` logic) increases the surface area for injection flaws.
+Remediation: Implement strict input validation on all arguments, especially `pattern` and `repl`. If user-supplied patterns are necessary, they must be rigorously sanitized to prevent malicious regex constructs. For simple substitution tasks, utilize built-in, safe library functions (like Python's standard `re.sub`) which handle escaping and replacement logic internally, rather than implementing custom, complex string manipulation routines.

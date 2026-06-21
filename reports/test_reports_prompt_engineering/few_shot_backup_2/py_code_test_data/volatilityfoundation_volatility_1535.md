@@ -1,0 +1,6 @@
+Vulnerability: Improper Output Encoding/Sanitization
+Severity: Medium
+CWE: CWE-116
+Location: Line 40, Line 57
+Description: The function writes user-provided content (data from the grid) directly to the output file descriptor (`outfd`) without sanitizing or encoding control characters. If the data contained within `node.values` includes raw newline characters (`\n`), carriage returns (`\r`), or other structural control sequences, these will be written literally to the output stream. This can corrupt the intended structured format of the grid (e.g., causing a single cell's content to span multiple lines in the log file) and lead to parsing errors or unexpected behavior in downstream systems that consume this formatted text.
+Remediation: Before writing any user-provided data (`column_text` or `row`) to the output stream, implement robust sanitization logic. Specifically, all control characters (especially newlines and carriage returns) should be escaped or replaced with a safe representation (e.g., replacing `\n` with `\\n`) that preserves the structural integrity of the rendered grid format.

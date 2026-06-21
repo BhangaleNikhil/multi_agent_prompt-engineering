@@ -1,0 +1,6 @@
+Vulnerability: HTTP Header Injection
+Severity: High
+CWE: CWE-501
+Location: Lines 32, 47, and throughout header assignment blocks.
+Description: The function constructs and manipulates various HTTP headers (e.g., "Connection", "Host", "Authorization", "User-Agent") using data derived from the request object (`self.request`) or parsed network details (`self.parsed`). If any of these inputs contain unvalidated characters, particularly Carriage Return (`\r`) and Line Feed (`\n`), an attacker could inject arbitrary headers into the outgoing request stream. This can lead to protocol confusion, bypass security controls (like host validation), or facilitate session hijacking by injecting malicious cookies or custom headers.
+Remediation: All user-controllable inputs used in HTTP header values must be strictly sanitized and validated to ensure they do not contain CRLF sequences (`\r` or `\n`). Furthermore, the application should use a robust networking library that handles header construction internally, rather than manually concatenating strings derived from untrusted sources.

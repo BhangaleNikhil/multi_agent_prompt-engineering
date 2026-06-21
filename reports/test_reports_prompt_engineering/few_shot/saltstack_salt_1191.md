@@ -1,0 +1,6 @@
+Vulnerability: Path Traversal / Arbitrary File Deletion
+Severity: High
+CWE: CWE-22
+Location: Lines involving `shutil.rmtree(cls.sshd_config_dir, ignore_errors=True)` and the file deletion loop using `os.remove()`.
+Description: The function relies on class attributes (e.g., `cls.sshd_config_dir` or the filenames used in the SSH key cleanup) to define paths for resource cleanup. If any of these path variables are derived from untrusted user input, an attacker could inject directory traversal sequences (e.g., `../../etc/`) into the variable values. This would allow them to trick the application into deleting sensitive system files or configuration directories outside the intended test scope, leading to a Denial of Service (DoS) condition or potential data loss.
+Remediation: Before using any path variable derived from external input for file operations (`os.remove`, `shutil.rmtree`), implement strict validation and sanitization. Use functions like `os.path.abspath()` combined with checks to ensure the resolved path remains within a designated, safe root directory (a technique known as "path confinement"). Never trust user-provided paths for destructive operations.

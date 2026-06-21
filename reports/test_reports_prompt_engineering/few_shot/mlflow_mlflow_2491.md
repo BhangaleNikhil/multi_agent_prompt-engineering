@@ -1,0 +1,6 @@
+Vulnerability: Insecure Deserialization
+Severity: High
+CWE: CWE-502
+Location: Line 14
+Description: The code deserializes a potentially complex internal state object (`mlflow.get_last_active_trace()`) into a Python dictionary using `json.loads()`. While JSON is generally safer than formats like Pickle, relying on the deserialization of large, structured data derived from an external or semi-trusted source (like a recorded trace) can introduce risks. If the underlying MLflow system allows malicious or unexpected data types to be serialized into the trace object, loading it blindly could lead to type confusion, denial of service (DoS), or subsequent injection vulnerabilities if the resulting dictionary structure is later used by other components without proper validation.
+Remediation: Implement strict schema validation and whitelisting for all deserialized inputs. Instead of relying on a full `json.loads()` conversion, developers should validate that the loaded data conforms exactly to the expected structure (e.g., using libraries like Pydantic) before accessing or processing any fields. If possible, process the trace object directly through the MLflow API methods rather than serializing and deserializing it manually.
