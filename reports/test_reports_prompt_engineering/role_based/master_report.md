@@ -314,13 +314,6 @@ To mitigate these systemic risks, engineering teams must adhere to the following
 ## Master Agent Tokens:
 | Field | Value |
 |---|---|
-|Input Token Agent|16380|
-|Output Token Agent|4|
-|Input Token Tool|0|
-|Output Token Tool|0|
-## Master Agent Tokens:
-| Field | Value |
-|---|---|
 |Input Token Agent|397050|
 |Output Token Agent|86104|
 |Input Token Tool|0|

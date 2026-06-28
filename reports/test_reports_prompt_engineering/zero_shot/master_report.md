@@ -232,13 +232,6 @@ The following files encountered issues during the scanning/reporting process:
 ## Master Agent Tokens:
 | Field | Value |
 |---|---|
-|Input Token Agent|12285|
-|Output Token Agent|3|
-|Input Token Tool|0|
-|Output Token Tool|0|
-## Master Agent Tokens:
-| Field | Value |
-|---|---|
 |Input Token Agent|287570|
 |Output Token Agent|22255|
 |Input Token Tool|0|

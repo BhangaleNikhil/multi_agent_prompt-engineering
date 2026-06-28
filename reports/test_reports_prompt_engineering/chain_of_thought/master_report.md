@@ -446,13 +446,6 @@ The following files were identified as having issues during processing and were 
 ## Master Agent Tokens:
 | Field | Value |
 |---|---|
-|Input Token Agent|16380|
-|Output Token Agent|4|
-|Input Token Tool|0|
-|Output Token Tool|0|
-## Master Agent Tokens:
-| Field | Value |
-|---|---|
 |Input Token Agent|483427|
 |Output Token Agent|91818|
 |Input Token Tool|0|

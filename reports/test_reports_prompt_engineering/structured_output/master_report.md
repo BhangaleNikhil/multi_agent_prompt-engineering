@@ -191,13 +191,6 @@ The security assessment of the provided codebase indicates a critical risk profi
 ## Master Agent Tokens:
 | Field | Value |
 |---|---|
-|Input Token Agent|12285|
-|Output Token Agent|3|
-|Input Token Tool|0|
-|Output Token Tool|0|
-## Master Agent Tokens:
-| Field | Value |
-|---|---|
 |Input Token Agent|252712|
 |Output Token Agent|87116|
 |Input Token Tool|0|
